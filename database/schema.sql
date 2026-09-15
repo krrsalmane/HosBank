@@ -1,6 +1,6 @@
 -- Active: 1764668125407@@127.0.0.1@3306@hosbank
-CREATE DATABASE IF NOT EXISTS smartbank;
-USE smartbank;
+CREATE DATABASE IF NOT EXISTS hosBank;
+USE hosBank;
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
 
@@ -18,6 +18,24 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE email_verifications (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+
+    user_id INT NOT NULL,
+
+    token VARCHAR(255) NOT NULL UNIQUE,
+
+    expires_at TIMESTAMP NOT NULL,
+
+    verified_at TIMESTAMP NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE bank_accounts (
