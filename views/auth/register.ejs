@@ -17,6 +17,14 @@
             <h1>HosBank</h1>
             <h2>Create your account</h2>
 
+            <p class="description">
+                Register to access your bank account.
+            </p>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+
             <form action="/register" method="POST">
 
                 <div class="form-group">
@@ -25,6 +33,7 @@
                         type="text"
                         id="firstName"
                         name="firstName"
+                        value="<%= typeof firstName !== 'undefined' ? firstName : '' %>"
                         placeholder="Enter your first name"
                         required
                     >
@@ -36,6 +45,7 @@
                         type="text"
                         id="lastName"
                         name="lastName"
+                        value="<%= typeof lastName !== 'undefined' ? lastName : '' %>"
                         placeholder="Enter your last name"
                         required
                     >
@@ -47,7 +57,20 @@
                         type="email"
                         id="email"
                         name="email"
+                        value="<%= typeof email !== 'undefined' ? email : '' %>"
                         placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value="<%= typeof phone !== 'undefined' ? phone : '' %>"
+                        placeholder="Enter your phone"
                         required
                     >
                 </div>
@@ -59,17 +82,6 @@
                         id="password"
                         name="password"
                         placeholder="Enter your password"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm password</label>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        placeholder="Confirm your password"
                         required
                     >
                 </div>
