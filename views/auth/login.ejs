@@ -1,25 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>HosBank - Login</title>
+
+    <link rel="stylesheet" href="/css/login.css">
 </head>
+
 <body>
 
-    <h1>Login</h1>
+    <div class="container">
 
-    <form action="/login" method="POST">
+        <div class="form-box">
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+            <h1>HosBank</h1>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
+            <p class="description">
+                Login to access your bank account.
+            </p>
 
-        <button type="submit">Login</button>
+            <form action="/login" method="POST">
 
-    </form>
-    
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit">Login</button>
+
+            </form>
+
+            <p class="register-link">
+                Don't have an account?
+                <a href="/register">Create an account</a>
+            </p>
+
+        </div>
+
+    </div>
+
 </body>
 </html>
