@@ -18,6 +18,9 @@ app.get('/', (req, res) =>{
 app.get('/register' ,(req,res) =>{
     res.render('auth/register')
 })
+app.get('/login' , (req,res) =>{
+    res.render('auth/login')
+})
 
 app.use((req,res) => {
     res.status(404).render('errors/404')

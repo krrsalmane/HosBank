@@ -3,29 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>register</title>
+    <title>HosBank - Register</title>
+
+    <link rel="stylesheet" href="/css/register.css">
 </head>
+
 <body>
-    <h1>Create Account</h1>
 
-    <form action="/register" method="POST">
-         <label>first name</label>
-        <input type="firstname" name="firstname" required>
+    <div class="container">
 
-         <label>last name</label>
-        <input type="lastname" name="lastname" required>
+        <div class="form-box">
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+            <h1>HosBank</h1>
+            <h2>Create your account</h2>
 
-         <label>Phone</label>
-        <input type="phone" name="phone" required>
+            <form action="/register" method="POST">
 
-        <label>Password</label>
-        <input type="password" name="password" required>
+                <div class="form-group">
+                    <label for="firstName">First name</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="Enter your first name"
+                        required
+                    >
+                </div>
 
-        <button type="submit">Save</button>
+                <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Enter your last name"
+                        required
+                    >
+                </div>
 
-    </form>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit">Create account</button>
+
+            </form>
+
+            <p class="login-link">
+                Already have an account?
+                <a href="/login">Login</a>
+            </p>
+
+        </div>
+
+    </div>
+
 </body>
 </html>
