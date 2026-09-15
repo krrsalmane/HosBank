@@ -3,21 +3,17 @@ import express from 'express';
 import {pool} from './config/database.js';
 import router from './routes/auth.routes.js';
 
-const connection = await pool.getConnection()
 const app = express()
 app.set("view engine","ejs");
 app.set('views','views')
 app.use(express.static("public"));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use('/auth',router)
 
 
 app.get('/', (req, res) =>{
     res.render('home')
-})
-
-app.get('/register' ,(req,res) =>{
-    res.render('auth/register')
 })
 
 app.use((req,res) => {
