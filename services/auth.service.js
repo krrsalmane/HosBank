@@ -13,3 +13,18 @@ export async function registerUser(firstName, lastName,email,password,phone) {
     let userId = await createUser(firstName,lastName,email,hashedpassword,phone,'CLIENT');
     return userId 
 }
+
+export async function loginUser(email, password) {
+    if (!email || !password) {
+        throw new Error('Email and password are required');
+    }
+    let user = await findUserByEmail(email);
+    if (!user) {
+        throw new Error('Invalid email or password');
+    }
+    let passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+        throw new Error('Invalid email or password');
+    }
+    return user;
+}
