@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express';
 import {pool} from './config/database.js';
+import router from './routes/auth.routes.js';
 
 const connection = await pool.getConnection()
 const app = express()
