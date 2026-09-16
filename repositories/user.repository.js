@@ -1,7 +1,7 @@
 import { pool } from '../config/database.js';
 
 export async function findUserByEmail(email) {
-    let [row] =  await pool.query(`SELECT FROM users WHERE email = ?`,[email])
+    let [row] =  await pool.query(`SELECT * FROM users WHERE email = ?`,[email])
     if (row === 0) {
         return null;
     }

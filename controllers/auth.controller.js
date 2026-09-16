@@ -1,4 +1,5 @@
 import {loginUser, registerUser} from '../services/auth.service.js';
+import { verifyEmail } from '../services/emailVerification.service.js';
 
 export function showRegister(req,res) {
     res.render('auth/register');
@@ -8,7 +9,7 @@ export async function register(req,res) {
     let {firstName,lastName,email,password,phone } = req.body;
     try {
         let userId = await registerUser(firstName,lastName,email,password,phone)
-        res.status(201)
+        res.status(201).send(`use created succesfully id : ${userId}`)
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -51,4 +52,14 @@ export function showDashboard(req,res) {
     res.render('/dashboard/index',{
         user : req.session.user
     });
+}
+
+export async function verifyEmailController(req , res) {
+    let {token} = req.query;
+    try{
+        await verifyEmail(token);
+        return res.send('email verified succesfully')
+    } catch (error) {
+        return res.status(400).send(error.message)
+    }
 }

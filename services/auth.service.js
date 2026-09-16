@@ -1,5 +1,6 @@
 import { findUserByEmail,createUser } from "../repositories/user.repository.js";
 import bcrypt from 'bcrypt';
+import { createEmailVerification } from "./emailVerification.service.js";
 
 export async function registerUser(firstName, lastName,email,password,phone) {
     if (!firstName || !lastName || !email || !password) {
@@ -9,9 +10,11 @@ export async function registerUser(firstName, lastName,email,password,phone) {
     if (existUser) {
         throw new Error('email already exist');
     }
-    const hashedpassword = await bcrypt.hash(password);
-    let userId = await createUser(firstName,lastName,email,hashedpassword,phone,'CLIENT');
-    return userId 
+    const hashedpassword = await bcrypt.hash(password,10);
+    let userId = await createUser(firstName,lastName,email,hashedpassword,phone || null,'CLIENT');
+
+    let verificationToken = await createEmailVerification(userId);
+    return {userId,verificationToken}; 
 }
 
 export async function loginUser(email, password) {
@@ -22,9 +25,10 @@ export async function loginUser(email, password) {
     if (!user) {
         throw new Error('Invalid email or password');
     }
-    let passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
         throw new Error('Invalid email or password');
     }
     return user;
 }
+
