@@ -1,3 +1,24 @@
-<%- include('../partials/navbar', { user: user }) %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
 
-<h1>Client Dashboard</h1>
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Welcome <%= user.firstName %></h1>
+
+    <div>
+        <h2>My Banking</h2>
+
+        <a href="/client/accounts">My Accounts</a>
+        <a href="/client/beneficiaries">Beneficiaries</a>
+        <a href="/client/transfers">Transfers</a>
+        <a href="/client/requests">My Requests</a>
+    </div>
+
+</body>
+</html>
