@@ -3,7 +3,6 @@ import express from 'express';
 import session from 'express-session';
 import authRouter from './routes/auth.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
-
 const app = express()
 app.set("view engine","ejs");
 app.set('views','views')

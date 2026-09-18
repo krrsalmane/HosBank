@@ -5,27 +5,26 @@ export function showRegister(req,res) {
     res.render('auth/register');
 }
 
-export async function register(req,res) {
-    let {firstName,lastName,email,password,phone } = req.body;
+export async function register(req, res) {
+    const {firstName,lastName,email,password,phone} = req.body;
     try {
-        let userId = await registerUser(firstName,lastName,email,password,phone)
-        res.status(201).send(`use created succesfully id : ${userId}`)
+        const result = await registerUser(firstName,lastName,email,password,phone);
+        return res.redirect('/auth/check-email');
     } catch (error) {
-        res.status(400).send(error.message)
+        return res.status(400).send(error.message);
     }
-    
 }
 
 export function showLogin(req,res) {
     res.render('auth/login');
 }
 
-export async function login(params) {
+export async function login(req,res) {
     let {email,password} = req.body;
     try {
         let user = await loginUser(email,password);
         req.session.user = {
-        id: user.id,
+        id: user.id, 
         firstName: user.first_name,
         lastName: user.last_name,
         email: user.email,
@@ -44,7 +43,7 @@ export function logout(req,res) {
             return res.status(500).send('caould not logout');
         }
         res.clearCookie('connect.sid');
-        res.redirect('auth/login')
+        res.redirect('/auth/login')
     });
 }
 
@@ -62,4 +61,8 @@ export async function verifyEmailController(req , res) {
     } catch (error) {
         return res.status(400).send(error.message)
     }
+}
+
+export function showCheckEmail(req, res) {
+    res.render('auth/check-email');
 }

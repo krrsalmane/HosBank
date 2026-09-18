@@ -1,8 +1,8 @@
 import { pool } from '../config/database.js';
 
 export async function findUserByEmail(email) {
-    let [row] =  await pool.query(`SELECT * FROM users WHERE email = ?`,[email])
-    if (row === 0) {
+    let [row] =  await pool.query(`SELECT * FROM users WHERE email = ?`,[email]);
+    if (row.length === 0) {
         return null;
     }
     return row[0];
@@ -21,4 +21,9 @@ export async function createUser(firstName,lastName,email,password,phone,role) {
         [firstName, lastName, email, password, phone, role]
     );
     return result.insertId;
+}
+
+export async function markUserEmailAsVerified(userId) {
+    let [result] = await pool.query(`UPDATE users SET email_verified = TRUEWHERE id = ?`,[userId]);
+    return result.affectedRows > 0;
 }
