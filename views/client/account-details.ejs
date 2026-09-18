@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Account Details</h1>
+
+    <p>Account type: <%= account.account_type %></p>
+    <p>Balance: <%= account.balance %></p>
+    <p>Account number: <%= account.account_number %></p>
+    <p>Status: <%= account.status %></p>
+
+    <a href="/client/accounts">Back to accounts</a>
+
+</body>
+</html>
