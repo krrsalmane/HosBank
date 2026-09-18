@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Accounts</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>My Accounts</h1>
+
+    <% if (accounts.length === 0) { %>
+
+        <p>You don't have any accounts.</p>
+
+    <% } else { %>
+
+        <% accounts.forEach(account => { %>
+
+            <div>
+                <h2><%= account.account_type %></h2>
+
+                <p>
+                    Balance:
+                    <%= account.balance %>
+                </p>
+
+                <a href="/client/accounts/<%= account.id %>">
+                    View details
+                </a>
+            </div>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+</html>

@@ -3,7 +3,8 @@ import express from 'express';
 import session from 'express-session';
 import authRouter from './routes/auth.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
-import verificationRouter from './routes/verification.router.js'
+import verificationRouter from './routes/verification.router.js';
+import clientRoutes from './routes/client.routes.js';
 
 const app = express()
 app.set("view engine","ejs");
@@ -33,6 +34,7 @@ app.use('/verification' ,verificationRouter);
 app.use((req,res) => {
     res.status(404).render('errors/404')
 });
+app.use('/client' , clientRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
