@@ -31,3 +31,18 @@ export async function getBeneficiaryById(id, userId) {
 
     return rows[0];
 }
+
+export async function updateBeneficiary(
+    id,
+    userId,
+    name,
+    accountNumber
+) {
+    await pool.query(
+        `UPDATE beneficiaries
+         SET name = ?, accountNumber = ?
+         WHERE id = ?
+         AND user_id = ?`,
+        [name, accountNumber, id, userId]
+    );
+}
