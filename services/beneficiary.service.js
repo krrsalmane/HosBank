@@ -46,3 +46,13 @@ export async function updateBeneficiary(
         [name, accountNumber, id, userId]
     );
 }
+
+
+export async function deleteBeneficiary(id, userId) {
+    await pool.query(
+        `DELETE FROM beneficiaries
+         WHERE id = ?
+         AND user_id = ?`,
+        [id, userId]
+    );
+}
