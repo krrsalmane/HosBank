@@ -3,12 +3,13 @@ import { showClientDashboard } from '../controllers/client.controller.js';
 import { requireAuth,authorize } from '../middlewares/auth.middleware.js';
 import { showAccounts } from '../controllers/client.controller.js';
 import { showAccountDetails } from '../controllers/client.controller.js';
+
 const router = express.Router();
 
 router.get(
     '/dashboard',
-    requireAuth,
-    authorize('CLIENT'),
+    // requireAuth,
+   // authorize('CLIENT'),
     showClientDashboard
 )
 

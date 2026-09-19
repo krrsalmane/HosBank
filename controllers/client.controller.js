@@ -5,9 +5,20 @@ import {
 
 
 
-export function showClientDashboard( req , res ){
+//export function showClientDashboard( req , res ){
+  //  res.render('client/dashboard', {
+    //    user: req.session.user
+    //});
+//}
+export function showClientDashboard(req, res) {
     res.render('client/dashboard', {
-        user: req.session.user
+        user: {
+            id: 1,
+            firstName: 'Test',
+            lastName: 'Client',
+            email: 'test@test.com',
+            role: 'CLIENT'
+        }
     });
 }
 

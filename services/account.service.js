@@ -1,4 +1,4 @@
-import pool from '../config/database.js'
+import {pool} from '../config/database.js'
 
 export async function getClientAccounts(userId) {
     const [rows] = await pool.query(

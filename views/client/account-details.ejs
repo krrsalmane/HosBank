@@ -11,12 +11,34 @@
 
     <h1>Account Details</h1>
 
-    <p>Account type: <%= account.account_type %></p>
-    <p>Balance: <%= account.balance %></p>
-    <p>Account number: <%= account.account_number %></p>
-    <p>Status: <%= account.status %></p>
+    <p>
+        <strong>Account number:</strong>
+        <%= account.account_number %>
+    </p>
 
-    <a href="/client/accounts">Back to accounts</a>
+    <p>
+        <strong>Type:</strong>
+        <%= account.type %>
+    </p>
+
+    <p>
+        <strong>Balance:</strong>
+        <%= account.balance %>
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        <%= account.status %>
+    </p>
+
+    <p>
+        <strong>Created:</strong>
+        <%= account.created_at %>
+    </p>
+
+    <a href="/client/accounts">
+        Back to accounts
+    </a>
 
 </body>
 </html>

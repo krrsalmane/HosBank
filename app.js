@@ -6,6 +6,7 @@ import dashboardRouter from './routes/dashboard.routes.js';
 import verificationRouter from './routes/verification.router.js';
 import clientRoutes from './routes/client.routes.js';
 
+
 const app = express()
 app.set("view engine","ejs");
 app.set('views','views')
@@ -31,10 +32,12 @@ app.get('/', (req, res) =>{
 
 app.use('/verification' ,verificationRouter);
 
+
+app.use('/client' , clientRoutes);
+
 app.use((req,res) => {
     res.status(404).render('errors/404')
 });
-app.use('/client' , clientRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
