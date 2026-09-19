@@ -20,3 +20,14 @@ export async function createBeneficiary(userId, name, accountNumber) {
     );
 }
 
+export async function getBeneficiaryById(id, userId) {
+    const [rows] = await pool.query(
+        `SELECT *
+         FROM beneficiaries
+         WHERE id = ?
+         AND user_id = ?`,
+        [id, userId]
+    );
+
+    return rows[0];
+}
