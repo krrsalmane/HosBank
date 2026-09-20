@@ -2,116 +2,120 @@
     <div class="container">
 
 
-    <a class="navbar-brand" href="/dashboard">
-        MyBank
-    </a>
+        <a class="navbar-brand" href="/dashboard">
+            MyBank
+        </a>
 
-    <div class="navbar-nav">
+        <div class="navbar-nav">
 
-        <!-- CLIENT -->
-        <% if (user && user.role === 'CLIENT') { %>
+            <!-- CLIENT -->
+            <% if (user && user.role==='CLIENT' ) { %>
 
-            <a class="nav-link" href="/client/dashboard">
-                Dashboard
-            </a>
+                <a class="nav-link" href="/client/dashboard">
+                    Dashboard
+                </a>
 
-            <a class="nav-link" href="/client/accounts">
-                Accounts
-            </a>
+                <a class="nav-link" href="/client/accounts">
+                    Accounts
+                </a>
 
-            <a class="nav-link" href="/client/beneficiaries">
-                Beneficiaries
-            </a>
+                <a class="nav-link" href="/client/beneficiaries">
+                    Beneficiaries
+                </a>
 
-            <a class="nav-link" href="/client/transfers">
-                Transfers
-            </a>
+                <a class="nav-link" href="/client/transfers">
+                    Transfers
+                </a>
 
-            <a class="nav-link" href="/client/requests">
-                Requests
-            </a>
+                <a class="nav-link" href="/client/requests">
+                    Requests
+                </a>
 
-        <% } %>
+                <a class="nav-link" href="/client/transfers/history">
+                    Transaction History
+                </a>
 
-
-        <!-- MANAGER -->
-        <% if (user && user.role === 'MANAGER') { %>
-
-            <a class="nav-link" href="/manager/dashboard">
-                Dashboard
-            </a>
-
-            <a class="nav-link" href="/manager/clients">
-                Clients
-            </a>
-
-            <a class="nav-link" href="/manager/requests">
-                Requests
-            </a>
-
-            <a class="nav-link" href="/manager/interactions">
-                Interactions
-            </a>
-
-        <% } %>
+                <% } %>
 
 
-        <!-- ADMIN -->
-        <% if (user && user.role === 'ADMIN') { %>
+                    <!-- MANAGER -->
+                    <% if (user && user.role==='MANAGER' ) { %>
 
-            <a class="nav-link" href="/admin/dashboard">
-                Dashboard
-            </a>
+                        <a class="nav-link" href="/manager/dashboard">
+                            Dashboard
+                        </a>
 
-            <a class="nav-link" href="/admin/users">
-                Users
-            </a>
+                        <a class="nav-link" href="/manager/clients">
+                            Clients
+                        </a>
 
-            <a class="nav-link" href="/admin/accounts">
-                Accounts
-            </a>
+                        <a class="nav-link" href="/manager/requests">
+                            Requests
+                        </a>
 
-            <a class="nav-link" href="/admin/cards">
-                Cards
-            </a>
+                        <a class="nav-link" href="/manager/interactions">
+                            Interactions
+                        </a>
 
-            <a class="nav-link" href="/admin/transfers">
-                Transfers
-            </a>
-
-            <a class="nav-link" href="/admin/requests">
-                Requests
-            </a>
-
-            <a class="nav-link" href="/admin/statistics">
-                Statistics
-            </a>
-
-        <% } %>
-
-    </div>
+                        <% } %>
 
 
-    <!-- USER + LOGOUT -->
-    <% if (user) { %>
+                            <!-- ADMIN -->
+                            <% if (user && user.role==='ADMIN' ) { %>
 
-        <div class="d-flex align-items-center">
+                                <a class="nav-link" href="/admin/dashboard">
+                                    Dashboard
+                                </a>
 
-            <span class="text-white me-3">
-                <%= user.firstName %>
-            </span>
+                                <a class="nav-link" href="/admin/users">
+                                    Users
+                                </a>
 
-            <form action="/auth/logout" method="POST">
-                <button type="submit" class="btn btn-danger btn-sm">
-                    Logout
-                </button>
-            </form>
+                                <a class="nav-link" href="/admin/accounts">
+                                    Accounts
+                                </a>
+
+                                <a class="nav-link" href="/admin/cards">
+                                    Cards
+                                </a>
+
+                                <a class="nav-link" href="/admin/transfers">
+                                    Transfers
+                                </a>
+
+                                <a class="nav-link" href="/admin/requests">
+                                    Requests
+                                </a>
+
+                                <a class="nav-link" href="/admin/statistics">
+                                    Statistics
+                                </a>
+
+                                <% } %>
 
         </div>
 
-    <% } %>
 
-</div>
+        <!-- USER + LOGOUT -->
+        <% if (user) { %>
+
+            <div class="d-flex align-items-center">
+
+                <span class="text-white me-3">
+                    <%= user.firstName %>
+                </span>
+
+                <form action="/auth/logout" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Logout
+                    </button>
+                </form>
+
+            </div>
+
+            <% } %>
+
+    </div>
 
 
 </nav>

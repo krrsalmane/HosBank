@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Make a Transfer</title>
     <link rel="stylesheet" href="/css/style.css">
@@ -9,89 +10,86 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Make a Transfer</h1>
+        <h1>Make a Transfer</h1>
 
-    <form action="/client/transfers/confirm" method="POST">
+        <% if (error) { %>
+            <div>
+                <p><strong>Error:</strong>
+                    <%= error %>
+                </p>
+            </div>
+            <% } %>
 
-        <div>
-            <label for="accountId">From Account</label>
-            <select name="accountId" id="accountId" required>
+                <form action="/client/transfers/confirm" method="POST">
 
-                <option value="">Select an account</option>
+                    <div>
+                        <label for="accountId">From Account</label>
+                        <select name="accountId" id="accountId" required>
 
-                <% accounts.forEach(account => { %>
+                            <option value="">Select an account</option>
 
-                    <option value="<%= account.id %>">
-                        <%= account.type %> -
-                        <%= account.account_number %> -
-                        Balance: <%= account.balance %>
-                    </option>
+                            <% accounts.forEach(account=> { %>
 
-                <% }) %>
+                                <option value="<%= account.id %>">
+                                    <%= account.type %> -
+                                        <%= account.account_number %> -
+                                            Balance: <%= account.balance %>
+                                </option>
 
-            </select>
-        </div>
+                                <% }) %>
 
-        <br>
+                        </select>
+                    </div>
 
-        <div>
-            <label for="beneficiaryId">Beneficiary</label>
+                    <br>
 
-            <select name="beneficiaryId" id="beneficiaryId" required>
+                    <div>
+                        <label for="beneficiaryId">Beneficiary</label>
 
-                <option value="">Select a beneficiary</option>
+                        <select name="beneficiaryId" id="beneficiaryId" required>
 
-                <% beneficiaries.forEach(beneficiary => { %>
+                            <option value="">Select a beneficiary</option>
 
-                    <option value="<%= beneficiary.id %>">
-                        <%= beneficiary.name %> -
-                        <%= beneficiary.accountNumber %>
-                    </option>
+                            <% beneficiaries.forEach(beneficiary=> { %>
 
-                <% }) %>
+                                <option value="<%= beneficiary.id %>">
+                                    <%= beneficiary.name %> -
+                                        <%= beneficiary.accountNumber %>
+                                </option>
 
-            </select>
-        </div>
+                                <% }) %>
 
-        <br>
+                        </select>
+                    </div>
 
-        <div>
-            <label for="amount">Amount</label>
+                    <br>
 
-            <input
-                type="number"
-                name="amount"
-                id="amount"
-                step="0.01"
-                min="0.01"
-                required
-            >
-        </div>
+                    <div>
+                        <label for="amount">Amount</label>
 
-        <br>
+                        <input type="number" name="amount" id="amount" step="0.01" min="0.01" required>
+                    </div>
 
-        <div>
-            <label for="description">Description</label>
+                    <br>
 
-            <input
-                type="text"
-                name="description"
-                id="description"
-                maxlength="255"
-            >
-        </div>
+                    <div>
+                        <label for="description">Description</label>
 
-        <br>
+                        <input type="text" name="description" id="description" maxlength="255">
+                    </div>
 
-        <button type="submit">
-            Continue
-        </button>
+                    <br>
 
-    </form>
+                    <button type="submit">
+                        Continue
+                    </button>
 
-    <br>
+                </form>
 
-    <a href="/client/dashboard">Back to dashboard</a>
+                <br>
+
+                <a href="/client/dashboard">Back to dashboard</a>
 
 </body>
+
 </html>
