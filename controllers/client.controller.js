@@ -192,3 +192,40 @@ export async function showTransferForm(req, res) {
         res.status(500).send(error.message);
     }
 }
+
+
+export async function showTransferConfirmation(req, res) {
+    try {
+        const userId = req.session.user.id;
+
+        const accounts = await getClientAccounts(userId);
+        const beneficiaries = await getClientBeneficiaries(userId);
+
+        const account = accounts.find(
+            account => account.id == req.body.accountId
+        );
+
+        const beneficiary = beneficiaries.find(
+            beneficiary => beneficiary.id == req.body.beneficiaryId
+        );
+
+        if (!account) {
+            return res.status(404).send('Account not found');
+        }
+
+        if (!beneficiary) {
+            return res.status(404).send('Beneficiary not found');
+        }
+
+        res.render('client/transfer-confirmation', {
+            user: req.session.user,
+            account: account,
+            beneficiary: beneficiary,
+            amount: req.body.amount,
+            description: req.body.description
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

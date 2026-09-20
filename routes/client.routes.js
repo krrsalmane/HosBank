@@ -9,7 +9,9 @@ import {
     addBeneficiary,
     showEditBeneficiary,
     editBeneficiary,
-    removeBeneficiary
+    removeBeneficiary,
+    showTransferForm,
+    showTransferConfirmation
 } from '../controllers/client.controller.js';
 
 import {
@@ -26,8 +28,8 @@ const router = express.Router();
 
 router.get(
     '/dashboard',
-    // requireAuth,
-    // authorize('CLIENT'),
+     requireAuth,
+     authorize('CLIENT'),
     showClientDashboard
 );
 
@@ -85,5 +87,22 @@ router.post(
     removeBeneficiary
 );
 
+//================
+//    TRANSFERS
+//===============
+
+router.get(
+    '/transfers',
+    requireAuth,
+    authorize('CLIENT'),
+    showTransferForm
+);
+
+router.post(
+    '/transfers/confirm',
+    requireAuth,
+    authorize('CLIENT'),
+    showTransferConfirmation
+);
 
 export default router;
