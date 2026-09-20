@@ -23,6 +23,10 @@ import {
     createTransfer
 } from '../services/transfer.service.js';
 
+import {
+    getClientTransactions
+} from '../services/transaction.service.js';
+
 
 
 export function showClientDashboard( req , res ){
@@ -257,6 +261,36 @@ export async function makeTransfer(req, res) {
         res.redirect('/client/transfers/history');
 
     } catch (error) {
-        res.status(400).send(error.message);
+        const accounts = await getClientAccounts(
+            req.session.user.id
+        );
+
+        const beneficiaries = await getClientBeneficiaries(
+            req.session.user.id
+        );
+
+        res.status(400).render('client/transfer', {
+            user: req.session.user,
+            accounts: accounts,
+            beneficiaries: beneficiaries,
+            error: error.message
+        });
+    }
+}
+
+
+export async function showTransactionHistory(req, res) {
+    try {
+        const transactions = await getClientTransactions(
+            req.session.user.id
+        );
+
+        res.render('client/transaction-history', {
+            user: req.session.user,
+            transactions: transactions
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 }

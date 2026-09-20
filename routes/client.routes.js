@@ -12,7 +12,8 @@ import {
     removeBeneficiary,
     showTransferForm,
     showTransferConfirmation,
-    makeTransfer
+    makeTransfer,
+    showTransactionHistory
 } from '../controllers/client.controller.js';
 
 import {
@@ -112,6 +113,13 @@ router.post(
     requireAuth,
     authorize('CLIENT'),
     makeTransfer
+);
+
+router.get(
+    '/transfers/history',
+    requireAuth,
+    authorize('CLIENT'),
+    showTransactionHistory
 );
 
 export default router;
