@@ -19,6 +19,10 @@ import {
     getClientBeneficiaries
 } from '../services/beneficiary.service.js';
 
+import {
+    createTransfer
+} from '../services/transfer.service.js';
+
 
 
 export function showClientDashboard( req , res ){
@@ -227,5 +231,32 @@ export async function showTransferConfirmation(req, res) {
 
     } catch (error) {
         res.status(500).send(error.message);
+    }
+}
+
+
+export async function makeTransfer(req, res) {
+    try {
+        const userId = req.session.user.id;
+
+        const {
+            accountId,
+            beneficiaryId,
+            amount,
+            description
+        } = req.body;
+
+        await createTransfer(
+            userId,
+            accountId,
+            beneficiaryId,
+            amount,
+            description
+        );
+
+        res.redirect('/client/transfers/history');
+
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 }
