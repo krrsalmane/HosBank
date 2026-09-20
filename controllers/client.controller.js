@@ -11,22 +11,23 @@ import {
     deleteBeneficiary
 }from '../services/beneficiary.service.js'
 
-//export function showClientDashboard( req , res ){
-  //  res.render('client/dashboard', {
-    //    user: req.session.user
-    //});
-//}
-export function showClientDashboard(req, res) {
+import {
+    getClientAccounts
+} from '../services/account.service.js';
+
+import {
+    getClientBeneficiaries
+} from '../services/beneficiary.service.js';
+
+
+
+export function showClientDashboard( req , res ){
     res.render('client/dashboard', {
-        user: {
-            id: 1,
-            firstName: 'Test',
-            lastName: 'Client',
-            email: 'test@test.com',
-            role: 'CLIENT'
-        }
+        user: req.session.user
     });
 }
+
+
 
 export async function showAccounts(req ,res){
     try{
@@ -168,6 +169,24 @@ export async function removeBeneficiary(req, res) {
         );
 
         res.redirect('/client/beneficiaries');
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function showTransferForm(req, res) {
+    try {
+        const userId = req.session.user.id;
+
+        const accounts = await getClientAccounts(userId);
+        const beneficiaries = await getClientBeneficiaries(userId);
+
+        res.render('client/transfer', {
+            user: req.session.user,
+            accounts: accounts,
+            beneficiaries: beneficiaries
+        });
 
     } catch (error) {
         res.status(500).send(error.message);

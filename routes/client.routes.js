@@ -38,15 +38,15 @@ router.get(
 
 router.get(
     '/accounts',
-   // requireAuth,
-   // authorize('CLIENT'),
+    requireAuth,
+    authorize('CLIENT'),
     showAccounts
 );
 
 router.get(
     '/accounts/:id',
-   // requireAuth,
-  //  authorize('CLIENT'),
+    requireAuth,
+    authorize('CLIENT'),
     showAccountDetails
 );
 
