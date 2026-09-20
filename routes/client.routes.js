@@ -1,30 +1,89 @@
-import express from 'express'
-import { showClientDashboard } from '../controllers/client.controller.js';
-import { requireAuth,authorize } from '../middlewares/auth.middleware.js';
-import { showAccounts } from '../controllers/client.controller.js';
-import { showAccountDetails } from '../controllers/client.controller.js';
+import express from 'express';
+
+import {
+    showClientDashboard,
+    showAccounts,
+    showAccountDetails,
+    showBeneficiaries,
+    showAddBeneficiary,
+    addBeneficiary,
+    showEditBeneficiary,
+    editBeneficiary,
+    removeBeneficiary
+} from '../controllers/client.controller.js';
+
+import {
+    requireAuth,
+    authorize
+} from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
+
+
+// ====================
+// DASHBOARD
+// ====================
 
 router.get(
     '/dashboard',
     // requireAuth,
-   // authorize('CLIENT'),
+    // authorize('CLIENT'),
     showClientDashboard
-)
+);
+
+
+// ====================
+// ACCOUNTS
+// ====================
 
 router.get(
     '/accounts',
-    requireAuth,
-    authorize('CLIENT'),
+   // requireAuth,
+   // authorize('CLIENT'),
     showAccounts
-)
+);
 
 router.get(
     '/accounts/:id',
-    requireAuth,
-    authorize('CLIENT'),
+   // requireAuth,
+  //  authorize('CLIENT'),
     showAccountDetails
-)
+);
+
+
+// ====================
+// BENEFICIARIES
+// ====================
+
+router.get(
+    '/beneficiaries',
+    showBeneficiaries
+);
+
+router.get(
+    '/beneficiaries/add',
+    showAddBeneficiary
+);
+
+router.post(
+    '/beneficiaries/add',
+    addBeneficiary
+);
+
+router.get(
+    '/beneficiaries/:id/edit',
+    showEditBeneficiary
+);
+
+router.post(
+    '/beneficiaries/:id/edit',
+    editBeneficiary
+);
+
+router.post(
+    '/beneficiaries/:id/delete',
+    removeBeneficiary
+);
+
 
 export default router;
