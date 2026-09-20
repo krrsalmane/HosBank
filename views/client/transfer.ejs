@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make a Transfer</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Make a Transfer</h1>
+
+    <form action="/client/transfers/confirm" method="POST">
+
+        <div>
+            <label for="accountId">From Account</label>
+            <select name="accountId" id="accountId" required>
+
+                <option value="">Select an account</option>
+
+                <% accounts.forEach(account => { %>
+
+                    <option value="<%= account.id %>">
+                        <%= account.type %> -
+                        <%= account.account_number %> -
+                        Balance: <%= account.balance %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="beneficiaryId">Beneficiary</label>
+
+            <select name="beneficiaryId" id="beneficiaryId" required>
+
+                <option value="">Select a beneficiary</option>
+
+                <% beneficiaries.forEach(beneficiary => { %>
+
+                    <option value="<%= beneficiary.id %>">
+                        <%= beneficiary.name %> -
+                        <%= beneficiary.accountNumber %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="amount">Amount</label>
+
+            <input
+                type="number"
+                name="amount"
+                id="amount"
+                step="0.01"
+                min="0.01"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="description">Description</label>
+
+            <input
+                type="text"
+                name="description"
+                id="description"
+                maxlength="255"
+            >
+        </div>
+
+        <br>
+
+        <button type="submit">
+            Continue
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/client/dashboard">Back to dashboard</a>
+
+</body>
+</html>
