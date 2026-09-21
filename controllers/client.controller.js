@@ -356,3 +356,25 @@ export async function showClientRequests(req, res) {
         res.status(500).send(error.message);
     }
 }
+
+
+export async function showClientRequestDetails(req, res) {
+    try {
+        const request = await getRequestById(
+            req.params.id,
+            req.session.user.id
+        );
+
+        if (!request) {
+            return res.status(404).send('Request not found');
+        }
+
+        res.render('client/request-details', {
+            user: req.session.user,
+            request: request
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
