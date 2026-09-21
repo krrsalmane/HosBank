@@ -96,3 +96,5 @@ export async function loginUser(email, password) {
 
     return user;
 }
+
+    
