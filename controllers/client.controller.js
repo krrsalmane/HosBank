@@ -28,6 +28,13 @@ import {
 } from '../services/transaction.service.js';
 
 
+import {
+    createRequest,
+    getClientRequests,
+    getRequestById
+} from '../services/request.service.js';
+
+
 
 export function showClientDashboard( req , res ){
     res.render('client/dashboard', {
@@ -289,6 +296,44 @@ export async function showTransactionHistory(req, res) {
             user: req.session.user,
             transactions: transactions
         });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export function showRequests(req, res) {
+    res.render('client/requests', {
+        user: req.session.user
+    });
+}
+
+export async function createClientRequest(req, res) {
+    const {
+        type,
+        description
+    } = req.body;
+
+    const allowedTypes = [
+        'RIB',
+        'SAVINGS_ACCOUNT',
+        'VIRTUAL_CARD',
+        'PIN_RECALCULATION',
+        'CARD_OPPOSITION'
+    ];
+
+    if (!allowedTypes.includes(type)) {
+        return res.status(400).send('Invalid request type');
+    }
+
+    try {
+        await createRequest(
+            req.session.user.id,
+            type,
+            description
+        );
+
+        res.redirect('/client/requests');
 
     } catch (error) {
         res.status(500).send(error.message);
