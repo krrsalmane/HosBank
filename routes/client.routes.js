@@ -13,7 +13,10 @@ import {
     showTransferForm,
     showTransferConfirmation,
     makeTransfer,
-    showTransactionHistory
+    showTransactionHistory,
+    showClientRequestDetails,
+    showClientRequests,
+    createClientRequest
 } from '../controllers/client.controller.js';
 
 import {
@@ -121,5 +124,35 @@ router.get(
     authorize('CLIENT'),
     showTransactionHistory
 );
+
+
+
+//==============
+//  REQUEST
+//==============
+
+
+router.get(
+    '/requests',
+    requireAuth,
+    authorize('CLIENT'),
+    showClientRequests
+);
+
+router.post(
+    '/requests',
+    requireAuth,
+    authorize('CLIENT'),
+    createClientRequest
+);
+
+router.get(
+    '/requests/:id',
+    requireAuth,
+    authorize('CLIENT'),
+    showClientRequestDetails
+);
+
+
 
 export default router;
