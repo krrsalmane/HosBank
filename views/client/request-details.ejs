@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Request Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Type:</strong>
+            <%= request.type %>
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            <%= request.status %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= request.description || 'No description' %>
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            <%= request.created_at %>
+        </p>
+
+        <p>
+            <strong>Updated:</strong>
+            <%= request.updated_at %>
+        </p>
+
+    </div>
+
+    <a href="/client/requests">
+        Back to requests
+    </a>
+
+</body>
+</html>
