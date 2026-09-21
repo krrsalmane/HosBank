@@ -339,3 +339,20 @@ export async function createClientRequest(req, res) {
         res.status(500).send(error.message);
     }
 }
+
+
+export async function showClientRequests(req, res) {
+    try {
+        const requests = await getClientRequests(
+            req.session.user.id
+        );
+
+        res.render('client/requests', {
+            user: req.session.user,
+            requests: requests
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
