@@ -35,6 +35,9 @@ import {
 } from '../services/request.service.js';
 
 
+import {
+    getClientCards
+}from '../services/card.service.js'
 
 export function showClientDashboard( req , res ){
     res.render('client/dashboard', {
@@ -372,6 +375,30 @@ export async function showClientRequestDetails(req, res) {
         res.render('client/request-details', {
             user: req.session.user,
             request: request
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+
+
+
+//===============
+//     CARDS
+//=============
+
+export async function showClientCards(req, res) {
+    try {
+        const cards = await getClientCards(
+            req.session.user.id
+        );
+
+        res.render('client/cards', {
+            user: req.session.user,
+            cards: cards
         });
 
     } catch (error) {
