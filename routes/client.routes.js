@@ -16,7 +16,8 @@ import {
     showTransactionHistory,
     showClientRequestDetails,
     showClientRequests,
-    createClientRequest
+    createClientRequest,
+    showClientCards
 } from '../controllers/client.controller.js';
 
 import {
@@ -152,6 +153,14 @@ router.get(
     authorize('CLIENT'),
     showClientRequestDetails
 );
+
+
+router.get(
+    '/cards',
+    requireAuth,
+    authorize('CLIENT'),
+    showClientCards
+)
 
 
 
