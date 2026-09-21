@@ -5,7 +5,7 @@ import authRouter from './routes/auth.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
 import verificationRouter from './routes/verification.router.js';
 import clientRoutes from './routes/client.routes.js';
-
+import managerRoutes from './routes/manager.routes.js';
 
 const app = express()
 app.set("view engine","ejs");
@@ -34,6 +34,8 @@ app.use('/verification' ,verificationRouter);
 
 
 app.use('/client' , clientRoutes);
+
+app.use('/manager' ,managerRoutes)
 
 app.use((req,res) => {
     res.status(404).render('errors/404')

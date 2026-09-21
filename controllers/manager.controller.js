@@ -1,0 +1,80 @@
+import {
+    getManagerRequests,
+    getRequestForManager,
+    updateRequestStatus
+}from '../services/manager-request.service.js';
+
+
+export async function showManagerDashboard(req ,res){
+    res.render('manager/dashboard' ,{
+        user: req.session.user
+    })
+}
+
+export async function showManagerRequests(req ,res){
+    try{
+        const requests = await getManagerRequests(
+            req.session.user.id
+        );
+
+        res.render('manager/requests' ,{
+            user: req.session.user,
+            requests:requests
+        })
+    }catch (error){
+
+        res.status(500).send(error.message)
+    }
+}
+
+export async function showManagerRequestDetails(req ,res){
+    try{
+        const request = await getManagerRequests(
+            req.params.id,
+            req.session.user.id
+        );
+        if(!request){
+            return res.status(404).send('Request not found');
+        }
+
+        res.render('manager/request-details' ,{
+            user: req.session.user,
+            request: request
+        });
+    }catch (error){
+        res.status(500).send(error.message)
+    }
+}
+
+export async function changeRequestStatus(req ,res){
+    const{
+        status
+    }=req.body;
+
+    const allowedStauses = [
+        'PENDING',
+        'IN_PROGRESS',
+        'APPROVED',
+        'REJECTED',
+        'COMPLETEDW'
+    ];
+
+    if(!allowedStauses.includes(status)){
+        return res.status(400).send('Invalid status')
+    }
+
+    try{
+        await updateRequestStatus(
+            req.params.id,
+            req.session.user.id,
+            status
+        );
+
+        res.redirect(
+             `/manager/requests/${req.params.id} `
+        )
+
+    }catch (error){
+        res.status(500).send(error.message)
+    }
+}
