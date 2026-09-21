@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Request Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Client:</strong>
+            <%= request.first_name %>
+            <%= request.last_name %>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <%= request.email %>
+        </p>
+
+        <p>
+            <strong>Type:</strong>
+            <%= request.type %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= request.description || 'No description' %>
+        </p>
+
+        <p>
+            <strong>Current status:</strong>
+            <%= request.status %>
+        </p>
+
+    </div>
+
+    <h2>Change Status</h2>
+
+    <form
+        action="/manager/requests/<%= request.id %>/status"
+        method="POST"
+    >
+
+        <select name="status" required>
+
+            <option value="PENDING">
+                Pending
+            </option>
+
+            <option value="IN_PROGRESS">
+                In Progress
+            </option>
+
+            <option value="APPROVED">
+                Approved
+            </option>
+
+            <option value="REJECTED">
+                Rejected
+            </option>
+
+            <option value="COMPLETED">
+                Completed
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Update Status
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/manager/requests">
+        Back to requests
+    </a>
+
+</body>
+</html>

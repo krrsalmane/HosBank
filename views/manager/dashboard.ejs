@@ -1,3 +1,25 @@
-<%- include('../partials/navbar', { user: user }) %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chargé Client Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
 
-<h1>Manager Dashboard</h1>
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Chargé Client Dashboard</h1>
+
+    <p>
+        Welcome
+        <%= user.firstName %>
+        <%= user.lastName %>
+    </p>
+
+    <a href="/manager/requests">
+        View Requests
+    </a>
+
+</body>
+</html>

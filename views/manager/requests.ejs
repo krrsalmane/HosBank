@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Requests</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Client Requests</h1>
+
+    <% if (requests.length === 0) { %>
+
+        <p>No requests assigned to you.</p>
+
+    <% } else { %>
+
+        <% requests.forEach(request => { %>
+
+            <div>
+
+                <h3>
+                    <%= request.type %>
+                </h3>
+
+                <p>
+                    Client:
+                    <%= request.first_name %>
+                    <%= request.last_name %>
+                </p>
+
+                <p>
+                    Email:
+                    <%= request.email %>
+                </p>
+
+                <p>
+                    Status:
+                    <strong>
+                        <%= request.status %>
+                    </strong>
+                </p>
+
+                <a href="/manager/requests/<%= request.id %>">
+                    View request
+                </a>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+</html>
