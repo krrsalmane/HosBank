@@ -178,5 +178,18 @@ router.post(
 )
 
 
+router.get(
+    '/cards/pin-request',
+    requireAuth,
+    authorize('CLIENT'),
+    showPinRequest
+);
+
+router.post(
+    '/cards/pin-request',
+    requireAuth,
+    authorize('CLIENT'),
+    requestPinRecalculation
+);
 
 export default router;
