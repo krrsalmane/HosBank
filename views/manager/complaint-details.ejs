@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Complaint Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Client:</strong>
+            <%= complaint.first_name %>
+            <%= complaint.last_name %>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <%= complaint.email %>
+        </p>
+
+        <p>
+            <strong>Subject:</strong>
+            <%= complaint.subject %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= complaint.description %>
+        </p>
+
+        <p>
+            <strong>Current status:</strong>
+            <%= complaint.status %>
+        </p>
+
+    </div>
+
+    <h2>Change Status</h2>
+
+    <form
+        action="/manager/complaints/<%= complaint.id %>/status"
+        method="POST"
+    >
+
+        <select name="status" required>
+
+            <option value="OPEN">
+                Open
+            </option>
+
+            <option value="IN_PROGRESS">
+                In Progress
+            </option>
+
+            <option value="RESOLVED">
+                Resolved
+            </option>
+
+            <option value="CLOSED">
+                Closed
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Update Status
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/manager/complaints">
+        Back to complaints
+    </a>
+
+</body>
+</html>
