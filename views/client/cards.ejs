@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,9 +16,25 @@
 
         <p>You don't have any cards.</p>
 
-        <a href="/client/requests">
-            Request a virtual card
-        </a>
+        <form action="/client/requests" method="POST">
+
+            <input
+                type="hidden"
+                name="type"
+                value="VIRTUAL_CARD"
+            >
+
+            <input
+                type="hidden"
+                name="description"
+                value="Request for a virtual card"
+            >
+
+            <button type="submit">
+                Request Virtual Card
+            </button>
+
+        </form>
 
     <% } else { %>
 
