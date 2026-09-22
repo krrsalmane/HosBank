@@ -3,7 +3,12 @@ import express from 'express';
 import session from 'express-session';
 import authRouter from './routes/auth.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
-const app = express()
+import accountROuter from './routes/account.routes.js';
+import transactionRouter from './routes/transaction.routes.js';
+import { requireAuth } from './middlewares/auth.middleware.js';
+
+const app = express();
+
 app.set("view engine","ejs");
 app.set('views','views')
 app.use(express.static("public"));
@@ -21,6 +26,8 @@ app.use(session({
 }));
 app.use('/auth',authRouter);
 app.use('/dashboard',dashboardRouter);
+app.use('/accounts',requireAuth,accountROuter);
+app.use('/transfers',requireAuth,transactionRouter)
 
 app.get('/', (req, res) =>{
     res.render('home')
