@@ -192,4 +192,30 @@ router.post(
     requestPinRecalculation
 );
 
+//==================
+// complaints
+//==============
+
+
+router.get(
+    '/complaints',
+    requireAuth,
+    authorize('CLIENT'),
+    showComplaints
+);
+
+router.post(
+    '/complaints',
+    requireAuth,
+    authorize('CLIENT'),
+    createClientComplaint
+);
+
+router.get(
+    '/complaints/:id',
+    requireAuth,
+    authorize('CLIENT'),
+    showClientComplaintDetails
+);
+
 export default router;

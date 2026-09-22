@@ -488,6 +488,10 @@ export async function requestPinRecalculation(req ,res){
 }
 
 
+//===============
+//  COMPLAIN
+//==============
+
 
 export async function showComplaints(req, res) {
     try {
@@ -498,6 +502,55 @@ export async function showComplaints(req, res) {
         res.render('client/complaints', {
             user: req.session.user,
             complaints: complaints
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function createClientComplaint(req, res) {
+    const {
+        subject,
+        description
+    } = req.body;
+
+    if (!subject || !description) {
+        return res.status(400).send(
+            'Subject and description are required'
+        );
+    }
+
+    try {
+        await createComplaint(
+            req.session.user.id,
+            subject,
+            description
+        );
+
+        res.redirect('/client/complaints');
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function showClientComplaintDetails(req, res) {
+    try {
+        const complaint = await getComplaintById(
+            req.params.id,
+            req.session.user.id
+        );
+
+        if (!complaint) {
+            return res.status(404).send(
+                'Complaint not found'
+            );
+        }
+
+        res.render('client/complaint-details', {
+            user: req.session.user,
+            complaint: complaint
         });
 
     } catch (error) {
