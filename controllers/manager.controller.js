@@ -1,7 +1,8 @@
 import {
     getManagerRequests,
     getRequestForManager,
-    updateRequestStatus
+    updateRequestStatus,
+    approveVirtualCardRequest
 }from '../services/manager-request.service.js';
 
 import {
@@ -166,3 +167,72 @@ export async function changeComplaintStatus(
     }
 }
 
+
+export async function changeRequestStatus(req, res) {
+    const {
+        status
+    } = req.body;
+
+    const allowedStatuses = [
+        'PENDING',
+        'IN_PROGRESS',
+        'APPROVED',
+        'REJECTED',
+        'COMPLETED'
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+        return res.status(400).send(
+            'Invalid status'
+        );
+    }
+
+    try {
+
+        if (status === 'APPROVED') {
+
+            const request = await getRequestForManager(
+                req.params.id,
+                req.session.user.id
+            );
+
+            if (!request) {
+                return res.status(404).send(
+                    'Request not found'
+                );
+            }
+
+            if (request.type === 'VIRTUAL_CARD') {
+
+                await approveVirtualCardRequest(
+                    req.params.id,
+                    req.session.user.id
+                );
+
+            } else {
+
+                await updateRequestStatus(
+                    req.params.id,
+                    req.session.user.id,
+                    status
+                );
+
+            }
+
+        } else {
+
+            await updateRequestStatus(
+                req.params.id,
+                req.session.user.id,
+                status
+            );
+        }
+
+        res.redirect(
+            `/manager/requests/${req.params.id}`
+        );
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
