@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Complaint Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Subject:</strong>
+            <%= complaint.subject %>
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            <%= complaint.status %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= complaint.description %>
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            <%= complaint.created_at %>
+        </p>
+
+        <p>
+            <strong>Updated:</strong>
+            <%= complaint.updated_at %>
+        </p>
+
+    </div>
+
+    <a href="/client/complaints">
+        Back to complaints
+    </a>
+
+</body>
+</html>
