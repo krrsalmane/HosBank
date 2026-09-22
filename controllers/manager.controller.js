@@ -4,6 +4,12 @@ import {
     updateRequestStatus
 }from '../services/manager-request.service.js';
 
+import {
+    getManagerComplaints,
+    getManagerComplaint,
+    updateRequestStatus
+} from '../services/manager-complaint.service.js'
+
 
 export async function showManagerDashboard(req ,res){
     res.render('manager/dashboard' ,{
@@ -76,5 +82,86 @@ export async function changeRequestStatus(req ,res){
 
     }catch (error){
         res.status(500).send(error.message)
+    }
+}
+
+
+export async function showManagerComplaints(req, res) {
+    try {
+        const complaints = await getManagerComplaints(
+            req.session.user.id
+        );
+
+        res.render('manager/complaints', {
+            user: req.session.user,
+            complaints: complaints
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+export async function showManagerComplaintDetails(
+    req,
+    res
+) {
+    try {
+        const complaint = await getManagerComplaint(
+            req.params.id,
+            req.session.user.id
+        );
+
+        if (!complaint) {
+            return res.status(404).send(
+                'Complaint not found'
+            );
+        }
+
+        res.render('manager/complaint-details', {
+            user: req.session.user,
+            complaint: complaint
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function changeComplaintStatus(
+    req,
+    res
+) {
+    const allowedStatuses = [
+        'OPEN',
+        'IN_PROGRESS',
+        'RESOLVED',
+        'CLOSED'
+    ];
+
+    const {
+        status
+    } = req.body;
+
+    if (!allowedStatuses.includes(status)) {
+        return res.status(400).send(
+            'Invalid complaint status'
+        );
+    }
+
+    try {
+        await updateComplaintStatus(
+            req.params.id,
+            req.session.user.id,
+            status
+        );
+
+        res.redirect(
+            `/manager/complaints/${req.params.id}`
+        );
+
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 }
