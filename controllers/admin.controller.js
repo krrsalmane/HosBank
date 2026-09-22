@@ -13,7 +13,9 @@ import {
     getClientAssignment,
     assignClient,
     getAllBankAccounts,
-    updateBankAccountStatus
+    updateBankAccountStatus,
+    getAllCards,
+    updateCardStatus
 } from '../services/admin.service.js';
 
 
@@ -287,6 +289,37 @@ export async function changeAccountStatus(req, res) {
         );
 
         res.redirect('/admin/accounts');
+
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+
+export async function showCards(req, res) {
+    try {
+        const cards = await getAllCards();
+
+        res.render('admin/cards', {
+            user: req.session.user,
+            cards: cards
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function changeCardStatus(req, res) {
+    const { status } = req.body;
+
+    try {
+        await updateCardStatus(
+            req.params.id,
+            status
+        );
+
+        res.redirect('/admin/cards');
 
     } catch (error) {
         res.status(400).send(error.message);
