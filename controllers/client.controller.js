@@ -405,3 +405,52 @@ export async function showClientCards(req, res) {
         res.status(500).send(error.message);
     }
 }
+
+
+
+export async function showCardOpposition(req ,res){
+
+    try{
+        const cards = await getClientCards(
+            req.session.user.id
+        )
+        res.render('client/card-opposition' ,{
+            user: req.session.user,
+            cards: cards
+        })
+    }catch (error){
+        res.status(500).send(error.message)
+    }
+}
+
+export async function requestCardOpposition(req ,res){
+    const {
+        cardId,
+        description
+    }= req.body;
+
+    try {
+        const cards = await getClientCards(
+            req.session.user.id
+        )
+
+        const card = cards.find(
+            card =>card.id == cardId
+        )
+
+        if(!card){
+            return res.status(404).send('Card not found')
+        }
+
+        await createRequest(
+            req.session.user.id,
+            'CARD_OPPOSITION',
+            `Card ID: ${cardId}. ${description} `
+        )
+        res.redirect('/client/requests')
+    }catch (error) 
+    {
+
+        res.status(500).send(error.message)
+    }
+}
