@@ -5,7 +5,10 @@ import {
     showManagerDashboard,
     showManagerRequestDetails,
     showManagerRequests,
-    changeRequestStatus
+    changeRequestStatus,
+    showManagerComplaintDetails,
+    showManagerComplaints,
+    changeComplaintStatus
 }from '../controllers/manager.controller.js'
 
 import {
@@ -41,6 +44,28 @@ router.post(
     requireAuth,
     authorize('CHARGE_CLIENT'),
     changeRequestStatus
+);
+
+
+router.get(
+    '/complaints',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    showManagerComplaints
+);
+
+router.get(
+    '/complaints/:id',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    showManagerComplaintDetails
+);
+
+router.post(
+    '/complaints/:id/status',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    changeComplaintStatus
 );
 
 export default router ;
