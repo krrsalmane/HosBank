@@ -107,3 +107,86 @@ export async function updateUserStatus(userId, active) {
         [active, userId]
     );
 }
+
+
+export async function getClients() {
+    const [rows] = await pool.query(
+        `SELECT
+            id,
+            first_name,
+            last_name,
+            email
+         FROM users
+         WHERE role = 'CLIENT'
+         ORDER BY last_name, first_name`
+    );
+
+    return rows;
+}
+
+export async function getManagers() {
+    const [rows] = await pool.query(
+        `SELECT
+            id,
+            first_name,
+            last_name,
+            email
+         FROM users
+         WHERE role = 'CHARGE_CLIENT'
+           AND active = TRUE
+         ORDER BY last_name, first_name`
+    );
+
+    return rows;
+}
+
+export async function getClientAssignment(clientId) {
+    const [rows] = await pool.query(
+        `SELECT assigned_to
+         FROM bank_requests
+         WHERE user_id = ?
+           AND assigned_to IS NOT NULL
+         ORDER BY updated_at DESC
+         LIMIT 1`,
+        [clientId]
+    );
+
+    if (rows.length > 0) {
+        return rows[0].assigned_to;
+    }
+
+    const [complaints] = await pool.query(
+        `SELECT assigned_to
+         FROM complaints
+         WHERE user_id = ?
+           AND assigned_to IS NOT NULL
+         ORDER BY updated_at DESC
+         LIMIT 1`,
+        [clientId]
+    );
+
+    if (complaints.length > 0) {
+        return complaints[0].assigned_to;
+    }
+
+    return null;
+}
+
+export async function assignClient(clientId, managerId) {
+    await pool.query(
+        `UPDATE bank_requests
+         SET assigned_to = ?
+         WHERE user_id = ?
+           AND status IN ('PENDING', 'IN_PROGRESS')`,
+        [managerId, clientId]
+    );
+
+    await pool.query(
+        `UPDATE complaints
+         SET assigned_to = ?
+         WHERE user_id = ?
+           AND status IN ('OPEN', 'IN_PROGRESS')`,
+        [managerId, clientId]
+    );
+}
+
