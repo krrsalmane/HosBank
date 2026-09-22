@@ -18,7 +18,9 @@ import {
     editUser,
     changeUserStatus,
     showAssignments,
-    assignClientToManager
+    assignClientToManager,
+    showAccounts,
+    changeAccountStatus
 } from '../controllers/admin.controller.js';
 
 const router = express.Router();
@@ -85,6 +87,21 @@ router.post(
     requireAuth,
     authorize('ADMIN'),
     assignClientToManager
+);
+
+
+router.get(
+    '/accounts',
+    requireAuth,
+    authorize('ADMIN'),
+    showAccounts
+);
+
+router.post(
+    '/accounts/:id/status',
+    requireAuth,
+    authorize('ADMIN'),
+    changeAccountStatus
 );
 
 export default router;
