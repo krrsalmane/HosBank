@@ -1,5 +1,15 @@
 import {pool} from '../config/database.js'
 
+import bcrypt from 'bcrypt';
+
+import {
+    getAllUsers,
+    getUserById,
+    createAdminUser,
+    updateUser,
+    updateUserStatus
+} from '../services/admin.service.js';
+import { error } from 'node:console';
 
 
 export async function showAdminDashboard(req ,res){
@@ -56,4 +66,155 @@ export async function showAdminDashboard(req ,res){
         res.status(500).send(error.message)
     }
     
+}
+
+
+export async function showUsers( req, res){
+    try{
+        const users = await getAllUsers()
+        
+        res.render('admin/users' ,{
+        user: req.session.user,
+        users: users
+    })
+}catch (error){
+    res.status(500).send(error.message)
+}
+}
+
+export function showCreateUser(req ,res){
+    res.render('admin/create-user' ,{
+        user:req.session.user,
+        error: null
+    })
+}
+
+export async function createUser(req, res) {
+    const {
+        firstName,
+        lastName,
+        email,
+        password,
+        phone,
+        role
+    } = req.body;
+
+    const allowedRoles = [
+        'CLIENT',
+        'CHARGE_CLIENT',
+        'ADMIN'
+    ];
+
+    if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !password ||
+        !allowedRoles.includes(role)
+    ) {
+        return res.status(400).render('admin/create-user', {
+            user: req.session.user,
+            error: 'Please fill in all required fields.'
+        });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        await createAdminUser(
+            firstName,
+            lastName,
+            email,
+            hashedPassword,
+            phone,
+            role
+        );
+
+        res.redirect('/admin/users');
+
+    } catch (error) {
+        res.status(400).render('admin/create-user', {
+            user: req.session.user,
+            error: error.message
+        });
+    }
+}
+
+
+export async function showEditUser(req, res) {
+    try {
+        const selectedUser = await getUserById(req.params.id);
+
+        if (!selectedUser) {
+            return res.status(404).send('User not found');
+        }
+
+        res.render('admin/edit-user', {
+            user: req.session.user,
+            selectedUser: selectedUser,
+            error: null
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+export async function editUser(req, res) {
+    const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        role
+    } = req.body;
+
+    const allowedRoles = [
+        'CLIENT',
+        'CHARGE_CLIENT',
+        'ADMIN'
+    ];
+
+    if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !allowedRoles.includes(role)
+    ) {
+        return res.status(400).send('Invalid user data');
+    }
+
+    try {
+        await updateUser(
+            req.params.id,
+            firstName,
+            lastName,
+            email,
+            phone,
+            role
+        );
+
+        res.redirect('/admin/users');
+
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+
+export async function changeUserStatus(req, res) {
+    const active = req.body.active === 'true';
+
+    try {
+        await updateUserStatus(
+            req.params.id,
+            active
+        );
+
+        res.redirect('/admin/users');
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 }

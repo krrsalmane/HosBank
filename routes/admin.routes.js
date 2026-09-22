@@ -9,6 +9,16 @@ import {
     authorize
 }from '../middlewares/auth.middleware.js'
 
+import {
+    showAdminDashboard,
+    showUsers,
+    showCreateUser,
+    createUser,
+    showEditUser,
+    editUser,
+    changeUserStatus
+} from '../controllers/admin.controller.js';
+
 const router = express.Router();
 
 router.get(
@@ -17,5 +27,48 @@ router.get(
     authorize('ADMIN'),
     showAdminDashboard
 )
+
+
+router.get(
+    '/users',
+    requireAuth,
+    authorize('ADMIN'),
+    showUsers
+);
+
+router.get(
+    '/users/create',
+    requireAuth,
+    authorize('ADMIN'),
+    showCreateUser
+);
+
+router.post(
+    '/users/create',
+    requireAuth,
+    authorize('ADMIN'),
+    createUser
+);
+
+router.get(
+    '/users/:id/edit',
+    requireAuth,
+    authorize('ADMIN'),
+    showEditUser
+);
+
+router.post(
+    '/users/:id/edit',
+    requireAuth,
+    authorize('ADMIN'),
+    editUser
+);
+
+router.post(
+    '/users/:id/status',
+    requireAuth,
+    authorize('ADMIN'),
+    changeUserStatus
+);
 
 export default router;
