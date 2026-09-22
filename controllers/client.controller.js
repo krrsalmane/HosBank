@@ -39,6 +39,14 @@ import {
     getClientCards
 }from '../services/card.service.js'
 
+
+import {
+    createComplaint,
+    getClientComplaints,
+    getComplaintById
+} from '../services/complaint.service.js'
+
+
 export function showClientDashboard( req , res ){
     res.render('client/dashboard', {
         user: req.session.user
@@ -478,3 +486,22 @@ export async function requestPinRecalculation(req ,res){
         res.status(500).send(error.message)
     }
 }
+
+
+
+export async function showComplaints(req, res) {
+    try {
+        const complaints = await getClientComplaints(
+            req.session.user.id
+        );
+
+        res.render('client/complaints', {
+            user: req.session.user,
+            complaints: complaints
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
