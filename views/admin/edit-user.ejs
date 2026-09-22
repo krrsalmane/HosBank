@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit User</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Edit User</h1>
+
+    <% if (error) { %>
+
+        <p>
+            <strong>Error:</strong>
+            <%= error %>
+        </p>
+
+    <% } %>
+
+    <form
+        action="/admin/users/<%= selectedUser.id %>/edit"
+        method="POST"
+    >
+
+        <div>
+            <label>First Name</label>
+
+            <input
+                type="text"
+                name="firstName"
+                value="<%= selectedUser.first_name %>"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Last Name</label>
+
+            <input
+                type="text"
+                name="lastName"
+                value="<%= selectedUser.last_name %>"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Email</label>
+
+            <input
+                type="email"
+                name="email"
+                value="<%= selectedUser.email %>"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Phone</label>
+
+            <input
+                type="text"
+                name="phone"
+                value="<%= selectedUser.phone || '' %>"
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Role</label>
+
+            <select name="role" required>
+
+                <option
+                    value="CLIENT"
+                    <%= selectedUser.role === 'CLIENT'
+                        ? 'selected'
+                        : '' %>
+                >
+                    Client
+                </option>
+
+                <option
+                    value="CHARGE_CLIENT"
+                    <%= selectedUser.role === 'CHARGE_CLIENT'
+                        ? 'selected'
+                        : '' %>
+                >
+                    Chargé Client
+                </option>
+
+                <option
+                    value="ADMIN"
+                    <%= selectedUser.role === 'ADMIN'
+                        ? 'selected'
+                        : '' %>
+                >
+                    Administrator
+                </option>
+
+            </select>
+        </div>
+
+        <br>
+
+        <button type="submit">
+            Save Changes
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/admin/users">
+        Back to Users
+    </a>
+
+</body>
+
+</html>
