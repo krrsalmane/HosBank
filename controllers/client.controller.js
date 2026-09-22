@@ -454,3 +454,27 @@ export async function requestCardOpposition(req ,res){
         res.status(500).send(error.message)
     }
 }
+
+
+//==============
+//       PIN
+//===============
+
+export function showPinRequest(req ,res){
+    res.render('client/pin-request' , {
+        user: req.session.user
+    })
+}
+
+export async function requestPinRecalculation(req ,res){
+    try{
+        await createRequest(
+            req.session.user.id,
+            'PIN_RECALCULATION',
+            req.body.description
+        )
+        res.redirect('/client/requests');
+    } catch (error){
+        res.status(500).send(error.message)
+    }
+}
