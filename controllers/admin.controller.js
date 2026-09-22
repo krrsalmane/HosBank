@@ -11,7 +11,9 @@ import {
     getClients,
     getManagers,
     getClientAssignment,
-    assignClient
+    assignClient,
+    getAllBankAccounts,
+    updateBankAccountStatus
 } from '../services/admin.service.js';
 
 
@@ -260,3 +262,33 @@ export async function assignClientToManager(req, res) {
     }
 }
 
+
+export async function showAccounts(req, res) {
+    try {
+        const accounts = await getAllBankAccounts();
+
+        res.render('admin/accounts', {
+            user: req.session.user,
+            accounts: accounts
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function changeAccountStatus(req, res) {
+    const { status } = req.body;
+
+    try {
+        await updateBankAccountStatus(
+            req.params.id,
+            status
+        );
+
+        res.redirect('/admin/accounts');
+
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}

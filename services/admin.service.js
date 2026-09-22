@@ -190,3 +190,47 @@ export async function assignClient(clientId, managerId) {
     );
 }
 
+
+
+export async function getAllBankAccounts() {
+    const [rows] = await pool.query(
+        `SELECT
+            bank_accounts.id,
+            bank_accounts.account_number,
+            bank_accounts.type,
+            bank_accounts.balance,
+            bank_accounts.status,
+            bank_accounts.created_at,
+            users.first_name,
+            users.last_name,
+            users.email
+         FROM bank_accounts
+         INNER JOIN users
+            ON bank_accounts.user_id = users.id
+         ORDER BY bank_accounts.created_at DESC`
+    );
+
+    return rows;
+}
+
+export async function updateBankAccountStatus(
+    accountId,
+    status
+) {
+    const allowedStatuses = [
+        'ACTIVE',
+        'BLOCKED',
+        'CLOSED'
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+        throw new Error('Invalid account status');
+    }
+
+    await pool.query(
+        `UPDATE bank_accounts
+         SET status = ?
+         WHERE id = ?`,
+        [status, accountId]
+    );
+}
