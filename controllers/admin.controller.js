@@ -7,9 +7,12 @@ import {
     getUserById,
     createAdminUser,
     updateUser,
-    updateUserStatus
+    updateUserStatus,
+    getClients,
+    getManagers,
+    getClientAssignment,
+    assignClient
 } from '../services/admin.service.js';
-import { error } from 'node:console';
 
 
 export async function showAdminDashboard(req ,res){
@@ -218,3 +221,42 @@ export async function changeUserStatus(req, res) {
         res.status(500).send(error.message);
     }
 }
+
+
+export async function showAssignments(req, res) {
+    try {
+        const clients = await getClients();
+        const managers = await getManagers();
+
+        for (const client of clients) {
+            client.assigned_to = await getClientAssignment(client.id);
+        }
+
+        res.render('admin/assignments', {
+            user: req.session.user,
+            clients: clients,
+            managers: managers
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function assignClientToManager(req, res) {
+    const { clientId, managerId } = req.body;
+
+    if (!clientId || !managerId) {
+        return res.status(400).send('Client and manager are required');
+    }
+
+    try {
+        await assignClient(clientId, managerId);
+
+        res.redirect('/admin/assignments');
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
