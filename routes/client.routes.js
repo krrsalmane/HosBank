@@ -17,7 +17,8 @@ import {
     showClientRequestDetails,
     showClientRequests,
     createClientRequest,
-    showClientCards
+    showClientCards,
+    showCardOpposition
 } from '../controllers/client.controller.js';
 
 import {
@@ -160,6 +161,20 @@ router.get(
     requireAuth,
     authorize('CLIENT'),
     showClientCards
+)
+
+router.get(
+    '/cards/opposition',
+    requireAuth,
+    authorize('CLIENT'),
+    showCardOpposition
+)
+
+router.post(
+    '/cards/opposition',
+    requireAuth,
+     authorize('CLIENT'),
+    showCardOpposition
 )
 
 
