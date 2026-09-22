@@ -19,3 +19,40 @@ export async function getClientCards(userId){
     )
     return rows
 }
+
+
+export async function createVirtualCard(
+    userId,
+    accountId
+) {
+    const cardNumber =
+        '4' +
+        Math.floor(
+            100000000000000 + Math.random() * 900000000000000
+        ).toString();
+
+    const expirationDate = new Date();
+
+    expirationDate.setFullYear(
+        expirationDate.getFullYear() + 4
+    );
+
+    await pool.query(
+        `INSERT INTO cards
+        (
+            user_id,
+            account_id,
+            card_number,
+            type,
+            status,
+            expiration_date
+        )
+        VALUES (?, ?, ?, 'VIRTUAL', 'ACTIVE', ?)`,
+        [
+            userId,
+            accountId,
+            cardNumber,
+            expirationDate
+        ]
+    );
+}
