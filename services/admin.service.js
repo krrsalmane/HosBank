@@ -234,3 +234,51 @@ export async function updateBankAccountStatus(
         [status, accountId]
     );
 }
+
+
+export async function getAllCards() {
+    const [rows] = await pool.query(
+        `SELECT
+            cards.id,
+            cards.card_number,
+            cards.type,
+            cards.status,
+            cards.expiration_date,
+            cards.created_at,
+            users.first_name,
+            users.last_name,
+            users.email,
+            bank_accounts.account_number
+         FROM cards
+         INNER JOIN users
+            ON cards.user_id = users.id
+         INNER JOIN bank_accounts
+            ON cards.account_id = bank_accounts.id
+         ORDER BY cards.created_at DESC`
+    );
+
+    return rows;
+}
+
+export async function updateCardStatus(
+    cardId,
+    status
+) {
+    const allowedStatuses = [
+        'ACTIVE',
+        'BLOCKED',
+        'OPPOSED',
+        'EXPIRED'
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+        throw new Error('Invalid card status');
+    }
+
+    await pool.query(
+        `UPDATE cards
+         SET status = ?
+         WHERE id = ?`,
+        [status, cardId]
+    );
+}
