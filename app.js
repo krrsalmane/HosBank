@@ -6,6 +6,8 @@ import dashboardRouter from './routes/dashboard.routes.js';
 import accountROuter from './routes/account.routes.js';
 import transactionRouter from './routes/transaction.routes.js';
 import { requireAuth } from './middlewares/auth.middleware.js';
+import cardRouter from './routes/card.routes.js';
+import disputeRouter from './routes/dispute.routes.js';
 
 const app = express();
 
@@ -28,6 +30,8 @@ app.use('/auth',authRouter);
 app.use('/dashboard',dashboardRouter);
 app.use('/accounts',requireAuth,accountROuter);
 app.use('/transfers',requireAuth,transactionRouter)
+app.use('/cards', requireAuth, cardRouter);
+app.use('/disputes', requireAuth, disputeRouter);
 
 app.get('/', (req, res) =>{
     res.render('home')

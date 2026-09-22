@@ -8,7 +8,7 @@ export async function showAccounts(req,res) {
 }
 
 export async function showSingleAccount(req,res) {
-    let userId = req.session.user.id 
+    let userId = req.session.user.id  
     let accountId  = req.params.id
     try {
         let acc = await getAccountById(accountId,userId)
