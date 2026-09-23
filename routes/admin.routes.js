@@ -26,7 +26,9 @@ import {
     showTransactions,
     showTransfers,
     showBankRequests,
-    changeBankRequestStatus
+    changeBankRequestStatus,
+    showComplaints,
+    changeComplaintStatus
 } from '../controllers/admin.controller.js';
 
 const router = express.Router();
@@ -153,6 +155,20 @@ router.post(
     requireAuth,
     authorize('ADMIN'),
     changeBankRequestStatus
+);
+
+router.get(
+    '/complaints',
+    requireAuth,
+    authorize('ADMIN'),
+    showComplaints
+);
+
+router.post(
+    '/complaints/:id/status',
+    requireAuth,
+    authorize('ADMIN'),
+    changeComplaintStatus
 );
 
 export default router;
