@@ -22,7 +22,9 @@ import {
     showAccounts,
     changeAccountStatus,
     showCards,
-    changeCardStatus
+    changeCardStatus,
+    showTransactions,
+    showTransfers
 } from '../controllers/admin.controller.js';
 
 const router = express.Router();
@@ -119,6 +121,21 @@ router.post(
     requireAuth,
     authorize('ADMIN'),
     changeCardStatus
+);
+
+
+router.get(
+    '/transfers',
+    requireAuth,
+    authorize('ADMIN'),
+    showTransfers
+);
+
+router.get(
+    '/transactions',
+    requireAuth,
+    authorize('ADMIN'),
+    showTransactions
 );
 
 export default router;
