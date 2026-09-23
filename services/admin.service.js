@@ -282,3 +282,52 @@ export async function updateCardStatus(
         [status, cardId]
     );
 }
+
+
+export async function getAllTransfers() {
+    const [rows] = await pool.query(
+        `SELECT
+            transfers.id,
+            transfers.amount,
+            transfers.description,
+            transfers.status,
+            transfers.created_at,
+            bank_accounts.account_number AS sender_account,
+            users.first_name,
+            users.last_name,
+            beneficiaries.name AS beneficiary_name,
+            beneficiaries.accountNumber AS beneficiary_account
+         FROM transfers
+         INNER JOIN bank_accounts
+            ON transfers.sender_account_id = bank_accounts.id
+         INNER JOIN users
+            ON bank_accounts.user_id = users.id
+         INNER JOIN beneficiaries
+            ON transfers.beneficiary_id = beneficiaries.id
+         ORDER BY transfers.created_at DESC`
+    );
+
+    return rows;
+}
+
+export async function getAllTransactions() {
+    const [rows] = await pool.query(
+        `SELECT
+            transactions.id,
+            transactions.type,
+            transactions.amount,
+            transactions.description,
+            transactions.created_at,
+            bank_accounts.account_number,
+            users.first_name,
+            users.last_name
+         FROM transactions
+         INNER JOIN bank_accounts
+            ON transactions.account_id = bank_accounts.id
+         INNER JOIN users
+            ON bank_accounts.user_id = users.id
+         ORDER BY transactions.created_at DESC`
+    );
+
+    return rows;
+}
