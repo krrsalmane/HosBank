@@ -331,3 +331,49 @@ export async function getAllTransactions() {
 
     return rows;
 }
+
+export async function getAllBankRequests() {
+    const [rows] = await pool.query(
+        `SELECT
+            bank_requests.id,
+            bank_requests.type,
+            bank_requests.status,
+            bank_requests.description,
+            bank_requests.created_at,
+            bank_requests.updated_at,
+            users.first_name,
+            users.last_name,
+            users.email,
+            managers.first_name AS manager_first_name,
+            managers.last_name AS manager_last_name
+         FROM bank_requests
+         INNER JOIN users
+            ON bank_requests.user_id = users.id
+         LEFT JOIN users AS managers
+            ON bank_requests.assigned_to = managers.id
+         ORDER BY bank_requests.created_at DESC`
+    );
+
+    return rows;
+}
+
+export async function updateBankRequestStatus(requestId, status) {
+    const allowedStatuses = [
+        'PENDING',
+        'IN_PROGRESS',
+        'APPROVED',
+        'REJECTED',
+        'COMPLETED'
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+        throw new Error('Invalid request status');
+    }
+
+    await pool.query(
+        `UPDATE bank_requests
+         SET status = ?
+         WHERE id = ?`,
+        [status, requestId]
+    );
+}
