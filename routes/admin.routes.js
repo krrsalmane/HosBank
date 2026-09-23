@@ -24,7 +24,9 @@ import {
     showCards,
     changeCardStatus,
     showTransactions,
-    showTransfers
+    showTransfers,
+    showBankRequests,
+    changeBankRequestStatus
 } from '../controllers/admin.controller.js';
 
 const router = express.Router();
@@ -136,6 +138,21 @@ router.get(
     requireAuth,
     authorize('ADMIN'),
     showTransactions
+);
+
+
+router.get(
+    '/requests',
+    requireAuth,
+    authorize('ADMIN'),
+    showBankRequests
+);
+
+router.post(
+    '/requests/:id/status',
+    requireAuth,
+    authorize('ADMIN'),
+    changeBankRequestStatus
 );
 
 export default router;
