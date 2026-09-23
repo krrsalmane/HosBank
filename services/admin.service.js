@@ -377,3 +377,49 @@ export async function updateBankRequestStatus(requestId, status) {
         [status, requestId]
     );
 }
+
+
+export async function getAllComplaints() {
+    const [rows] = await pool.query(
+        `SELECT
+            complaints.id,
+            complaints.subject,
+            complaints.description,
+            complaints.status,
+            complaints.created_at,
+            complaints.updated_at,
+            users.first_name,
+            users.last_name,
+            users.email,
+            managers.first_name AS manager_first_name,
+            managers.last_name AS manager_last_name
+         FROM complaints
+         INNER JOIN users
+            ON complaints.user_id = users.id
+         LEFT JOIN users AS managers
+            ON complaints.assigned_to = managers.id
+         ORDER BY complaints.created_at DESC`
+    );
+
+    return rows;
+}
+
+export async function updateComplaintStatus(complaintId, status) {
+    const allowedStatuses = [
+        'OPEN',
+        'IN_PROGRESS',
+        'RESOLVED',
+        'CLOSED'
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+        throw new Error('Invalid complaint status');
+    }
+
+    await pool.query(
+        `UPDATE complaints
+         SET status = ?
+         WHERE id = ?`,
+        [status, complaintId]
+    );
+}
