@@ -17,7 +17,9 @@ import {
     getAllCards,
     updateCardStatus,
     getAllTransactions,
-    getAllTransfers
+    getAllTransfers,
+    getAllBankRequests,
+    updateBankRequestStatus
 } from '../services/admin.service.js';
 
 
@@ -353,5 +355,36 @@ export async function showTransactions(req, res) {
 
     } catch (error) {
         res.status(500).send(error.message);
+    }
+}
+
+
+export async function showBankRequests(req, res) {
+    try {
+        const requests = await getAllBankRequests();
+
+        res.render('admin/requests', {
+            user: req.session.user,
+            requests: requests
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function changeBankRequestStatus(req, res) {
+    const { status } = req.body;
+
+    try {
+        await updateBankRequestStatus(
+            req.params.id,
+            status
+        );
+
+        res.redirect('/admin/requests');
+
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 }
