@@ -1,88 +1,60 @@
+
 import {
     getManagerRequests,
     getRequestForManager,
     updateRequestStatus,
     approveVirtualCardRequest
-}from '../services/manager-request.service.js';
+} from '../services/manager-request.service.js';
 
 import {
     getManagerComplaints,
     getManagerComplaint,
-    updateRequestStatus
-} from '../services/manager-complaint.service.js'
+    updateComplaintStatus
+} from '../services/manager-complaint.service.js';
 
 
-export async function showManagerDashboard(req ,res){
-    res.render('manager/dashboard' ,{
+export async function showManagerDashboard(req, res) {
+    res.render('manager/dashboard', {
         user: req.session.user
-    })
+    });
 }
 
-export async function showManagerRequests(req ,res){
-    try{
+
+export async function showManagerRequests(req, res) {
+    try {
         const requests = await getManagerRequests(
             req.session.user.id
         );
 
-        res.render('manager/requests' ,{
+        res.render('manager/requests', {
             user: req.session.user,
-            requests:requests
-        })
-    }catch (error){
+            requests: requests
+        });
 
-        res.status(500).send(error.message)
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 }
 
-export async function showManagerRequestDetails(req ,res){
-    try{
-        const request = await getManagerRequests(
+
+export async function showManagerRequestDetails(req, res) {
+    try {
+        const request = await getRequestForManager(
             req.params.id,
             req.session.user.id
         );
-        if(!request){
+
+        if (!request) {
             return res.status(404).send('Request not found');
         }
 
-        res.render('manager/request-details' ,{
+        res.render('manager/request-details', {
             user: req.session.user,
             request: request
         });
-    }catch (error){
-        res.status(500).send(error.message)
-    }
-}
 
-export async function changeRequestStatus(req ,res){
-    const{
-        status
-    }=req.body;
-
-    const allowedStauses = [
-        'PENDING',
-        'IN_PROGRESS',
-        'APPROVED',
-        'REJECTED',
-        'COMPLETEDW'
-    ];
-
-    if(!allowedStauses.includes(status)){
-        return res.status(400).send('Invalid status')
-    }
-
-    try{
-        await updateRequestStatus(
-            req.params.id,
-            req.session.user.id,
-            status
-        );
-
-        res.redirect(
-             `/manager/requests/${req.params.id} `
-        )
-
-    }catch (error){
-        res.status(500).send(error.message)
+    } catch (error) {
+        res.status(500).send(error.message);
     }
 }
 
@@ -104,10 +76,7 @@ export async function showManagerComplaints(req, res) {
 }
 
 
-export async function showManagerComplaintDetails(
-    req,
-    res
-) {
+export async function showManagerComplaintDetails(req, res) {
     try {
         const complaint = await getManagerComplaint(
             req.params.id,
@@ -130,10 +99,8 @@ export async function showManagerComplaintDetails(
     }
 }
 
-export async function changeComplaintStatus(
-    req,
-    res
-) {
+
+export async function changeComplaintStatus(req, res) {
     const allowedStatuses = [
         'OPEN',
         'IN_PROGRESS',
@@ -216,7 +183,6 @@ export async function changeRequestStatus(req, res) {
                     req.session.user.id,
                     status
                 );
-
             }
 
         } else {

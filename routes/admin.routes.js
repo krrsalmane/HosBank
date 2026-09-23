@@ -1,8 +1,5 @@
 import express  from 'express'
 
-import {
-    showAdminDashboard
-} from '../controllers/admin.controller.js'
 
 import {
     requireAuth,

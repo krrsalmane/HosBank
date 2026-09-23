@@ -11,13 +11,8 @@ import {
     deleteBeneficiary
 }from '../services/beneficiary.service.js'
 
-import {
-    getClientAccounts
-} from '../services/account.service.js';
 
-import {
-    getClientBeneficiaries
-} from '../services/beneficiary.service.js';
+
 
 import {
     createTransfer

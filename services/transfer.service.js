@@ -1,4 +1,4 @@
-import pool from '../config/db.js';
+import {pool} from '../config/database.js';
 
 export async function createTransfer(
     userId,

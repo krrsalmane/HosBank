@@ -18,7 +18,13 @@ import {
     showClientRequests,
     createClientRequest,
     showClientCards,
-    showCardOpposition
+    showCardOpposition,
+    showPinRequest,
+    requestPinRecalculation,
+    showComplaints,
+    createClientComplaint,
+    showClientComplaintDetails
+
 } from '../controllers/client.controller.js';
 
 import {
