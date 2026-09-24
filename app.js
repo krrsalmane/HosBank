@@ -8,6 +8,7 @@ import transactionRouter from './routes/transaction.routes.js';
 import { requireAuth } from './middlewares/auth.middleware.js';
 import cardRouter from './routes/card.routes.js';
 import disputeRouter from './routes/dispute.routes.js';
+import adminRouter from './routes/admin.routes.js';
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/accounts',requireAuth,accountROuter);
 app.use('/transfers',requireAuth,transactionRouter)
 app.use('/cards', requireAuth, cardRouter);
 app.use('/disputes', requireAuth, disputeRouter);
+app.use('/admin', adminRouter);
 
 app.get('/', (req, res) =>{
     res.render('home')
