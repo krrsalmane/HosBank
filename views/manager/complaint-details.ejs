@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Complaint Details</title>
     <link rel="stylesheet" href="/css/style.css">
@@ -12,6 +14,11 @@
     <h1>Complaint Details</h1>
 
     <div>
+
+        <p>
+            <strong>Complaint ID:</strong>
+            <%= complaint.id %>
+        </p>
 
         <p>
             <strong>Client:</strong>
@@ -35,8 +42,18 @@
         </p>
 
         <p>
-            <strong>Current status:</strong>
+            <strong>Current Status:</strong>
             <%= complaint.status %>
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            <%= complaint.created_at %>
+        </p>
+
+        <p>
+            <strong>Last Updated:</strong>
+            <%= complaint.updated_at %>
         </p>
 
     </div>
@@ -50,19 +67,31 @@
 
         <select name="status" required>
 
-            <option value="OPEN">
+            <option
+                value="OPEN"
+                <%= complaint.status === 'OPEN' ? 'selected' : '' %>
+            >
                 Open
             </option>
 
-            <option value="IN_PROGRESS">
+            <option
+                value="IN_PROGRESS"
+                <%= complaint.status === 'IN_PROGRESS' ? 'selected' : '' %>
+            >
                 In Progress
             </option>
 
-            <option value="RESOLVED">
+            <option
+                value="RESOLVED"
+                <%= complaint.status === 'RESOLVED' ? 'selected' : '' %>
+            >
                 Resolved
             </option>
 
-            <option value="CLOSED">
+            <option
+                value="CLOSED"
+                <%= complaint.status === 'CLOSED' ? 'selected' : '' %>
+            >
                 Closed
             </option>
 
@@ -77,8 +106,9 @@
     <br>
 
     <a href="/manager/complaints">
-        Back to complaints
+        Back to Complaints
     </a>
 
 </body>
+
 </html>
