@@ -24,6 +24,10 @@ import {
     getComplaintComments
 } from '../services/manager-comment.service.js';
 
+import {
+    getClientAccounts
+} from '../services/manager-account.service.js';
+
 
 export async function showManagerDashboard(req, res) {
     res.render('manager/dashboard', {
@@ -319,6 +323,24 @@ export async function addManagerComplaintComment(req, res) {
         res.redirect(
             `/manager/complaints/${req.params.id}`
         );
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+export async function showClientAccounts(req, res) {
+    try {
+        const accounts = await getClientAccounts(
+            req.params.id,
+            req.session.user.id
+        );
+
+        res.render('manager/accounts', {
+            user: req.session.user,
+            accounts: accounts,
+            clientId: req.params.id
+        });
     } catch (error) {
         res.status(500).send(error.message);
     }
