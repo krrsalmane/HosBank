@@ -12,6 +12,10 @@ import {
     updateComplaintStatus
 } from '../services/manager-complaint.service.js';
 
+import {
+    getClientInteractions
+} from '../services/manager-interaction.service.js';
+
 
 export async function showManagerDashboard(req, res) {
     res.render('manager/dashboard', {
@@ -239,6 +243,24 @@ export async function showManagerClientDetails(req, res) {
             client: client
         });
 
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+export async function showClientInteractions(req, res) {
+    try {
+        const interactions = await getClientInteractions(
+            req.params.id,
+            req.session.user.id
+        );
+
+        res.render('manager/interactions', {
+            user: req.session.user,
+            interactions: interactions,
+            clientId: req.params.id
+        });
     } catch (error) {
         res.status(500).send(error.message);
     }
