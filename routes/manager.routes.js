@@ -10,7 +10,9 @@ import {
     changeComplaintStatus,
     showManagerClients,
     showManagerClientDetails,
-    showClientInteractions
+    showClientInteractions,
+    addManagerComplaintComment,
+    addManagerRequestComment
 } from '../controllers/manager.controller.js';
 
 import {
@@ -100,5 +102,18 @@ router.get(
     showClientInteractions
 );
 
+router.post(
+    '/requests/:id/comments',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    addManagerRequestComment
+);
+
+router.post(
+    '/complaints/:id/comments',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    addManagerComplaintComment
+);
 
 export default router;
