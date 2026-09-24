@@ -1,6 +1,5 @@
 import express from 'express';
 
-
 import {
     showManagerDashboard,
     showManagerRequestDetails,
@@ -8,15 +7,18 @@ import {
     changeRequestStatus,
     showManagerComplaintDetails,
     showManagerComplaints,
-    changeComplaintStatus
-}from '../controllers/manager.controller.js'
+    changeComplaintStatus,
+    showManagerClients,
+    showManagerClientDetails
+} from '../controllers/manager.controller.js';
 
 import {
     requireAuth,
     authorize
-} from '../middlewares/auth.middleware.js'
+} from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
+
 
 router.get(
     '/dashboard',
@@ -25,6 +27,7 @@ router.get(
     showManagerDashboard
 );
 
+
 router.get(
     '/requests',
     requireAuth,
@@ -32,12 +35,14 @@ router.get(
     showManagerRequests
 );
 
+
 router.get(
     '/requests/:id',
     requireAuth,
     authorize('CHARGE_CLIENT'),
     showManagerRequestDetails
 );
+
 
 router.post(
     '/requests/:id/status',
@@ -54,12 +59,14 @@ router.get(
     showManagerComplaints
 );
 
+
 router.get(
     '/complaints/:id',
     requireAuth,
     authorize('CHARGE_CLIENT'),
     showManagerComplaintDetails
 );
+
 
 router.post(
     '/complaints/:id/status',
@@ -68,4 +75,21 @@ router.post(
     changeComplaintStatus
 );
 
-export default router ;
+
+router.get(
+    '/clients',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    showManagerClients
+);
+
+
+router.get(
+    '/clients/:id',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    showManagerClientDetails
+);
+
+
+export default router;

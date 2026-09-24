@@ -202,3 +202,44 @@ export async function changeRequestStatus(req, res) {
         res.status(500).send(error.message);
     }
 }
+
+
+export async function showManagerClients(req, res) {
+    try {
+        const clients = await getAssignedClients(
+            req.session.user.id
+        );
+
+        res.render('manager/clients', {
+            user: req.session.user,
+            clients: clients
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+
+export async function showManagerClientDetails(req, res) {
+    try {
+        const client = await getAssignedClientById(
+            req.params.id,
+            req.session.user.id
+        );
+
+        if (!client) {
+            return res.status(404).send(
+                'Client not found'
+            );
+        }
+
+        res.render('manager/client-details', {
+            user: req.session.user,
+            client: client
+        });
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
