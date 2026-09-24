@@ -89,3 +89,29 @@ export async function getRequestComments(
 
     return rows;
 }
+
+export async function getComplaintComments(
+    complaintId,
+    managerId
+) {
+    const [rows] = await pool.query(
+        `SELECT
+            comments.*,
+            users.first_name,
+            users.last_name
+         FROM comments
+         INNER JOIN users
+            ON comments.user_id = users.id
+         INNER JOIN complaints
+            ON comments.complaint_id = complaints.id
+         WHERE comments.complaint_id = ?
+           AND complaints.assigned_to = ?
+         ORDER BY comments.created_at ASC`,
+        [
+            complaintId,
+            managerId
+        ]
+    );
+
+    return rows;
+}

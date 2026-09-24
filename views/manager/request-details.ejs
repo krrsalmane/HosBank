@@ -98,7 +98,7 @@
             <option
                 value="COMPLETED"
                 <%= request.status === 'COMPLETED' ? 'selected' : '' %>
-                >
+            >
                 Completed
             </option>
 
@@ -106,6 +106,67 @@
 
         <button type="submit">
             Update Status
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Comments / Responses</h2>
+
+    <% if (comments.length === 0) { %>
+
+        <p>No comments yet.</p>
+
+    <% } else { %>
+
+        <% comments.forEach(comment => { %>
+
+            <div>
+
+                <p>
+                    <strong>
+                        <%= comment.first_name %>
+                        <%= comment.last_name %>
+                    </strong>
+                </p>
+
+                <p>
+                    <%= comment.content %>
+                </p>
+
+                <p>
+                    <small>
+                        <%= comment.created_at %>
+                    </small>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+    <h3>Add a Response</h3>
+
+    <form
+        action="/manager/requests/<%= request.id %>/comments"
+        method="POST"
+    >
+
+        <textarea
+            name="content"
+            rows="4"
+            required
+            placeholder="Write a response..."
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Add Response
         </button>
 
     </form>
