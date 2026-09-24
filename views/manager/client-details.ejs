@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Client Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Client Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Client ID:</strong>
+            <%= client.id %>
+        </p>
+
+        <p>
+            <strong>First Name:</strong>
+            <%= client.first_name %>
+        </p>
+
+        <p>
+            <strong>Last Name:</strong>
+            <%= client.last_name %>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <%= client.email %>
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            <%= client.phone || 'Not provided' %>
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            <%= client.active ? 'Active' : 'Inactive' %>
+        </p>
+
+    </div>
+
+    <br>
+
+    <a href="/manager/clients">
+        Back to Assigned Clients
+    </a>
+
+</body>
+
+</html>
