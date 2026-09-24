@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Request Details</title>
     <link rel="stylesheet" href="/css/style.css">
@@ -12,6 +14,11 @@
     <h1>Request Details</h1>
 
     <div>
+
+        <p>
+            <strong>Request ID:</strong>
+            <%= request.id %>
+        </p>
 
         <p>
             <strong>Client:</strong>
@@ -35,8 +42,18 @@
         </p>
 
         <p>
-            <strong>Current status:</strong>
+            <strong>Current Status:</strong>
             <%= request.status %>
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            <%= request.created_at %>
+        </p>
+
+        <p>
+            <strong>Last Updated:</strong>
+            <%= request.updated_at %>
         </p>
 
     </div>
@@ -50,23 +67,38 @@
 
         <select name="status" required>
 
-            <option value="PENDING">
+            <option
+                value="PENDING"
+                <%= request.status === 'PENDING' ? 'selected' : '' %>
+            >
                 Pending
             </option>
 
-            <option value="IN_PROGRESS">
+            <option
+                value="IN_PROGRESS"
+                <%= request.status === 'IN_PROGRESS' ? 'selected' : '' %>
+            >
                 In Progress
             </option>
 
-            <option value="APPROVED">
+            <option
+                value="APPROVED"
+                <%= request.status === 'APPROVED' ? 'selected' : '' %>
+            >
                 Approved
             </option>
 
-            <option value="REJECTED">
+            <option
+                value="REJECTED"
+                <%= request.status === 'REJECTED' ? 'selected' : '' %>
+            >
                 Rejected
             </option>
 
-            <option value="COMPLETED">
+            <option
+                value="COMPLETED"
+                <%= request.status === 'COMPLETED' ? 'selected' : '' %>
+                >
                 Completed
             </option>
 
@@ -81,8 +113,9 @@
     <br>
 
     <a href="/manager/requests">
-        Back to requests
+        Back to Requests
     </a>
 
 </body>
+
 </html>
