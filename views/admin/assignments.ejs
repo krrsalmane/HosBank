@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Assign Clients</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Assign Clients to Chargé Client</h1>
+
+    <p>
+        <a href="/admin/dashboard">
+            Back to Admin Dashboard
+        </a>
+    </p>
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+
+            <tr>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Current Chargé Client</th>
+                <th>Assign To</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <% clients.forEach(client => { %>
+
+                <tr>
+
+                    <td>
+                        <%= client.first_name %>
+                        <%= client.last_name %>
+                    </td>
+
+                    <td>
+                        <%= client.email %>
+                    </td>
+
+                    <td>
+
+                        <% if (client.assigned_to) { %>
+
+                            <% const currentManager = managers.find(
+                                manager => manager.id === client.assigned_to
+                            ); %>
+
+                            <% if (currentManager) { %>
+
+                                <%= currentManager.first_name %>
+                                <%= currentManager.last_name %>
+
+                            <% } else { %>
+
+                                Not assigned
+
+                            <% } %>
+
+                        <% } else { %>
+
+                            Not assigned
+
+                        <% } %>
+
+                    </td>
+
+                    <td>
+
+                        <form
+                            action="/admin/assignments"
+                            method="POST"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="clientId"
+                                value="<%= client.id %>"
+                            >
+
+                            <select
+                                name="managerId"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Chargé Client
+                                </option>
+
+                                <% managers.forEach(manager => { %>
+
+                                    <option
+                                        value="<%= manager.id %>"
+                                        <%= client.assigned_to === manager.id
+                                            ? 'selected'
+                                            : '' %>
+                                    >
+                                        <%= manager.first_name %>
+                                        <%= manager.last_name %>
+                                    </option>
+
+                                <% }) %>
+
+                            </select>
+
+                    </td>
+
+                    <td>
+
+                            <button type="submit">
+                                Assign
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>

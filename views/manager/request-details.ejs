@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Request Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Request Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Request ID:</strong>
+            <%= request.id %>
+        </p>
+
+        <p>
+            <strong>Client:</strong>
+            <%= request.first_name %>
+            <%= request.last_name %>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <%= request.email %>
+        </p>
+
+        <p>
+            <strong>Type:</strong>
+            <%= request.type %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= request.description || 'No description' %>
+        </p>
+
+        <p>
+            <strong>Current Status:</strong>
+            <%= request.status %>
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            <%= request.created_at %>
+        </p>
+
+        <p>
+            <strong>Last Updated:</strong>
+            <%= request.updated_at %>
+        </p>
+
+    </div>
+
+    <h2>Change Status</h2>
+
+    <form
+        action="/manager/requests/<%= request.id %>/status"
+        method="POST"
+    >
+
+        <select name="status" required>
+
+            <option
+                value="PENDING"
+                <%= request.status === 'PENDING' ? 'selected' : '' %>
+            >
+                Pending
+            </option>
+
+            <option
+                value="IN_PROGRESS"
+                <%= request.status === 'IN_PROGRESS' ? 'selected' : '' %>
+            >
+                In Progress
+            </option>
+
+            <option
+                value="APPROVED"
+                <%= request.status === 'APPROVED' ? 'selected' : '' %>
+            >
+                Approved
+            </option>
+
+            <option
+                value="REJECTED"
+                <%= request.status === 'REJECTED' ? 'selected' : '' %>
+            >
+                Rejected
+            </option>
+
+            <option
+                value="COMPLETED"
+                <%= request.status === 'COMPLETED' ? 'selected' : '' %>
+            >
+                Completed
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Update Status
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Comments / Responses</h2>
+
+    <% if (comments.length === 0) { %>
+
+        <p>No comments yet.</p>
+
+    <% } else { %>
+
+        <% comments.forEach(comment => { %>
+
+            <div>
+
+                <p>
+                    <strong>
+                        <%= comment.first_name %>
+                        <%= comment.last_name %>
+                    </strong>
+                </p>
+
+                <p>
+                    <%= comment.content %>
+                </p>
+
+                <p>
+                    <small>
+                        <%= comment.created_at %>
+                    </small>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+    <h3>Add a Response</h3>
+
+    <form
+        action="/manager/requests/<%= request.id %>/comments"
+        method="POST"
+    >
+
+        <textarea
+            name="content"
+            rows="4"
+            required
+            placeholder="Write a response..."
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Add Response
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/manager/requests">
+        Back to Requests
+    </a>
+
+</body>
+
+</html>

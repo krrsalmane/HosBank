@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Complaints</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Complaints</h1>
+
+    <p>
+        <a href="/admin/dashboard">
+            Back to Admin Dashboard
+        </a>
+    </p>
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <% complaints.forEach(complaint => { %>
+
+                <tr>
+
+                    <td>
+                        <%= complaint.id %>
+                    </td>
+
+                    <td>
+                        <%= complaint.first_name %>
+                        <%= complaint.last_name %>
+                    </td>
+
+                    <td>
+                        <%= complaint.email %>
+                    </td>
+
+                    <td>
+                        <%= complaint.subject %>
+                    </td>
+
+                    <td>
+                        <%= complaint.description %>
+                    </td>
+
+                    <td>
+
+                        <% if (complaint.manager_first_name) { %>
+
+                            <%= complaint.manager_first_name %>
+                            <%= complaint.manager_last_name %>
+
+                        <% } else { %>
+
+                            Not assigned
+
+                        <% } %>
+
+                    </td>
+
+                    <td>
+                        <%= complaint.status %>
+                    </td>
+
+                    <td>
+                        <%= complaint.created_at %>
+                    </td>
+
+                    <td>
+                        <%= complaint.updated_at %>
+                    </td>
+
+                    <td>
+
+                        <form
+                            method="POST"
+                            action="/admin/complaints/<%= complaint.id %>/status"
+                        >
+
+                            <select name="status">
+
+                                <option value="OPEN"
+                                    <%= complaint.status === 'OPEN' ? 'selected' : '' %>>
+                                    OPEN
+                                </option>
+
+                                <option value="IN_PROGRESS"
+                                    <%= complaint.status === 'IN_PROGRESS' ? 'selected' : '' %>>
+                                    IN_PROGRESS
+                                </option>
+
+                                <option value="RESOLVED"
+                                    <%= complaint.status === 'RESOLVED' ? 'selected' : '' %>>
+                                    RESOLVED
+                                </option>
+
+                                <option value="CLOSED"
+                                    <%= complaint.status === 'CLOSED' ? 'selected' : '' %>>
+                                    CLOSED
+                                </option>
+
+                            </select>
+
+                            <button type="submit">
+                                Update
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>

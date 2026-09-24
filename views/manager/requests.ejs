@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Banking Requests</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Banking Requests</h1>
+
+    <p>
+        <a href="/manager/dashboard">
+            Back to Dashboard
+        </a>
+    </p>
+
+    <% if (requests.length === 0) { %>
+
+        <p>No requests assigned to you.</p>
+
+    <% } else { %>
+
+        <% requests.forEach(request => { %>
+
+            <div>
+
+                <h3>
+                    <%= request.type %>
+                </h3>
+
+                <p>
+                    <strong>Client:</strong>
+                    <%= request.first_name %>
+                    <%= request.last_name %>
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    <%= request.email %>
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    <%= request.description || 'No description' %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <%= request.status %>
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    <%= request.created_at %>
+                </p>
+
+                <p>
+                    <strong>Last Updated:</strong>
+                    <%= request.updated_at %>
+                </p>
+
+                <p>
+                    <a href="/manager/requests/<%= request.id %>">
+                        View Request Details
+                    </a>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+
+</html>

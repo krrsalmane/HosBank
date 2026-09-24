@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Transfer</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Confirm Transfer</h1>
+
+    <div>
+        <h2>Transfer Details</h2>
+
+        <p>
+            <strong>From account:</strong>
+            <%= account.account_number %>
+        </p>
+
+        <p>
+            <strong>Beneficiary:</strong>
+            <%= beneficiary.name %>
+        </p>
+
+        <p>
+            <strong>Beneficiary account:</strong>
+            <%= beneficiary.accountNumber %>
+        </p>
+
+        <p>
+            <strong>Amount:</strong>
+            <%= amount %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= description || 'No description' %>
+        </p>
+    </div>
+
+    <br>
+
+    <form action="/client/transfers" method="POST">
+
+        <input type="hidden" name="accountId" value="<%= account.id %>">
+        <input type="hidden" name="beneficiaryId" value="<%= beneficiary.id %>">
+        <input type="hidden" name="amount" value="<%= amount %>">
+        <input type="hidden" name="description" value="<%= description %>">
+
+        <button type="submit">
+            Confirm Transfer
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/client/transfers">
+        Cancel
+    </a>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Assigned Clients</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Assigned Clients</h1>
+
+    <p>
+        <a href="/manager/dashboard">
+            Back to Dashboard
+        </a>
+    </p>
+
+    <% if (clients.length === 0) { %>
+
+        <p>No clients assigned to you.</p>
+
+    <% } else { %>
+
+        <% clients.forEach(client => { %>
+
+            <div>
+
+                <h3>
+                    <%= client.first_name %>
+                    <%= client.last_name %>
+                </h3>
+
+                <p>
+                    <strong>Email:</strong>
+                    <%= client.email %>
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    <%= client.phone || 'Not provided' %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <%= client.active ? 'Active' : 'Inactive' %>
+                </p>
+
+                <a href="/manager/clients/<%= client.id %>">
+                    View Client Details
+                </a>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+
+</html>

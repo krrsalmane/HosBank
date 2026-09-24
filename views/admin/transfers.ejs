@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Transfers</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Transfers</h1>
+
+    <p>
+        <a href="/admin/dashboard">Back to Admin Dashboard</a>
+    </p>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sender</th>
+                <th>Sender Account</th>
+                <th>Beneficiary</th>
+                <th>Beneficiary Account</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% transfers.forEach(transfer => { %>
+
+                <tr>
+                    <td>
+                        <%= transfer.id %>
+                    </td>
+
+                    <td>
+                        <%= transfer.first_name %>
+                        <%= transfer.last_name %>
+                    </td>
+
+                    <td>
+                        <%= transfer.sender_account %>
+                    </td>
+
+                    <td>
+                        <%= transfer.beneficiary_name %>
+                    </td>
+
+                    <td>
+                        <%= transfer.beneficiary_account %>
+                    </td>
+
+                    <td>
+                        <%= transfer.amount %>
+                    </td>
+
+                    <td>
+                        <%= transfer.description || '-' %>
+                    </td>
+
+                    <td>
+                        <%= transfer.status %>
+                    </td>
+
+                    <td>
+                        <%= transfer.created_at %>
+                    </td>
+                </tr>
+
+            <% }) %>
+        </tbody>
+    </table>
+
+</body>
+</html>

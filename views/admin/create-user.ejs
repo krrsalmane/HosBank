@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create User</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Create User</h1>
+
+    <% if (error) { %>
+
+        <p>
+            <strong>Error:</strong>
+            <%= error %>
+        </p>
+
+    <% } %>
+
+    <form action="/admin/users/create" method="POST">
+
+        <div>
+            <label>First Name</label>
+
+            <input
+                type="text"
+                name="firstName"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Last Name</label>
+
+            <input
+                type="text"
+                name="lastName"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Email</label>
+
+            <input
+                type="email"
+                name="email"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Phone</label>
+
+            <input
+                type="text"
+                name="phone"
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label>Role</label>
+
+            <select name="role" required>
+
+                <option value="CLIENT">
+                    Client
+                </option>
+
+                <option value="CHARGE_CLIENT">
+                    Chargé Client
+                </option>
+
+                <option value="ADMIN">
+                    Administrator
+                </option>
+
+            </select>
+        </div>
+
+        <br>
+
+        <button type="submit">
+            Create User
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/admin/users">
+        Back to Users
+    </a>
+
+</body>
+
+</html>

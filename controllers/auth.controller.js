@@ -94,7 +94,7 @@ export function showDashboard(req, res) {
         return res.redirect('/client/dashboard');
     }
 
-    if (user.role === 'MANAGER') {
+    if (user.role === 'CHARGE_CLIENT') {
         return res.redirect('/manager/dashboard');
     }
 

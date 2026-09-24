@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beneficiaries</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>My Beneficiaries</h1>
+
+    <a href="/client/beneficiaries/add">
+        Add Beneficiary
+    </a>
+
+    <br><br>
+
+    <% if (beneficiaries.length === 0) { %>
+
+        <p>You don't have any beneficiaries.</p>
+
+    <% } else { %>
+
+        <% beneficiaries.forEach(beneficiary => { %>
+
+            <div>
+
+                <h3>
+                    <%= beneficiary.name %>
+                </h3>
+
+                <p>
+                    Account:
+                    <%= beneficiary.accountNumber %>
+                </p>
+
+                <a href="/client/beneficiaries/<%= beneficiary.id %>/edit">
+                    Edit
+                </a>
+
+                <form
+                    action="/client/beneficiaries/<%= beneficiary.id %>/delete"
+                    method="POST"
+                    style="display:inline;"
+                >
+                    <button type="submit">
+                        Delete
+                    </button>
+                </form>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+</html>
