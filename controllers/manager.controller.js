@@ -16,9 +16,11 @@ import {
     getClientInteractions
 } from '../services/manager-interaction.service.js';
 
+
 import {
     addRequestComment,
-    addComplaintComment
+    addComplaintComment,
+    getRequestComments
 } from '../services/manager-comment.service.js';
 
 
@@ -45,7 +47,6 @@ export async function showManagerRequests(req, res) {
     }
 }
 
-
 export async function showManagerRequestDetails(req, res) {
     try {
         const request = await getRequestForManager(
@@ -57,16 +58,20 @@ export async function showManagerRequestDetails(req, res) {
             return res.status(404).send('Request not found');
         }
 
+        const comments = await getRequestComments(
+            req.params.id,
+            req.session.user.id
+        );
+
         res.render('manager/request-details', {
             user: req.session.user,
-            request: request
+            request: request,
+            comments: comments
         });
-
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
-
 
 export async function showManagerComplaints(req, res) {
     try {
