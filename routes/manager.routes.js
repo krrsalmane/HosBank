@@ -12,7 +12,8 @@ import {
     showManagerClientDetails,
     showClientInteractions,
     addManagerComplaintComment,
-    addManagerRequestComment
+    addManagerRequestComment,
+    showClientAccounts
 } from '../controllers/manager.controller.js';
 
 import {
@@ -114,6 +115,14 @@ router.post(
     requireAuth,
     authorize('CHARGE_CLIENT'),
     addManagerComplaintComment
+);
+
+
+router.get(
+    '/clients/:id/accounts',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    showClientAccounts
 );
 
 export default router;
