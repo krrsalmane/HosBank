@@ -1,7 +1,9 @@
+
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Client Complaints</title>
+    <title>Complaints</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,7 +11,13 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Client Complaints</h1>
+    <h1>Complaints</h1>
+
+    <p>
+        <a href="/manager/dashboard">
+            Back to Dashboard
+        </a>
+    </p>
 
     <% if (complaints.length === 0) { %>
 
@@ -26,26 +34,41 @@
                 </h3>
 
                 <p>
-                    Client:
+                    <strong>Client:</strong>
                     <%= complaint.first_name %>
                     <%= complaint.last_name %>
                 </p>
 
                 <p>
-                    Email:
+                    <strong>Email:</strong>
                     <%= complaint.email %>
                 </p>
 
                 <p>
-                    Status:
-                    <strong>
-                        <%= complaint.status %>
-                    </strong>
+                    <strong>Description:</strong>
+                    <%= complaint.description || 'No description' %>
                 </p>
 
-                <a href="/manager/complaints/<%= complaint.id %>">
-                    View complaint
-                </a>
+                <p>
+                    <strong>Status:</strong>
+                    <%= complaint.status %>
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    <%= complaint.created_at %>
+                </p>
+
+                <p>
+                    <strong>Last Updated:</strong>
+                    <%= complaint.updated_at %>
+                </p>
+
+                <p>
+                    <a href="/manager/complaints/<%= complaint.id %>">
+                        View Complaint Details
+                    </a>
+                </p>
 
             </div>
 
@@ -56,4 +79,5 @@
     <% } %>
 
 </body>
+
 </html>
