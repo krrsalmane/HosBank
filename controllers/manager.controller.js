@@ -20,7 +20,8 @@ import {
 import {
     addRequestComment,
     addComplaintComment,
-    getRequestComments
+    getRequestComments,
+    getComplaintComments
 } from '../services/manager-comment.service.js';
 
 
@@ -98,16 +99,19 @@ export async function showManagerComplaintDetails(req, res) {
         );
 
         if (!complaint) {
-            return res.status(404).send(
-                'Complaint not found'
-            );
+            return res.status(404).send('Complaint not found');
         }
+
+        const comments = await getComplaintComments(
+            req.params.id,
+            req.session.user.id
+        );
 
         res.render('manager/complaint-details', {
             user: req.session.user,
-            complaint: complaint
+            complaint: complaint,
+            comments: comments
         });
-
     } catch (error) {
         res.status(500).send(error.message);
     }
