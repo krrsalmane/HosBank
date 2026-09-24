@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Client Accounts</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Client Bank Accounts</h1>
+
+    <p>
+        <a href="/manager/clients/<%= clientId %>">
+            Back to Client Details
+        </a>
+    </p>
+
+    <% if (accounts.length === 0) { %>
+
+        <p>No bank accounts found for this client.</p>
+
+    <% } else { %>
+
+        <% accounts.forEach(account => { %>
+
+            <div>
+
+                <h3>
+                    <%= account.type %>
+                </h3>
+
+                <p>
+                    <strong>Account Number:</strong>
+                    <%= account.account_number %>
+                </p>
+
+                <p>
+                    <strong>Balance:</strong>
+                    <%= account.balance %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <%= account.status %>
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    <%= account.created_at %>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+
+</html>
