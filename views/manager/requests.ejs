@@ -1,7 +1,9 @@
+
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Client Requests</title>
+    <title>Banking Requests</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,7 +11,13 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Client Requests</h1>
+    <h1>Banking Requests</h1>
+
+    <p>
+        <a href="/manager/dashboard">
+            Back to Dashboard
+        </a>
+    </p>
 
     <% if (requests.length === 0) { %>
 
@@ -26,26 +34,41 @@
                 </h3>
 
                 <p>
-                    Client:
+                    <strong>Client:</strong>
                     <%= request.first_name %>
                     <%= request.last_name %>
                 </p>
 
                 <p>
-                    Email:
+                    <strong>Email:</strong>
                     <%= request.email %>
                 </p>
 
                 <p>
-                    Status:
-                    <strong>
-                        <%= request.status %>
-                    </strong>
+                    <strong>Description:</strong>
+                    <%= request.description || 'No description' %>
                 </p>
 
-                <a href="/manager/requests/<%= request.id %>">
-                    View request
-                </a>
+                <p>
+                    <strong>Status:</strong>
+                    <%= request.status %>
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    <%= request.created_at %>
+                </p>
+
+                <p>
+                    <strong>Last Updated:</strong>
+                    <%= request.updated_at %>
+                </p>
+
+                <p>
+                    <a href="/manager/requests/<%= request.id %>">
+                        View Request Details
+                    </a>
+                </p>
 
             </div>
 
@@ -56,4 +79,5 @@
     <% } %>
 
 </body>
+
 </html>
