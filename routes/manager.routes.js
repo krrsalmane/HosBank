@@ -9,7 +9,8 @@ import {
     showManagerComplaints,
     changeComplaintStatus,
     showManagerClients,
-    showManagerClientDetails
+    showManagerClientDetails,
+    showClientInteractions
 } from '../controllers/manager.controller.js';
 
 import {
@@ -89,6 +90,14 @@ router.get(
     requireAuth,
     authorize('CHARGE_CLIENT'),
     showManagerClientDetails
+);
+
+
+router.get(
+    '/clients/:id/interactions',
+    requireAuth,
+    authorize('CHARGE_CLIENT'),
+    showClientInteractions
 );
 
 
