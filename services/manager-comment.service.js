@@ -63,3 +63,29 @@ export async function addComplaintComment(
         ]
     );
 }
+
+export async function getRequestComments(
+    requestId,
+    managerId
+) {
+    const [rows] = await pool.query(
+        `SELECT
+            comments.*,
+            users.first_name,
+            users.last_name
+         FROM comments
+         INNER JOIN users
+            ON comments.user_id = users.id
+         INNER JOIN bank_requests
+            ON comments.request_id = bank_requests.id
+         WHERE comments.request_id = ?
+           AND bank_requests.assigned_to = ?
+         ORDER BY comments.created_at ASC`,
+        [
+            requestId,
+            managerId
+        ]
+    );
+
+    return rows;
+}
