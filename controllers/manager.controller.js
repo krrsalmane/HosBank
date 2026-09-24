@@ -16,6 +16,11 @@ import {
     getClientInteractions
 } from '../services/manager-interaction.service.js';
 
+import {
+    addRequestComment,
+    addComplaintComment
+} from '../services/manager-comment.service.js';
+
 
 export async function showManagerDashboard(req, res) {
     res.render('manager/dashboard', {
@@ -261,6 +266,50 @@ export async function showClientInteractions(req, res) {
             interactions: interactions,
             clientId: req.params.id
         });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function addManagerRequestComment(req, res) {
+    const { content } = req.body;
+
+    if (!content || content.trim() === '') {
+        return res.status(400).send('Comment cannot be empty');
+    }
+
+    try {
+        await addRequestComment(
+            req.params.id,
+            req.session.user.id,
+            content.trim()
+        );
+
+        res.redirect(
+            `/manager/requests/${req.params.id}`
+        );
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function addManagerComplaintComment(req, res) {
+    const { content } = req.body;
+
+    if (!content || content.trim() === '') {
+        return res.status(400).send('Comment cannot be empty');
+    }
+
+    try {
+        await addComplaintComment(
+            req.params.id,
+            req.session.user.id,
+            content.trim()
+        );
+
+        res.redirect(
+            `/manager/complaints/${req.params.id}`
+        );
     } catch (error) {
         res.status(500).send(error.message);
     }
