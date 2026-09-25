@@ -11,6 +11,16 @@
 
     <h1>My Accounts</h1>
 
+    <form action="/client/accounts" method="POST">
+        <label for="type">Open a bank account</label>
+        <select id="type" name="type" required>
+            <option value="">Choose account type</option>
+            <option value="CHECKING">Checking</option>
+            <option value="SAVINGS">Savings</option>
+        </select>
+        <button type="submit">Create account</button>
+    </form>
+
     <% if (accounts.length === 0) { %>
 
         <p>You don't have any accounts.</p>

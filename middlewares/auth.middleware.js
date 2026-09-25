@@ -1,24 +1,25 @@
+export function authorize(...args) {
+    const checkAccess = (roles) => (req, res, next) => {
+        if (!req.session || !req.session.user) {
+            return res.redirect('/auth/login');
+        }
 
+        if (roles.length > 0 && !roles.includes(req.session.user.role)) {
+            return res.status(403).send('You are not authorized to access this page.');
+        }
 
-export function requireAuth(req, res, next) {
-    if (!req.session.user) {
-        return res.redirect('/auth/login');
+        next();
+    };
+
+    const usedAsMiddleware =
+        args.length >= 3 &&
+        typeof args[0] === 'object' &&
+        typeof args[1] === 'object' &&
+        typeof args[2] === 'function';
+
+    if (usedAsMiddleware) {
+        return checkAccess([])(args[0], args[1], args[2]);
     }
 
-    next();
+    return checkAccess(args);
 }
-
-export function authorize(...roles){
-    return (req,res,next)=>{
-        if (!req.session.user) {
-        return res.redirect('/auth/login');
-    }
-    if(!roles.includes(req.session.user.role)){
-        return res.status(403).render('error',{
-             message: 'You are not authorized to access this page.'
-        })
-    }
-    next()
-    }
-}
-

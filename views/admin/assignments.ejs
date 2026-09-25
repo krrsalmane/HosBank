@@ -52,7 +52,7 @@
                         <% if (client.assigned_to) { %>
 
                             <% const currentManager = managers.find(
-                                manager => manager.id === client.assigned_to
+                                manager => manager.id == client.assigned_to
                             ); %>
 
                             <% if (currentManager) { %>
@@ -100,7 +100,7 @@
 
                                     <option
                                         value="<%= manager.id %>"
-                                        <%= client.assigned_to === manager.id
+                                        <%= client.assigned_to == manager.id
                                             ? 'selected'
                                             : '' %>
                                     >

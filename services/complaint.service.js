@@ -1,4 +1,5 @@
 import {pool} from '../config/database.js'
+import { getClientAssignment } from './admin.service.js';
 
 
 
@@ -7,14 +8,17 @@ export async function createComplaint(
     subject,
     description
 ) {
+    const assignedTo = await getClientAssignment(userId);
+
     await pool.query(
         `INSERT INTO complaints
-        (user_id, subject, description)
-        VALUES (?, ?, ?)`,
+        (user_id, subject, description, assigned_to)
+        VALUES (?, ?, ?, ?)`,
         [
             userId,
             subject,
-            description
+            description,
+            assignedTo
         ]
     );
 }

@@ -1,3 +1,17 @@
+import { findAccountById } from "../repositories/account.repository.js";
+
+export async function  requestVirtualCard(accountId, userId, pin){
+    void pin;
+    let acc = await findAccountById(accountId)
+    if(!acc) {
+        throw new Error('account not found')
+    }
+    if(acc.user_id !== userId){
+        throw new Error('unauthorized');
+    }
+    await createVirtualCard(userId, accountId);
+    return {message : 'virtual card created'};
+}
 import {pool} from '../config/database.js'
 
 

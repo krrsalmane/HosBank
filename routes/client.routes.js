@@ -3,6 +3,7 @@ import express from 'express';
 import {
     showClientDashboard,
     showAccounts,
+    createClientAccount,
     showAccountDetails,
     showBeneficiaries,
     showAddBeneficiary,
@@ -19,6 +20,7 @@ import {
     createClientRequest,
     showClientCards,
     showCardOpposition,
+    requestCardOpposition,
     showPinRequest,
     requestPinRecalculation,
     showComplaints,
@@ -28,8 +30,7 @@ import {
 } from '../controllers/client.controller.js';
 
 import {
-    requireAuth,
-    authorize
+    authorize,
 } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
@@ -41,7 +42,7 @@ const router = express.Router();
 
 router.get(
     '/dashboard',
-     requireAuth,
+     authorize,
      authorize('CLIENT'),
     showClientDashboard
 );
@@ -53,14 +54,21 @@ router.get(
 
 router.get(
     '/accounts',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showAccounts
 );
 
+router.post(
+    '/accounts',
+    authorize,
+    authorize('CLIENT'),
+    createClientAccount
+);
+
 router.get(
     '/accounts/:id',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showAccountDetails
 );
@@ -72,31 +80,43 @@ router.get(
 
 router.get(
     '/beneficiaries',
+    authorize,
+    authorize('CLIENT'),
     showBeneficiaries
 );
 
 router.get(
     '/beneficiaries/add',
+    authorize,
+    authorize('CLIENT'),
     showAddBeneficiary
 );
 
 router.post(
     '/beneficiaries/add',
+    authorize,
+    authorize('CLIENT'),
     addBeneficiary
 );
 
 router.get(
     '/beneficiaries/:id/edit',
+    authorize,
+    authorize('CLIENT'),
     showEditBeneficiary
 );
 
 router.post(
     '/beneficiaries/:id/edit',
+    authorize,
+    authorize('CLIENT'),
     editBeneficiary
 );
 
 router.post(
     '/beneficiaries/:id/delete',
+    authorize,
+    authorize('CLIENT'),
     removeBeneficiary
 );
 
@@ -106,14 +126,14 @@ router.post(
 
 router.get(
     '/transfers',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showTransferForm
 );
 
 router.post(
     '/transfers/confirm',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showTransferConfirmation
 );
@@ -121,14 +141,14 @@ router.post(
 
 router.post(
     '/transfers',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     makeTransfer
 );
 
 router.get(
     '/transfers/history',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showTransactionHistory
 );
@@ -142,21 +162,21 @@ router.get(
 
 router.get(
     '/requests',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showClientRequests
 );
 
 router.post(
     '/requests',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     createClientRequest
 );
 
 router.get(
     '/requests/:id',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showClientRequestDetails
 );
@@ -164,36 +184,36 @@ router.get(
 
 router.get(
     '/cards',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showClientCards
 )
 
 router.get(
     '/cards/opposition',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showCardOpposition
 )
 
 router.post(
     '/cards/opposition',
-    requireAuth,
+    authorize,
      authorize('CLIENT'),
-    showCardOpposition
+    requestCardOpposition
 )
 
 
 router.get(
     '/cards/pin-request',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showPinRequest
 );
 
 router.post(
     '/cards/pin-request',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     requestPinRecalculation
 );
@@ -205,21 +225,21 @@ router.post(
 
 router.get(
     '/complaints',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showComplaints
 );
 
 router.post(
     '/complaints',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     createClientComplaint
 );
 
 router.get(
     '/complaints/:id',
-    requireAuth,
+    authorize,
     authorize('CLIENT'),
     showClientComplaintDetails
 );

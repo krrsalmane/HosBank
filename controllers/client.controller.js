@@ -1,6 +1,7 @@
 import {
     getClientAccounts,
-    getAccountById
+    getAccountById,
+    openAccount
 }from '../services/account.service.js'
 
 import {
@@ -64,6 +65,15 @@ export async function showAccounts(req ,res){
     }
 }
 
+export async function createClientAccount(req, res) {
+    try {
+        await openAccount(req.session.user.id, req.body.type);
+        return res.redirect('/client/accounts');
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+}
+
 export async function showAccountDetails(req ,res){
     try{
         const account = await getAccountById(
@@ -103,7 +113,8 @@ export function showAddBeneficiary(req ,res){
 }
 
 export async function addBeneficiary(req, res) {
-    const { name, accountNumber } = req.body;
+    const name = req.body.name?.trim();
+    const accountNumber = req.body.accountNumber?.trim();
 
     if (!name || !accountNumber) {
         return res.status(400).send('Name and account number are required');
@@ -113,8 +124,8 @@ export async function addBeneficiary(req, res) {
         return res.status(400).send('Name must contain at least 2 characters');
     }
 
-    if (accountNumber.length < 5) {
-        return res.status(400).send('Invalid account number');
+    if (accountNumber.length > 50) {
+        return res.status(400).send('Account number must be 50 characters or fewer');
     }
 
     try {
@@ -153,7 +164,8 @@ export async function showEditBeneficiary(req, res) {
 }
 
 export async function editBeneficiary(req, res) {
-    const { name, accountNumber } = req.body;
+    const name = req.body.name?.trim();
+    const accountNumber = req.body.accountNumber?.trim();
 
     if (!name || !accountNumber) {
         return res.status(400).send('Name and account number are required');
@@ -163,8 +175,8 @@ export async function editBeneficiary(req, res) {
         return res.status(400).send('Name must contain at least 2 characters');
     }
 
-    if (accountNumber.length < 5) {
-        return res.status(400).send('Invalid account number');
+    if (accountNumber.length > 50) {
+        return res.status(400).send('Account number must be 50 characters or fewer');
     }
 
     try {
@@ -206,7 +218,8 @@ export async function showTransferForm(req, res) {
         res.render('client/transfer', {
             user: req.session.user,
             accounts: accounts,
-            beneficiaries: beneficiaries
+            beneficiaries: beneficiaries,
+            error: null
         });
 
     } catch (error) {
@@ -552,4 +565,3 @@ export async function showClientComplaintDetails(req, res) {
         res.status(500).send(error.message);
     }
 }
-

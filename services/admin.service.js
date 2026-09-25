@@ -1,5 +1,30 @@
-import {pool} from '../config/database.js'
+import {getSystemStatistics ,findAllUsersWithRoles,findAllAccountsWithUsers,deleteUserById, updateUserRoleInDb} from '../repositories/admin.repository.js';
+import {pool} from '../config/database.js';
 
+
+export async function getAdminStats() {
+    let res = await getSystemStatistics();
+    return res
+}
+
+
+export async function updateUserRole(userId, newRole) {
+    if (!['CLIENT', 'CHARGE_CLIENT', 'ADMIN'].includes(newRole)) {
+        throw new Error('Invalid role specified');
+    }
+    let res = await updateUserRoleInDb(userId, newRole);
+    return res
+}
+
+export async function deleteUser(userId) {
+    let res = await deleteUserById(userId);
+    return res;
+}
+
+export async function getAllAccounts() {
+    let res = await findAllAccountsWithUsers();
+    return res
+}
 
 
 export async function getAllUsers(){
@@ -141,6 +166,20 @@ export async function getManagers() {
 }
 
 export async function getClientAssignment(clientId) {
+    const [assignments] = await pool.query(
+        `SELECT employee_id
+         FROM interactions
+         WHERE client_id = ?
+           AND type = 'ASSIGNMENT'
+         ORDER BY created_at DESC
+         LIMIT 1`,
+        [clientId]
+    );
+
+    if (assignments.length > 0) {
+        return assignments[0].employee_id;
+    }
+
     const [rows] = await pool.query(
         `SELECT assigned_to
          FROM bank_requests
@@ -176,17 +215,22 @@ export async function assignClient(clientId, managerId) {
     await pool.query(
         `UPDATE bank_requests
          SET assigned_to = ?
-         WHERE user_id = ?
-           AND status IN ('PENDING', 'IN_PROGRESS')`,
+         WHERE user_id = ?`,
         [managerId, clientId]
     );
 
     await pool.query(
         `UPDATE complaints
          SET assigned_to = ?
-         WHERE user_id = ?
-           AND status IN ('OPEN', 'IN_PROGRESS')`,
+         WHERE user_id = ?`,
         [managerId, clientId]
+    );
+
+    await pool.query(
+        `INSERT INTO interactions
+         (client_id, employee_id, type, description)
+         VALUES (?, ?, 'ASSIGNMENT', 'Client assigned to chargé client')`,
+        [clientId, managerId]
     );
 }
 

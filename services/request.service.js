@@ -1,15 +1,18 @@
 import {pool} from '../config/database.js';
+import { getClientAssignment } from './admin.service.js';
 
 export async function createRequest(
     userId,
     type,
     description
 ) {
+    const assignedTo = await getClientAssignment(userId);
+
     await pool.query(
         `INSERT INTO bank_requests
-        (user_id, type, description)
-        VALUES (?, ?, ?)`,
-        [userId, type, description]
+        (user_id, type, description, assigned_to)
+        VALUES (?, ?, ?, ?)`,
+        [userId, type, description, assignedTo]
     );
 }
 

@@ -17,7 +17,6 @@ import {
 } from '../controllers/manager.controller.js';
 
 import {
-    requireAuth,
     authorize
 } from '../middlewares/auth.middleware.js';
 
@@ -26,7 +25,7 @@ const router = express.Router();
 
 router.get(
     '/dashboard',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerDashboard
 );
@@ -34,7 +33,7 @@ router.get(
 
 router.get(
     '/requests',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerRequests
 );
@@ -42,7 +41,7 @@ router.get(
 
 router.get(
     '/requests/:id',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerRequestDetails
 );
@@ -50,7 +49,7 @@ router.get(
 
 router.post(
     '/requests/:id/status',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     changeRequestStatus
 );
@@ -58,7 +57,7 @@ router.post(
 
 router.get(
     '/complaints',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerComplaints
 );
@@ -66,7 +65,7 @@ router.get(
 
 router.get(
     '/complaints/:id',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerComplaintDetails
 );
@@ -74,7 +73,7 @@ router.get(
 
 router.post(
     '/complaints/:id/status',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     changeComplaintStatus
 );
@@ -82,15 +81,15 @@ router.post(
 
 router.get(
     '/clients',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerClients
-);
+); 
 
 
 router.get(
     '/clients/:id',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showManagerClientDetails
 );
@@ -98,21 +97,21 @@ router.get(
 
 router.get(
     '/clients/:id/interactions',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showClientInteractions
 );
 
 router.post(
     '/requests/:id/comments',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     addManagerRequestComment
 );
 
 router.post(
     '/complaints/:id/comments',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     addManagerComplaintComment
 );
@@ -120,7 +119,7 @@ router.post(
 
 router.get(
     '/clients/:id/accounts',
-    requireAuth,
+    authorize,
     authorize('CHARGE_CLIENT'),
     showClientAccounts
 );

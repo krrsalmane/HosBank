@@ -21,7 +21,11 @@ import {
     getAllBankRequests,
     updateBankRequestStatus,
     getAllComplaints,
-    updateComplaintStatus
+    updateComplaintStatus,
+    getAdminStats,
+    updateUserRole,
+    deleteUser,
+    getAllAccounts
 } from '../services/admin.service.js';
 
 
@@ -63,15 +67,34 @@ export async function showAdminDashboard(req ,res){
              WHERE status IN ('OPEN', 'IN_PROGRESS')`
         );
 
+        const [admins] = await pool.query(
+            `SELECT COUNT(*) AS total
+             FROM users
+             WHERE role = 'ADMIN'`
+        );
+
+        const [cards] = await pool.query(
+            `SELECT COUNT(*) AS total
+             FROM cards`
+        );
+
+        const [transfers] = await pool.query(
+            `SELECT COUNT(*) AS total
+             FROM transfers`
+        );
+
         res.render('admin/dashboard', {
             user: req.session.user,
             stats: {
                 users: users[0].total,
                 clients: clients[0].total,
                 managers: managers[0].total,
+                admins: admins[0].total,
                 accounts: accounts[0].total,
+                cards: cards[0].total,
                 requests: requests[0].total,
-                complaints: complaints[0].total
+                complaints: complaints[0].total,
+                transfers: transfers[0].total
             }
         });
 
@@ -361,6 +384,7 @@ export async function showTransactions(req, res) {
 }
 
 
+
 export async function showBankRequests(req, res) {
     try {
         const requests = await getAllBankRequests();
@@ -419,5 +443,52 @@ export async function changeComplaintStatus(req, res) {
 
     } catch (error) {
         res.status(400).send(error.message);
+    }
+}
+
+export async function handleGetAdminStats(req, res) {
+    try {
+        let stats = await getAdminStats();
+        return res.json(stats);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+export async function handleGetAllUsers(req, res) {
+    try {
+        let users = await getAllUsers();
+        return res.json(users);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+export async function handleUpdateUserRole(req, res) {
+    let { userId, newRole } = req.body;
+    try {
+        let result = await updateUserRole(userId, newRole);
+        return res.json({ message: "Role updated successfully", result });
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+}
+
+export async function handleDeleteUser(req, res) {
+    let { id } = req.params;
+    try {
+        await deleteUser(id);
+        return res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+}
+
+export async function handleGetAllAccounts(req, res) {
+    try {
+        let accounts = await getAllAccounts();
+        return res.json(accounts);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
 }

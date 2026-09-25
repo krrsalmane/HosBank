@@ -28,6 +28,11 @@ import {
     getClientAccounts
 } from '../services/manager-account.service.js';
 
+import {
+    getAssignedClients,
+    getAssignedClientById
+} from '../services/manager-client.service.js';
+
 
 export async function showManagerDashboard(req, res) {
     res.render('manager/dashboard', {
