@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,70 +23,46 @@
             </p>
 
             <% if (typeof error !== 'undefined' && error) { %>
-                <p class="error"><%= error %></p>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
             <% } %>
 
             <form action="/auth/register" method="POST">
 
                 <div class="form-group">
                     <label for="firstName">First name</label>
-                    <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
+                    <input type="text" id="firstName" name="firstName"
                         value="<%= typeof firstName !== 'undefined' ? firstName : '' %>"
-                        placeholder="Enter your first name"
-                        required
-                    >
+                        placeholder="Enter your first name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="lastName">Last name</label>
-                    <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
+                    <input type="text" id="lastName" name="lastName"
                         value="<%= typeof lastName !== 'undefined' ? lastName : '' %>"
-                        placeholder="Enter your last name"
-                        required
-                    >
+                        placeholder="Enter your last name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value="<%= typeof email !== 'undefined' ? email : '' %>"
-                        placeholder="Enter your email"
-                        required
-                    >
+                    <input type="email" id="email" name="email"
+                        value="<%= typeof email !== 'undefined' ? email : '' %>" placeholder="Enter your email"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value="<%= typeof phone !== 'undefined' ? phone : '' %>"
-                        placeholder="Enter your phone"
-                        required
-                    >
+                    <input type="tel" id="phone" name="phone"
+                        value="<%= typeof phone !== 'undefined' ? phone : '' %>" placeholder="Enter your phone"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        required
-                    >
+                    <input type="password" id="password" name="password" placeholder="Enter your password"
+                        required>
                 </div>
-
                 <button type="submit">Create account</button>
 
             </form>
@@ -100,4 +77,5 @@
     </div>
 
 </body>
+
 </html>

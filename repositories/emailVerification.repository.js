@@ -40,3 +40,14 @@ export async function markUserEmailAsVerified(userId) {
 
     return result.affectedRows > 0;
 }
+
+export async function markVerificationAsVerified(verificationId) {
+    const [result] = await pool.query(
+        `UPDATE email_verifications
+         SET verified_at = CURRENT_TIMESTAMP
+         WHERE id = ?`,
+        [verificationId]
+    );
+
+    return result.affectedRows > 0;
+}

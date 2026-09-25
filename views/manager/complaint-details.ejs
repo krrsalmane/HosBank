@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Complaint Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Complaint Details</h1>
+
+    <div>
+
+        <p>
+            <strong>Complaint ID:</strong>
+            <%= complaint.id %>
+        </p>
+
+        <p>
+            <strong>Client:</strong>
+            <%= complaint.first_name %>
+            <%= complaint.last_name %>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <%= complaint.email %>
+        </p>
+
+        <p>
+            <strong>Subject:</strong>
+            <%= complaint.subject %>
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            <%= complaint.description %>
+        </p>
+
+        <p>
+            <strong>Current Status:</strong>
+            <%= complaint.status %>
+        </p>
+
+        <p>
+            <strong>Created:</strong>
+            <%= complaint.created_at %>
+        </p>
+
+        <p>
+            <strong>Last Updated:</strong>
+            <%= complaint.updated_at %>
+        </p>
+
+    </div>
+
+    <h2>Change Status</h2>
+
+    <form
+        action="/manager/complaints/<%= complaint.id %>/status"
+        method="POST"
+    >
+
+        <select name="status" required>
+
+            <option
+                value="OPEN"
+                <%= complaint.status === 'OPEN' ? 'selected' : '' %>
+            >
+                Open
+            </option>
+
+            <option
+                value="IN_PROGRESS"
+                <%= complaint.status === 'IN_PROGRESS' ? 'selected' : '' %>
+            >
+                In Progress
+            </option>
+
+            <option
+                value="RESOLVED"
+                <%= complaint.status === 'RESOLVED' ? 'selected' : '' %>
+            >
+                Resolved
+            </option>
+
+            <option
+                value="CLOSED"
+                <%= complaint.status === 'CLOSED' ? 'selected' : '' %>
+            >
+                Closed
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Update Status
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Comments / Responses</h2>
+
+    <% if (comments.length === 0) { %>
+
+        <p>No comments yet.</p>
+
+    <% } else { %>
+
+        <% comments.forEach(comment => { %>
+
+            <div>
+
+                <p>
+                    <strong>
+                        <%= comment.first_name %>
+                        <%= comment.last_name %>
+                    </strong>
+                </p>
+
+                <p>
+                    <%= comment.content %>
+                </p>
+
+                <p>
+                    <small>
+                        <%= comment.created_at %>
+                    </small>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+    <h3>Add a Response</h3>
+
+    <form
+        action="/manager/complaints/<%= complaint.id %>/comments"
+        method="POST"
+    >
+
+        <textarea
+            name="content"
+            rows="4"
+            required
+            placeholder="Write a response..."
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Add Response
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/manager/complaints">
+        Back to Complaints
+    </a>
+
+</body>
+
+</html>

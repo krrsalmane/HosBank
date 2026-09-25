@@ -88,9 +88,9 @@ export async function loginUser(email, password) {
         );
     }
 
-    if (!user.email_verified) {
+    if (!user.active) {
         throw new Error(
-            'Please verify your email before logging in'
+            'This account has been deactivated'
         );
     }
 

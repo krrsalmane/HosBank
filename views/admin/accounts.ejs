@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manage Bank Accounts</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Manage Bank Accounts</h1>
+
+    <p>
+        <a href="/admin/dashboard">
+            Back to Admin Dashboard
+        </a>
+    </p>
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Account Number</th>
+                <th>Owner</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th>Change Status</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <% accounts.forEach(account => { %>
+
+                <tr>
+
+                    <td>
+                        <%= account.id %>
+                    </td>
+
+                    <td>
+                        <%= account.account_number %>
+                    </td>
+
+                    <td>
+                        <%= account.first_name %>
+                        <%= account.last_name %>
+                    </td>
+
+                    <td>
+                        <%= account.email %>
+                    </td>
+
+                    <td>
+                        <%= account.type %>
+                    </td>
+
+                    <td>
+                        <%= account.balance %>
+                    </td>
+
+                    <td>
+                        <%= account.status %>
+                    </td>
+
+                    <td>
+
+                        <form
+                            action="/admin/accounts/<%= account.id %>/status"
+                            method="POST"
+                        >
+
+                            <select name="status" required>
+
+                                <option
+                                    value="ACTIVE"
+                                    <%= account.status === 'ACTIVE'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Active
+                                </option>
+
+                                <option
+                                    value="BLOCKED"
+                                    <%= account.status === 'BLOCKED'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Blocked
+                                </option>
+
+                                <option
+                                    value="CLOSED"
+                                    <%= account.status === 'CLOSED'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Closed
+                                </option>
+
+                            </select>
+
+                            <button type="submit">
+                                Update
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>

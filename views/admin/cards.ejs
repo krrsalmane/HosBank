@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manage Cards</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Manage Cards</h1>
+
+    <p>
+        <a href="/admin/dashboard">
+            Back to Admin Dashboard
+        </a>
+    </p>
+
+    <table border="1" cellpadding="8">
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Card Number</th>
+                <th>Owner</th>
+                <th>Email</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Expiration Date</th>
+                <th>Status</th>
+                <th>Change Status</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <% cards.forEach(card => { %>
+
+                <tr>
+
+                    <td>
+                        <%= card.id %>
+                    </td>
+
+                    <td>
+                        <%= card.card_number %>
+                    </td>
+
+                    <td>
+                        <%= card.first_name %>
+                        <%= card.last_name %>
+                    </td>
+
+                    <td>
+                        <%= card.email %>
+                    </td>
+
+                    <td>
+                        <%= card.account_number %>
+                    </td>
+
+                    <td>
+                        <%= card.type %>
+                    </td>
+
+                    <td>
+                        <%= card.expiration_date || '-' %>
+                    </td>
+
+                    <td>
+                        <%= card.status %>
+                    </td>
+
+                    <td>
+
+                        <form
+                            action="/admin/cards/<%= card.id %>/status"
+                            method="POST"
+                        >
+
+                            <select name="status" required>
+
+                                <option
+                                    value="ACTIVE"
+                                    <%= card.status === 'ACTIVE'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Active
+                                </option>
+
+                                <option
+                                    value="BLOCKED"
+                                    <%= card.status === 'BLOCKED'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Blocked
+                                </option>
+
+                                <option
+                                    value="OPPOSED"
+                                    <%= card.status === 'OPPOSED'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Opposed
+                                </option>
+
+                                <option
+                                    value="EXPIRED"
+                                    <%= card.status === 'EXPIRED'
+                                        ? 'selected'
+                                        : '' %>
+                                >
+                                    Expired
+                                </option>
+
+                            </select>
+
+                            <button type="submit">
+                                Update
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>

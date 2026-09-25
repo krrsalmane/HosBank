@@ -1,8 +1,7 @@
-import { createCard } from "../repositories/card.repository";
-import { findAccountById } from "../repositories/account.repository";
-import { createCard } from "../repositories/card.repository";
+import { findAccountById } from "../repositories/account.repository.js";
 
 export async function  requestVirtualCard(accountId, userId, pin){
+    void pin;
     let acc = await findAccountById(accountId)
     if(!acc) {
         throw new Error('account not found')
@@ -10,9 +9,64 @@ export async function  requestVirtualCard(accountId, userId, pin){
     if(acc.user_id !== userId){
         throw new Error('unauthorized');
     }
-    let cardNumber = '4' + Math.floor(100000000000000 + Math.random() * 900000000000000);
-    let expiryDate = '2030-22-09';
-    let hashedPin = await bcrypt.hash(pin,10);
-    await createCard({accountId,cardNumber,cardType :'VIRTUAL',expiryDate,hashedPin});
-    return {message : 'virtual card created',cardNumber};
+    await createVirtualCard(userId, accountId);
+    return {message : 'virtual card created'};
+}
+import {pool} from '../config/database.js'
+
+
+
+
+
+export async function getClientCards(userId){
+    const [rows] = await pool.query(
+       ` select 
+         cards.* ,
+         bank_accounts.account_number
+         from cards 
+         inner join bank_accounts
+         on cards.account_id = bank_accounts.id
+         where cards.user_id = ?
+         order by cards.created_at desc
+       ` ,
+       [userId]
+    )
+    return rows
+}
+
+
+export async function createVirtualCard(
+    userId,
+    accountId
+) {
+    const cardNumber =
+        '4' +
+        Math.floor(
+            100000000000000 + Math.random() * 900000000000000
+        ).toString();
+
+    const expirationDate = new Date();
+
+    expirationDate.setFullYear(
+        expirationDate.getFullYear() + 4
+    );
+
+    await pool.query(
+        `INSERT INTO cards
+        (
+            user_id,
+            account_id,
+            card_number,
+            type,
+            status,
+            expiration_date
+        )
+        VALUES (?, ?, ?, 'VIRTUAL', 'ACTIVE', ?)`,
+        [
+            userId,
+            accountId,
+            cardNumber,
+            expirationDate
+        ]
+    );
 }

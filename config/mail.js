@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 
+const shouldSendEmails = !(process.env.NODE_ENV === 'test' || process.env.DISABLE_EMAIL_SENDING === 'true');
+
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -9,9 +11,13 @@ let transporter = nodemailer.createTransport({
 });
 
 export async function sendVerificationEmail(email, token) {
+    if (!shouldSendEmails) {
+        return;
+    }
 
+    const appUrl = (process.env.APP_URL || 'http://localhost:3000').replace(/\/$/, '');
     const verificationUrl =
-        `http://localhost:3000/auth/verify-email?token=${token}`;
+        `${appUrl}/auth/verify-email?token=${encodeURIComponent(token)}`;
 
     await transporter.sendMail({
         from: `"SmartBank" <${process.env.EMAIL_USER}>`,
@@ -20,7 +26,7 @@ export async function sendVerificationEmail(email, token) {
         html: `
             <h2>Welcome to SmartBank</h2>
             <p>Thank you for creating your account.</p>
-            <p>Please verify your email address by clicking the button below.</p>
+            <p>Verify your email address to activate your account and go to your dashboard.</p>
             <p>
                 <a href="${verificationUrl}"
                     style="
@@ -32,9 +38,10 @@ export async function sendVerificationEmail(email, token) {
                         border-radius:5px;
                     "
                 >
-                    Verify my email
+                    Verify email and open my dashboard
                 </a>
             </p>
-            <p>This link expires in 24 hours.</p> `
+            <p>This link expires in 24 hours. After verification, you will be signed in and redirected to your dashboard.</p>
+            <p>If the button does not work, open this link: <a href="${verificationUrl}">${verificationUrl}</a></p>`
     });
 }

@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Complaints</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Complaints</h1>
+
+    <p>
+        <a href="/manager/dashboard">
+            Back to Dashboard
+        </a>
+    </p>
+
+    <% if (complaints.length === 0) { %>
+
+        <p>No complaints assigned to you.</p>
+
+    <% } else { %>
+
+        <% complaints.forEach(complaint => { %>
+
+            <div>
+
+                <h3>
+                    <%= complaint.subject %>
+                </h3>
+
+                <p>
+                    <strong>Client:</strong>
+                    <%= complaint.first_name %>
+                    <%= complaint.last_name %>
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    <%= complaint.email %>
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    <%= complaint.description || 'No description' %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <%= complaint.status %>
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    <%= complaint.created_at %>
+                </p>
+
+                <p>
+                    <strong>Last Updated:</strong>
+                    <%= complaint.updated_at %>
+                </p>
+
+                <p>
+                    <a href="/manager/complaints/<%= complaint.id %>">
+                        View Complaint Details
+                    </a>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+
+</html>

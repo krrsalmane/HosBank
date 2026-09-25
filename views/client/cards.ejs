@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Cards</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>My Cards</h1>
+
+    <% if (cards.length === 0) { %>
+
+        <p>You don't have any cards.</p>
+
+        <form action="/client/requests" method="POST">
+
+            <input
+                type="hidden"
+                name="type"
+                value="VIRTUAL_CARD"
+            >
+
+            <input
+                type="hidden"
+                name="description"
+                value="Request for a virtual card"
+            >
+
+            <button type="submit">
+                Request Virtual Card
+            </button>
+
+        </form>
+
+    <% } else { %>
+
+        <% cards.forEach(card => { %>
+
+            <div>
+
+                <h3>
+                    <%= card.type %> Card
+                </h3>
+
+                <p>
+                    <strong>Card number:</strong>
+                    **** **** **** <%= card.card_number.slice(-4) %>
+                </p>
+
+                <p>
+                    <strong>Account:</strong>
+                    <%= card.account_number %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <%= card.status %>
+                </p>
+
+                <p>
+                    <strong>Expiration:</strong>
+                    <%= card.expiration_date || 'N/A' %>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+</html>

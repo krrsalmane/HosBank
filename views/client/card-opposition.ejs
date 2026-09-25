@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Card Opposition</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Card Opposition</h1>
+
+    <p>
+        If your card has been lost or stolen, you can request
+        an opposition.
+    </p>
+
+    <form action="/client/cards/opposition" method="POST">
+
+        <label>
+            Card
+        </label>
+
+        <select name="cardId" required>
+
+            <option value="">
+                Select a card
+            </option>
+
+            <% cards.forEach(card => { %>
+
+                <option value="<%= card.id %>">
+                    <%= card.type %> -
+                    **** <%= card.card_number.slice(-4) %>
+                </option>
+
+            <% }) %>
+
+        </select>
+
+        <br><br>
+
+        <label>
+            Reason
+        </label>
+
+        <br>
+
+        <textarea
+            name="description"
+            rows="5"
+            required
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Request Opposition
+        </button>
+
+    </form>
+
+</body>
+</html>

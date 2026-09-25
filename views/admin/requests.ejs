@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banking Requests</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Banking Requests</h1>
+
+    <p>
+        <a href="/admin/dashboard">Back to Admin Dashboard</a>
+    </p>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% requests.forEach(request => { %>
+
+                <tr>
+                    <td>
+                        <%= request.id %>
+                    </td>
+
+                    <td>
+                        <%= request.first_name %>
+                        <%= request.last_name %>
+                    </td>
+
+                    <td>
+                        <%= request.email %>
+                    </td>
+
+                    <td>
+                        <%= request.type %>
+                    </td>
+
+                    <td>
+                        <%= request.description || '-' %>
+                    </td>
+
+                    <td>
+                        <% if (request.manager_first_name) { %>
+
+                            <%= request.manager_first_name %>
+                            <%= request.manager_last_name %>
+
+                        <% } else { %>
+
+                            Not assigned
+
+                        <% } %>
+                    </td>
+
+                    <td>
+                        <%= request.status %>
+                    </td>
+
+                    <td>
+                        <%= request.created_at %>
+                    </td>
+
+                    <td>
+                        <%= request.updated_at %>
+                    </td>
+
+                    <td>
+                        <form
+                            method="POST"
+                            action="/admin/requests/<%= request.id %>/status"
+                        >
+
+                            <select name="status">
+
+                                <option value="PENDING"
+                                    <%= request.status === 'PENDING' ? 'selected' : '' %>>
+                                    PENDING
+                                </option>
+
+                                <option value="IN_PROGRESS"
+                                    <%= request.status === 'IN_PROGRESS' ? 'selected' : '' %>>
+                                    IN_PROGRESS
+                                </option>
+
+                                <option value="APPROVED"
+                                    <%= request.status === 'APPROVED' ? 'selected' : '' %>>
+                                    APPROVED
+                                </option>
+
+                                <option value="REJECTED"
+                                    <%= request.status === 'REJECTED' ? 'selected' : '' %>>
+                                    REJECTED
+                                </option>
+
+                                <option value="COMPLETED"
+                                    <%= request.status === 'COMPLETED' ? 'selected' : '' %>>
+                                    COMPLETED
+                                </option>
+
+                            </select>
+
+                            <button type="submit">
+                                Update
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+
+            <% }) %>
+        </tbody>
+    </table>
+
+</body>
+</html>

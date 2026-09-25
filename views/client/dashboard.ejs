@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Client Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>
+        Welcome <%= user.firstName %>
+    </h1>
+
+    <div>
+        <h2>My Banking</h2>
+
+        <p>
+            <a href="/client/accounts">My Accounts</a>
+        </p>
+        <p>
+            <a href="/client/accounts">Create a bank account</a>
+        </p>
+
+        <p>
+            <a href="/client/beneficiaries">Beneficiaries</a>
+        </p>
+
+        <p>
+            <a href="/client/transfers">Transfers</a>
+        </p>
+
+        <p>
+            <a href="/client/transfers/history">Transaction History</a>
+        </p>
+
+        <p>
+            <a href="/client/requests">My Requests</a>
+        </p>
+
+        <p>
+            <a href="/client/cards">Cards</a>
+        </p>
+
+        <p>
+            <a href="/client/cards/opposition">Card Opposition</a>
+        </p>
+
+        <p>
+            <a href="/client/cards/pin-request">PIN Request</a>
+        </p>
+
+        <p>
+            <a href="/client/complaints">Complaints</a>
+        </p>
+
+    </div>
+
+</body>
+
+</html>

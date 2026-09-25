@@ -1,5 +1,4 @@
-import {createVerificationToken,findVerificationByToken,markVerificationAsVerified} from '../repositories/emailVerification.repository.js';
-import {markUserEmailAsVerified} from '../repositories/user.repository.js';
+import {createVerificationToken,findVerificationByToken,markUserEmailAsVerified,markVerificationAsVerified} from '../repositories/emailVerification.repository.js';
 import { randomBytes } from 'node:crypto';
 import { sendVerificationEmail } from '../config/mail.js';
 
@@ -9,7 +8,12 @@ export async function createEmailVerification(userId,email) {
         Date.now() + 24 * 60 * 60 * 1000
     );
     await createVerificationToken(userId,token,expiresAt);
-    await sendVerificationEmail(email,token);
+    try {
+        await sendVerificationEmail(email,token);
+    } catch (error) {
+        // Email is a notification; delivery issues should not block registration.
+        console.error('Verification email could not be sent:', error.message);
+    }
     return token;
 }
 
@@ -49,5 +53,5 @@ export async function verifyEmail(token) {
         );
     }
 
-    return true;
+    return verification.user_id;
 }

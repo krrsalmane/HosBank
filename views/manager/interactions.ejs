@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Client Interaction History</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('../partials/navbar', { user: user }) %>
+
+    <h1>Client Interaction History</h1>
+
+    <p>
+        <a href="/manager/clients/<%= clientId %>">
+            Back to Client Details
+        </a>
+    </p>
+
+    <% if (interactions.length === 0) { %>
+
+        <p>No interactions found for this client.</p>
+
+    <% } else { %>
+
+        <% interactions.forEach(interaction => { %>
+
+            <div>
+
+                <h3>
+                    <%= interaction.type %>
+                </h3>
+
+                <p>
+                    <strong>Employee:</strong>
+                    <%= interaction.first_name %>
+                    <%= interaction.last_name %>
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    <%= interaction.description || 'No description' %>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    <%= interaction.created_at %>
+                </p>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+
+</html>

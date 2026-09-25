@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleRequestVirtualCard } from "../controllers/card.controller";
+import { handleRequestVirtualCard } from "../controllers/card.controller.js";
 
 let router = Router();
 

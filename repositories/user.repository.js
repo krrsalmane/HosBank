@@ -24,6 +24,6 @@ export async function createUser(firstName,lastName,email,password,phone,role) {
 }
 
 export async function markUserEmailAsVerified(userId) {
-    let [result] = await pool.query(`UPDATE users SET email_verified = TRUEWHERE id = ?`,[userId]);
+    let [result] = await pool.query(`UPDATE users SET email_verified = TRUE WHERE id = ?`,[userId]);
     return result.affectedRows > 0;
 }

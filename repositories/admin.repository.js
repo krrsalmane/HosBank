@@ -13,7 +13,7 @@ export async function getSystemStatistics(){
 }
 
 export async function findAllUsersWithRoles() {
-    let [rows] = await pool.query('SELECT id, name, email, role, created_at FROM users');
+    let [rows] = await pool.query('SELECT id, first_name, last_name, email, role, created_at FROM users');
     return rows;
 }
 
@@ -28,6 +28,6 @@ export async function deleteUserById(userId) {
 }
 
 export async function findAllAccountsWithUsers() {
-    let [res] = await pool.query('SELECT bank_accounts.*, users.name as owner_name FROM bank_accounts JOIN users ON bank_accounts.user_id = users.id');
+    let [res] = await pool.query('SELECT bank_accounts.*, CONCAT(users.first_name, \' \', users.last_name) as owner_name FROM bank_accounts JOIN users ON bank_accounts.user_id = users.id');
     return res;
 }

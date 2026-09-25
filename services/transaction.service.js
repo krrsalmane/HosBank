@@ -1,6 +1,7 @@
 import { updateAccountBalance, createTransaction } from "../repositories/transaction.repository.js";
 import { findAccountById } from "../repositories/account.repository.js";
 import { findTransactionsByAccountId } from "../repositories/transaction.repository.js";
+import {pool} from '../config/database.js';
 
 export async function transferMoney(senderAccountId, receiverAccountId, amount, userId) {
     if((Number(amount) <= 0 || isNaN(amount))){
@@ -13,18 +14,18 @@ export async function transferMoney(senderAccountId, receiverAccountId, amount, 
     if(!sender_account ) {
         throw new Error('sender acount not found')
     } 
-    if(sender_account.iser_id !== userId) {
+    if(sender_account.user_id !== userId) {
         throw new Error('unauthorized')
     }
     let receiver_account = await findAccountById(receiverAccountId);
-    if(!sender_account ) {
+    if(!receiver_account ) {
         throw new Error('reveiver acount not found')
     } 
     if(Number(sender_account.balance) < Number(amount)) {
         throw new Error('insuficient funds')
     } 
-    newSenderBalance = Number(sender_account.balance) - Number(amount)
-    newReceiverBalance = Number(receiver_account.balance) + Number(amount)
+    const newSenderBalance = Number(sender_account.balance) - Number(amount)
+    const newReceiverBalance = Number(receiver_account.balance) + Number(amount)
 
     await updateAccountBalance(senderAccountId,newSenderBalance);
     await updateAccountBalance(receiverAccountId,newReceiverBalance);
@@ -38,9 +39,28 @@ export async function getAccountTransactions(accountId, userId) {
     if(!acc){
             throw new Error('account not found');
         }
-        if(acc.user.id !== userId) {
+        if(acc.user_id !== userId) {
             throw new Error('unauthorized')
         }
         let res = await findTransactionsByAccountId(accountId)
         return res
+    }
+export async function getClientTransactions(userId) {
+    const [rows] = await pool.query(
+        `SELECT
+            transactions.id,
+            transactions.type,
+            transactions.amount,
+            transactions.description,
+            transactions.created_at,
+            bank_accounts.account_number
+         FROM transactions
+         INNER JOIN bank_accounts
+            ON transactions.account_id = bank_accounts.id
+         WHERE bank_accounts.user_id = ?
+         ORDER BY transactions.created_at DESC`,
+        [userId]
+    );
+
+    return rows;
 }
