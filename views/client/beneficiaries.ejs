@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Beneficiaries</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beneficiaries — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,54 +11,45 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>My Beneficiaries</h1>
-
-    <a href="/client/beneficiaries/add">
-        Add Beneficiary
-    </a>
-
-    <br><br>
-
-    <% if (beneficiaries.length === 0) { %>
-
-        <p>You don't have any beneficiaries.</p>
-
-    <% } else { %>
-
-        <% beneficiaries.forEach(beneficiary => { %>
-
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div>
-
-                <h3>
-                    <%= beneficiary.name %>
-                </h3>
-
-                <p>
-                    Account:
-                    <%= beneficiary.accountNumber %>
-                </p>
-
-                <a href="/client/beneficiaries/<%= beneficiary.id %>/edit">
-                    Edit
-                </a>
-
-                <form
-                    action="/client/beneficiaries/<%= beneficiary.id %>/delete"
-                    method="POST"
-                    style="display:inline;"
-                >
-                    <button type="submit">
-                        Delete
-                    </button>
-                </form>
-
+                <h1>Beneficiary Directory</h1>
+                <p>Manage trusted accounts for fast, seamless fund transfers.</p>
             </div>
+            <a href="/client/beneficiaries/add" class="btn btn-primary">
+                + Add Beneficiary
+            </a>
+        </div>
 
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% if (!beneficiaries || beneficiaries.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">No beneficiaries saved in your directory.</p>
+                <a href="/client/beneficiaries/add" class="btn btn-primary btn-sm">Add your first beneficiary</a>
+            </div>
+        <% } else { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem;">
+                <% beneficiaries.forEach(beneficiary => { %>
+                    <div class="card" style="margin-bottom: 0;">
+                        <h3 style="margin-bottom: 0.5rem;"><%= beneficiary.name %></h3>
+                        <p style="font-family: monospace; font-size: 1rem; color: var(--bank-navy-800); background: var(--surface-muted); padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); margin-bottom: 1.25rem;">
+                            <%= beneficiary.account_number %>
+                        </p>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <a href="/client/beneficiaries/<%= beneficiary.id %>/edit" class="btn btn-secondary btn-sm">
+                                Edit
+                            </a>
+                            <form action="/client/beneficiaries/<%= beneficiary.id %>/delete" method="POST" style="display: inline; margin: 0;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Remove this beneficiary?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 
 </body>
 </html>

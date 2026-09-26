@@ -60,7 +60,7 @@ CREATE TABLE beneficiaries (
     user_id INT NOT NULL,
 
     name VARCHAR(150) NOT NULL,
-    accountNumber VARCHAR(50) NOT NULL,
+    account_number VARCHAR(50) NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

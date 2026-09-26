@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Accounts</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Accounts — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,54 +11,62 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>My Accounts</h1>
+    <div class="container">
+        <div class="card" style="margin-bottom: 2rem;">
+            <h2>Open a New Account</h2>
+            <p>Select your account type to instantly create a new HosBank checking or savings account.</p>
+            <form action="/client/accounts" method="POST" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 0;">
+                <div style="flex: 1; min-width: 240px; margin-bottom: 0;">
+                    <label for="type">Account Type</label>
+                    <select id="type" name="type" required>
+                        <option value="">Choose account type</option>
+                        <option value="CHECKING">Checking Account</option>
+                        <option value="SAVINGS">Savings Account</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+        </div>
 
-    <form action="/client/accounts" method="POST">
-        <label for="type">Open a bank account</label>
-        <select id="type" name="type" required>
-            <option value="">Choose account type</option>
-            <option value="CHECKING">Checking</option>
-            <option value="SAVINGS">Savings</option>
-        </select>
-        <button type="submit">Create account</button>
-    </form>
+        <h1>Your Bank Accounts</h1>
 
-    <% if (accounts.length === 0) { %>
-
-        <p>You don't have any accounts.</p>
-
-    <% } else { %>
-
-        <% accounts.forEach(account => { %>
-
-            <div>
-                <h2><%= account.type %> Account</h2>
-
-                <p>
-                    Account number:
-                    <%= account.account_number %>
-                </p>
-
-                <p>
-                    Balance:
-                    <%= account.balance %>
-                </p>
-
-                <p>
-                    Status:
-                    <%= account.status %>
-                </p>
-
-                <a href="/client/accounts/<%= account.id %>">
-                    View details
-                </a>
+        <% if (!accounts || accounts.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">You don't have any accounts registered yet.</p>
+                <p>Use the form above to open your first HosBank account.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                <% accounts.forEach(account => { %>
+                    <div class="account-card-visual">
+                        <div class="account-card-header">
+                            <span class="account-card-type"><%= account.type %> ACCOUNT</span>
+                            <span class="status-badge <%= account.status === 'ACTIVE' ? 'badge-active' : 'badge-pending' %>">
+                                <%= account.status %>
+                            </span>
+                        </div>
+                        <div class="account-card-number">
+                            <%= account.account_number %>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <span style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Available Balance</span>
+                            <div class="account-card-balance">
+                                <%= Number(account.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> <span style="font-size: 1rem; font-weight: 500;">EUR / USD</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; align-items: center;">
+                            <a href="/client/accounts/<%= account.id %>" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.15); color: #ffffff; border-color: rgba(255,255,255,0.2);">
+                                View Details & RIB
+                            </a>
+                            <a href="/client/transfers" class="btn btn-primary btn-sm">
+                                Transfer
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 
 </body>
 </html>

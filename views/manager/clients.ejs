@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Assigned Clients</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Clients — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,56 +11,51 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Assigned Clients</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Assigned Client Portfolio</h1>
+            <p>List of customers managed under your account representative assignment.</p>
+        </div>
 
-    <p>
-        <a href="/manager/dashboard">
-            Back to Dashboard
-        </a>
-    </p>
-
-    <% if (clients.length === 0) { %>
-
-        <p>No clients assigned to you.</p>
-
-    <% } else { %>
-
-        <% clients.forEach(client => { %>
-
-            <div>
-
-                <h3>
-                    <%= client.first_name %>
-                    <%= client.last_name %>
-                </h3>
-
-                <p>
-                    <strong>Email:</strong>
-                    <%= client.email %>
-                </p>
-
-                <p>
-                    <strong>Phone:</strong>
-                    <%= client.phone || 'Not provided' %>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <%= client.active ? 'Active' : 'Inactive' %>
-                </p>
-
-                <a href="/manager/clients/<%= client.id %>">
-                    View Client Details
-                </a>
-
+        <% if (!clients || clients.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="color: var(--text-muted); margin: 0;">No clients currently assigned to your portfolio.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Client Name</th>
+                        <th>Email Address</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clients.forEach(client => { %>
+                        <tr>
+                            <td>
+                                <strong><%= client.first_name %> <%= client.last_name %></strong>
+                            </td>
+                            <td><%= client.email %></td>
+                            <td><%= client.phone || '-' %></td>
+                            <td>
+                                <span class="status-badge <%= client.active ? 'badge-active' : 'badge-danger' %>">
+                                    <%= client.active ? 'ACTIVE' : 'INACTIVE' %>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/manager/clients/<%= client.id %>" class="btn btn-secondary btn-sm">
+                                    View Dossier
+                                </a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
 
 </body>
-
 </html>

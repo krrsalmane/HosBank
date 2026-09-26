@@ -1,63 +1,69 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Client Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>
-        Welcome <%= user.firstName %>
-    </h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Welcome back, <%= user.firstName %> <%= user.lastName || '' %></h1>
+            <p>Access your accounts, initiate transfers, manage cards, and track requests from your banking console.</p>
+        </div>
 
-    <div>
-        <h2>My Banking</h2>
+        <h2>Banking Services</h2>
+        <div class="quick-actions-grid">
+            <a href="/client/accounts" class="quick-action-card">
+                <strong>💳 Accounts Overview</strong>
+                <span>View checking & savings balances or open an account</span>
+            </a>
 
-        <p>
-            <a href="/client/accounts">My Accounts</a>
-        </p>
-        <p>
-            <a href="/client/accounts">Create a bank account</a>
-        </p>
+            <a href="/client/transfers" class="quick-action-card">
+                <strong>↗ Make a Transfer</strong>
+                <span>Send money instantly to verified beneficiaries</span>
+            </a>
 
-        <p>
-            <a href="/client/beneficiaries">Beneficiaries</a>
-        </p>
+            <a href="/client/transfers/history" class="quick-action-card">
+                <strong>📋 Transaction History</strong>
+                <span>Track all debits, credits, and historical statements</span>
+            </a>
 
-        <p>
-            <a href="/client/transfers">Transfers</a>
-        </p>
+            <a href="/client/beneficiaries" class="quick-action-card">
+                <strong>👥 Beneficiaries</strong>
+                <span>Manage trusted recipient accounts and RIBs</span>
+            </a>
 
-        <p>
-            <a href="/client/transfers/history">Transaction History</a>
-        </p>
+            <a href="/client/cards" class="quick-action-card">
+                <strong>🪪 Bank Cards</strong>
+                <span>View active credit and debit card details</span>
+            </a>
 
-        <p>
-            <a href="/client/requests">My Requests</a>
-        </p>
+            <a href="/client/cards/pin-request" class="quick-action-card">
+                <strong>🔑 PIN Request</strong>
+                <span>Request or reset card security PIN codes</span>
+            </a>
 
-        <p>
-            <a href="/client/cards">Cards</a>
-        </p>
+            <a href="/client/cards/opposition" class="quick-action-card" style="border-left: 4px solid var(--danger-red);">
+                <strong style="color: var(--danger-red);">⚠️ Card Opposition</strong>
+                <span>Block lost, stolen, or compromised payment cards</span>
+            </a>
 
-        <p>
-            <a href="/client/cards/opposition">Card Opposition</a>
-        </p>
+            <a href="/client/requests" class="quick-action-card">
+                <strong>📑 Service Requests</strong>
+                <span>Submit and monitor official banking requests</span>
+            </a>
 
-        <p>
-            <a href="/client/cards/pin-request">PIN Request</a>
-        </p>
-
-        <p>
-            <a href="/client/complaints">Complaints</a>
-        </p>
-
+            <a href="/client/complaints" class="quick-action-card">
+                <strong>💬 Support & Complaints</strong>
+                <span>Open support tickets and view manager responses</span>
+            </a>
+        </div>
     </div>
 
 </body>
-
 </html>

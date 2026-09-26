@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Transaction History</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,59 +11,55 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Transaction History</h1>
-
-    <% if (transactions.length === 0) { %>
-
-        <p>You don't have any transactions yet.</p>
-
-        <a href="/client/transfers">
-            Make a Transfer
-        </a>
-
-    <% } else { %>
-
-        <% transactions.forEach(transaction => { %>
-
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div>
-
-                <h3>
-                    <%= transaction.type %>
-                </h3>
-
-                <p>
-                    <strong>Account:</strong>
-                    <%= transaction.account_number %>
-                </p>
-
-                <p>
-                    <strong>Amount:</strong>
-                    <%= transaction.amount %>
-                </p>
-
-                <p>
-                    <strong>Description:</strong>
-                    <%= transaction.description || 'No description' %>
-                </p>
-
-                <p>
-                    <strong>Date:</strong>
-                    <%= transaction.created_at %>
-                </p>
-
+                <h1>Transaction History</h1>
+                <p>Complete record of all debits, credits, and fund transfers.</p>
             </div>
+            <a href="/client/transfers" class="btn btn-primary">
+                + Make a Transfer
+            </a>
+        </div>
 
-            <hr>
-
-        <% }) %>
-
-    <% } %>
-
-    <br>
-
-    <a href="/client/transfers">
-        Make a Transfer
-    </a>
+        <% if (!transactions || transactions.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">No transactions recorded on your accounts yet.</p>
+                <a href="/client/transfers" class="btn btn-primary btn-sm">Initiate your first transfer</a>
+            </div>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Account</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(transaction => { %>
+                        <tr>
+                            <td>
+                                <span class="status-badge <%= transaction.type === 'CREDIT' || transaction.type === 'DEPOSIT' ? 'badge-success' : 'badge-danger' %>">
+                                    <%= transaction.type %>
+                                </span>
+                            </td>
+                            <td style="font-family: monospace;"><%= transaction.account_number %></td>
+                            <td style="font-weight: 700; color: <%= transaction.type === 'CREDIT' || transaction.type === 'DEPOSIT' ? 'var(--success-green)' : 'var(--bank-navy-900)' %>;">
+                                <%= transaction.type === 'CREDIT' || transaction.type === 'DEPOSIT' ? '+' : '-' %><%= Number(transaction.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) %>
+                            </td>
+                            <td><%= transaction.description || '-' %></td>
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                <%= transaction.created_at ? new Date(transaction.created_at).toLocaleString() : '-' %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
 
 </body>
 </html>

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Banking Requests</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Banking Requests — HosBank Admin</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,124 +11,64 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Banking Requests</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Banking Requests Oversight</h1>
+            <p>System-wide view of all client administrative requests and staff handling.</p>
+        </div>
 
-    <p>
-        <a href="/admin/dashboard">Back to Admin Dashboard</a>
-    </p>
-
-    <table border="1" cellpadding="8">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Client</th>
-                <th>Email</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Assigned To</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <% requests.forEach(request => { %>
-
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <%= request.id %>
-                    </td>
-
-                    <td>
-                        <%= request.first_name %>
-                        <%= request.last_name %>
-                    </td>
-
-                    <td>
-                        <%= request.email %>
-                    </td>
-
-                    <td>
-                        <%= request.type %>
-                    </td>
-
-                    <td>
-                        <%= request.description || '-' %>
-                    </td>
-
-                    <td>
-                        <% if (request.manager_first_name) { %>
-
-                            <%= request.manager_first_name %>
-                            <%= request.manager_last_name %>
-
-                        <% } else { %>
-
-                            Not assigned
-
-                        <% } %>
-                    </td>
-
-                    <td>
-                        <%= request.status %>
-                    </td>
-
-                    <td>
-                        <%= request.created_at %>
-                    </td>
-
-                    <td>
-                        <%= request.updated_at %>
-                    </td>
-
-                    <td>
-                        <form
-                            method="POST"
-                            action="/admin/requests/<%= request.id %>/status"
-                        >
-
-                            <select name="status">
-
-                                <option value="PENDING"
-                                    <%= request.status === 'PENDING' ? 'selected' : '' %>>
-                                    PENDING
-                                </option>
-
-                                <option value="IN_PROGRESS"
-                                    <%= request.status === 'IN_PROGRESS' ? 'selected' : '' %>>
-                                    IN_PROGRESS
-                                </option>
-
-                                <option value="APPROVED"
-                                    <%= request.status === 'APPROVED' ? 'selected' : '' %>>
-                                    APPROVED
-                                </option>
-
-                                <option value="REJECTED"
-                                    <%= request.status === 'REJECTED' ? 'selected' : '' %>>
-                                    REJECTED
-                                </option>
-
-                                <option value="COMPLETED"
-                                    <%= request.status === 'COMPLETED' ? 'selected' : '' %>>
-                                    COMPLETED
-                                </option>
-
-                            </select>
-
-                            <button type="submit">
-                                Update
-                            </button>
-
-                        </form>
-                    </td>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
                 </tr>
-
-            <% }) %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% requests.forEach(request => { %>
+                    <tr>
+                        <td>#<%= request.id %></td>
+                        <td><strong><%= request.first_name %> <%= request.last_name %></strong></td>
+                        <td><%= request.email %></td>
+                        <td><span class="status-badge badge-info"><%= request.type.replace('_', ' ') %></span></td>
+                        <td>
+                            <% if (request.manager_first_name) { %>
+                                <span class="badge badge-info"><%= request.manager_first_name %> <%= request.manager_last_name %></span>
+                            <% } else { %>
+                                <span class="badge badge-warning">Unassigned</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <span class="status-badge <%= request.status === 'APPROVED' || request.status === 'COMPLETED' ? 'badge-success' : (request.status === 'REJECTED' ? 'badge-danger' : 'badge-pending') %>">
+                                <%= request.status %>
+                            </span>
+                        </td>
+                        <td style="color: var(--text-muted); font-size: 0.85rem;">
+                            <%= request.created_at ? new Date(request.created_at).toLocaleDateString() : '-' %>
+                        </td>
+                        <td>
+                            <form method="POST" action="/admin/requests/<%= request.id %>/status" style="margin: 0; display: flex; gap: 0.5rem; align-items: center;">
+                                <select name="status" style="max-width: 140px; padding: 0.35rem 0.5rem; font-size: 0.85rem;">
+                                    <option value="PENDING" <%= request.status === 'PENDING' ? 'selected' : '' %>>PENDING</option>
+                                    <option value="IN_PROGRESS" <%= request.status === 'IN_PROGRESS' ? 'selected' : '' %>>IN_PROGRESS</option>
+                                    <option value="APPROVED" <%= request.status === 'APPROVED' ? 'selected' : '' %>>APPROVED</option>
+                                    <option value="REJECTED" <%= request.status === 'REJECTED' ? 'selected' : '' %>>REJECTED</option>
+                                    <option value="COMPLETED" <%= request.status === 'COMPLETED' ? 'selected' : '' %>>COMPLETED</option>
+                                </select>
+                                <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 </html>

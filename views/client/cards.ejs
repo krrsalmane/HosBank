@@ -1,78 +1,90 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Cards</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cards — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .virtual-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 14px;
+            padding: 1.75rem;
+            color: #ffffff;
+            position: relative;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .chip {
+            width: 42px;
+            height: 30px;
+            background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+        .card-num {
+            font-family: monospace;
+            font-size: 1.25rem;
+            letter-spacing: 0.18em;
+            margin-bottom: 1.25rem;
+        }
+    </style>
 </head>
 
 <body>
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>My Cards</h1>
-
-    <% if (cards.length === 0) { %>
-
-        <p>You don't have any cards.</p>
-
-        <form action="/client/requests" method="POST">
-
-            <input
-                type="hidden"
-                name="type"
-                value="VIRTUAL_CARD"
-            >
-
-            <input
-                type="hidden"
-                name="description"
-                value="Request for a virtual card"
-            >
-
-            <button type="submit">
-                Request Virtual Card
-            </button>
-
-        </form>
-
-    <% } else { %>
-
-        <% cards.forEach(card => { %>
-
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
             <div>
-
-                <h3>
-                    <%= card.type %> Card
-                </h3>
-
-                <p>
-                    <strong>Card number:</strong>
-                    **** **** **** <%= card.card_number.slice(-4) %>
-                </p>
-
-                <p>
-                    <strong>Account:</strong>
-                    <%= card.account_number %>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <%= card.status %>
-                </p>
-
-                <p>
-                    <strong>Expiration:</strong>
-                    <%= card.expiration_date || 'N/A' %>
-                </p>
-
+                <h1>Payment Cards</h1>
+                <p>Manage physical and virtual debit/credit cards linked to your accounts.</p>
             </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="/client/cards/pin-request" class="btn btn-secondary">Request PIN</a>
+                <a href="/client/cards/opposition" class="btn btn-danger">Card Opposition</a>
+            </div>
+        </div>
 
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% if (!cards || cards.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">You don't have any active cards attached to your accounts.</p>
+                <form action="/client/requests" method="POST" style="margin-bottom: 0;">
+                    <input type="hidden" name="type" value="VIRTUAL_CARD">
+                    <input type="hidden" name="description" value="Request for a virtual card">
+                    <button type="submit" class="btn btn-primary">Request Virtual Card</button>
+                </form>
+            </div>
+        <% } else { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                <% cards.forEach(card => { %>
+                    <div class="virtual-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="chip"></div>
+                            <span class="status-badge <%= card.status === 'ACTIVE' ? 'badge-active' : 'badge-danger' %>">
+                                <%= card.status %>
+                            </span>
+                        </div>
+                        <div class="card-num">
+                            •••• •••• •••• <%= card.card_number ? card.card_number.slice(-4) : '0000' %>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 0.85rem; color: #94a3b8;">
+                            <div>
+                                <div>ACCOUNT</div>
+                                <strong style="color: #ffffff; font-family: monospace;"><%= card.account_number %></strong>
+                            </div>
+                            <div style="text-align: right;">
+                                <div>EXPIRES</div>
+                                <strong style="color: #ffffff;"><%= card.expiration_date || '12/28' %></strong>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 
 </body>
 </html>

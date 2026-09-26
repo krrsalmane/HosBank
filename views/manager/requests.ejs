@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Banking Requests</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Requests Management — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,73 +11,62 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Banking Requests</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Client Banking Requests</h1>
+            <p>Manage and process administrative requests submitted by your clients.</p>
+        </div>
 
-    <p>
-        <a href="/manager/dashboard">
-            Back to Dashboard
-        </a>
-    </p>
-
-    <% if (requests.length === 0) { %>
-
-        <p>No requests assigned to you.</p>
-
-    <% } else { %>
-
-        <% requests.forEach(request => { %>
-
-            <div>
-
-                <h3>
-                    <%= request.type %>
-                </h3>
-
-                <p>
-                    <strong>Client:</strong>
-                    <%= request.first_name %>
-                    <%= request.last_name %>
-                </p>
-
-                <p>
-                    <strong>Email:</strong>
-                    <%= request.email %>
-                </p>
-
-                <p>
-                    <strong>Description:</strong>
-                    <%= request.description || 'No description' %>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <%= request.status %>
-                </p>
-
-                <p>
-                    <strong>Created:</strong>
-                    <%= request.created_at %>
-                </p>
-
-                <p>
-                    <strong>Last Updated:</strong>
-                    <%= request.updated_at %>
-                </p>
-
-                <p>
-                    <a href="/manager/requests/<%= request.id %>">
-                        View Request Details
-                    </a>
-                </p>
-
+        <% if (!requests || requests.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="color: var(--text-muted); margin: 0;">No pending requests assigned to your queue.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Client</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% requests.forEach(request => { %>
+                        <tr>
+                            <td>#<%= request.id %></td>
+                            <td>
+                                <strong><%= request.type.replace('_', ' ') %></strong>
+                            </td>
+                            <td>
+                                <div><%= request.first_name %> <%= request.last_name %></div>
+                                <small style="color: var(--text-muted);"><%= request.email %></small>
+                            </td>
+                            <td style="max-width: 250px; font-size: 0.85rem;">
+                                <%= request.description || 'No description' %>
+                            </td>
+                            <td>
+                                <span class="status-badge <%= request.status === 'APPROVED' || request.status === 'COMPLETED' ? 'badge-success' : (request.status === 'REJECTED' ? 'badge-danger' : 'badge-pending') %>">
+                                    <%= request.status %>
+                                </span>
+                            </td>
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                <%= request.created_at ? new Date(request.created_at).toLocaleDateString() : '-' %>
+                            </td>
+                            <td>
+                                <a href="/manager/requests/<%= request.id %>" class="btn btn-secondary btn-sm">
+                                    Review
+                                </a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
 
 </body>
-
 </html>

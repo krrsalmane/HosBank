@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Complaints</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaints Management — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,73 +11,58 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Complaints</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Client Support Complaints</h1>
+            <p>Review customer grievances, open investigations, and submit formal resolution notes.</p>
+        </div>
 
-    <p>
-        <a href="/manager/dashboard">
-            Back to Dashboard
-        </a>
-    </p>
-
-    <% if (complaints.length === 0) { %>
-
-        <p>No complaints assigned to you.</p>
-
-    <% } else { %>
-
-        <% complaints.forEach(complaint => { %>
-
-            <div>
-
-                <h3>
-                    <%= complaint.subject %>
-                </h3>
-
-                <p>
-                    <strong>Client:</strong>
-                    <%= complaint.first_name %>
-                    <%= complaint.last_name %>
-                </p>
-
-                <p>
-                    <strong>Email:</strong>
-                    <%= complaint.email %>
-                </p>
-
-                <p>
-                    <strong>Description:</strong>
-                    <%= complaint.description || 'No description' %>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <%= complaint.status %>
-                </p>
-
-                <p>
-                    <strong>Created:</strong>
-                    <%= complaint.created_at %>
-                </p>
-
-                <p>
-                    <strong>Last Updated:</strong>
-                    <%= complaint.updated_at %>
-                </p>
-
-                <p>
-                    <a href="/manager/complaints/<%= complaint.id %>">
-                        View Complaint Details
-                    </a>
-                </p>
-
+        <% if (!complaints || complaints.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="color: var(--text-muted); margin: 0;">No active complaints in your assigned queue.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Subject</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% complaints.forEach(complaint => { %>
+                        <tr>
+                            <td>#<%= complaint.id %></td>
+                            <td>
+                                <strong><%= complaint.subject %></strong>
+                            </td>
+                            <td>
+                                <div><%= complaint.first_name %> <%= complaint.last_name %></div>
+                                <small style="color: var(--text-muted);"><%= complaint.email %></small>
+                            </td>
+                            <td>
+                                <span class="status-badge <%= complaint.status === 'RESOLVED' ? 'badge-success' : (complaint.status === 'CLOSED' ? 'badge-pending' : 'badge-danger') %>">
+                                    <%= complaint.status %>
+                                </span>
+                            </td>
+                            <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                <%= complaint.created_at ? new Date(complaint.created_at).toLocaleDateString() : '-' %>
+                            </td>
+                            <td>
+                                <a href="/manager/complaints/<%= complaint.id %>" class="btn btn-secondary btn-sm">
+                                    Manage Ticket
+                                </a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
 
 </body>
-
 </html>

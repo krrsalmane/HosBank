@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Make a Transfer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Transfer — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -10,86 +11,66 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-        <h1>Make a Transfer</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Initiate Fund Transfer</h1>
+            <p>Transfer funds securely from your account to any registered beneficiary.</p>
+        </div>
 
-        <% if (error) { %>
-            <div>
-                <p><strong>Error:</strong>
-                    <%= error %>
-                </p>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger">
+                <strong>Transfer Error:</strong> <%= error %>
             </div>
-            <% } %>
+        <% } %>
 
-                <form action="/client/transfers/confirm" method="POST">
+        <div class="card" style="max-width: 650px;">
+            <form action="/client/transfers/confirm" method="POST">
 
-                    <div>
-                        <label for="accountId">From Account</label>
-                        <select name="accountId" id="accountId" required>
+                <div class="form-group">
+                    <label for="accountId">Source Account</label>
+                    <select name="accountId" id="accountId" required>
+                        <option value="">Select source account</option>
+                        <% accounts.forEach(account => { %>
+                            <option value="<%= account.id %>">
+                                <%= account.type %> — <%= account.account_number %> (Balance: <%= Number(account.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) %>)
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
 
-                            <option value="">Select an account</option>
-
-                            <% accounts.forEach(account=> { %>
-
-                                <option value="<%= account.id %>">
-                                    <%= account.type %> -
-                                        <%= account.account_number %> -
-                                            Balance: <%= account.balance %>
-                                </option>
-
-                                <% }) %>
-
-                        </select>
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <label for="beneficiaryId" style="margin-bottom: 0;">Beneficiary</label>
+                        <a href="/client/beneficiaries/add" style="font-size: 0.85rem;">+ Add New Beneficiary</a>
                     </div>
+                    <select name="beneficiaryId" id="beneficiaryId" required>
+                        <option value="">Select a beneficiary</option>
+                        <% beneficiaries.forEach(beneficiary => { %>
+                            <option value="<%= beneficiary.id %>">
+                                <%= beneficiary.name %> (<%= beneficiary.account_number %>)
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
 
-                    <br>
+                <div class="form-group">
+                    <label for="amount">Transfer Amount</label>
+                    <input type="number" name="amount" id="amount" step="0.01" min="0.01" placeholder="0.00" required>
+                </div>
 
-                    <div>
-                        <label for="beneficiaryId">Beneficiary</label>
+                <div class="form-group">
+                    <label for="description">Transfer Reference / Note (Optional)</label>
+                    <input type="text" name="description" id="description" maxlength="255" placeholder="e.g., Monthly invoice, Rent, Personal">
+                </div>
 
-                        <select name="beneficiaryId" id="beneficiaryId" required>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Review & Continue</button>
+                    <a href="/client/dashboard" class="btn btn-secondary">Cancel</a>
+                </div>
 
-                            <option value="">Select a beneficiary</option>
-
-                            <% beneficiaries.forEach(beneficiary=> { %>
-
-                                <option value="<%= beneficiary.id %>">
-                                    <%= beneficiary.name %> -
-                                        <%= beneficiary.accountNumber %>
-                                </option>
-
-                                <% }) %>
-
-                        </select>
-                    </div>
-
-                    <br>
-
-                    <div>
-                        <label for="amount">Amount</label>
-
-                        <input type="number" name="amount" id="amount" step="0.01" min="0.01" required>
-                    </div>
-
-                    <br>
-
-                    <div>
-                        <label for="description">Description</label>
-
-                        <input type="text" name="description" id="description" maxlength="255">
-                    </div>
-
-                    <br>
-
-                    <button type="submit">
-                        Continue
-                    </button>
-
-                </form>
-
-                <br>
-
-                <a href="/client/dashboard">Back to dashboard</a>
+            </form>
+        </div>
+    </div>
 
 </body>
-
 </html>

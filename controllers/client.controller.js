@@ -114,9 +114,9 @@ export function showAddBeneficiary(req ,res){
 
 export async function addBeneficiary(req, res) {
     const name = req.body.name?.trim();
-    const accountNumber = req.body.accountNumber?.trim();
+    const account_number = (req.body.account_number || req.body.accountNumber)?.trim();
 
-    if (!name || !accountNumber) {
+    if (!name || !account_number) {
         return res.status(400).send('Name and account number are required');
     }
 
@@ -124,7 +124,7 @@ export async function addBeneficiary(req, res) {
         return res.status(400).send('Name must contain at least 2 characters');
     }
 
-    if (accountNumber.length > 50) {
+    if (account_number.length > 50) {
         return res.status(400).send('Account number must be 50 characters or fewer');
     }
 
@@ -132,7 +132,7 @@ export async function addBeneficiary(req, res) {
         await createBeneficiary(
             req.session.user.id,
             name,
-            accountNumber
+            account_number
         );
 
         res.redirect('/client/beneficiaries');
@@ -165,9 +165,9 @@ export async function showEditBeneficiary(req, res) {
 
 export async function editBeneficiary(req, res) {
     const name = req.body.name?.trim();
-    const accountNumber = req.body.accountNumber?.trim();
+    const account_number = (req.body.account_number || req.body.accountNumber)?.trim();
 
-    if (!name || !accountNumber) {
+    if (!name || !account_number) {
         return res.status(400).send('Name and account number are required');
     }
 
@@ -175,7 +175,7 @@ export async function editBeneficiary(req, res) {
         return res.status(400).send('Name must contain at least 2 characters');
     }
 
-    if (accountNumber.length > 50) {
+    if (account_number.length > 50) {
         return res.status(400).send('Account number must be 50 characters or fewer');
     }
 
@@ -184,7 +184,7 @@ export async function editBeneficiary(req, res) {
             req.params.id,
             req.session.user.id,
             name,
-            accountNumber
+            account_number
         );
 
         res.redirect('/client/beneficiaries');

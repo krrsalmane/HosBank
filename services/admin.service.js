@@ -340,7 +340,7 @@ export async function getAllTransfers() {
             users.first_name,
             users.last_name,
             beneficiaries.name AS beneficiary_name,
-            beneficiaries.accountNumber AS beneficiary_account
+            beneficiaries.account_number AS beneficiary_account
          FROM transfers
          INNER JOIN bank_accounts
             ON transfers.sender_account_id = bank_accounts.id

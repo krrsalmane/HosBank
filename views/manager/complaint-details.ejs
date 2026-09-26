@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Complaint Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Investigation — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,165 +11,97 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Complaint Details</h1>
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/manager/complaints" style="display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 1rem;">
+                ← Back to complaints
+            </a>
+            <h1>Complaint Ticket #<%= complaint.id %></h1>
+        </div>
 
-    <div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="card" style="margin-bottom: 0;">
+                <h3 style="border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; margin-bottom: 1rem;">Ticket Overview</h3>
 
-        <p>
-            <strong>Complaint ID:</strong>
-            <%= complaint.id %>
-        </p>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Client:</span>
+                    <strong><%= complaint.first_name %> <%= complaint.last_name %></strong>
+                </div>
 
-        <p>
-            <strong>Client:</strong>
-            <%= complaint.first_name %>
-            <%= complaint.last_name %>
-        </p>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Email:</span>
+                    <span><%= complaint.email %></span>
+                </div>
 
-        <p>
-            <strong>Email:</strong>
-            <%= complaint.email %>
-        </p>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Subject:</span>
+                    <strong><%= complaint.subject %></strong>
+                </div>
 
-        <p>
-            <strong>Subject:</strong>
-            <%= complaint.subject %>
-        </p>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Status:</span>
+                    <span class="status-badge <%= complaint.status === 'RESOLVED' ? 'badge-success' : (complaint.status === 'CLOSED' ? 'badge-pending' : 'badge-danger') %>">
+                        <%= complaint.status %>
+                    </span>
+                </div>
 
-        <p>
-            <strong>Description:</strong>
-            <%= complaint.description %>
-        </p>
-
-        <p>
-            <strong>Current Status:</strong>
-            <%= complaint.status %>
-        </p>
-
-        <p>
-            <strong>Created:</strong>
-            <%= complaint.created_at %>
-        </p>
-
-        <p>
-            <strong>Last Updated:</strong>
-            <%= complaint.updated_at %>
-        </p>
-
-    </div>
-
-    <h2>Change Status</h2>
-
-    <form
-        action="/manager/complaints/<%= complaint.id %>/status"
-        method="POST"
-    >
-
-        <select name="status" required>
-
-            <option
-                value="OPEN"
-                <%= complaint.status === 'OPEN' ? 'selected' : '' %>
-            >
-                Open
-            </option>
-
-            <option
-                value="IN_PROGRESS"
-                <%= complaint.status === 'IN_PROGRESS' ? 'selected' : '' %>
-            >
-                In Progress
-            </option>
-
-            <option
-                value="RESOLVED"
-                <%= complaint.status === 'RESOLVED' ? 'selected' : '' %>
-            >
-                Resolved
-            </option>
-
-            <option
-                value="CLOSED"
-                <%= complaint.status === 'CLOSED' ? 'selected' : '' %>
-            >
-                Closed
-            </option>
-
-        </select>
-
-        <button type="submit">
-            Update Status
-        </button>
-
-    </form>
-
-    <hr>
-
-    <h2>Comments / Responses</h2>
-
-    <% if (comments.length === 0) { %>
-
-        <p>No comments yet.</p>
-
-    <% } else { %>
-
-        <% comments.forEach(comment => { %>
-
-            <div>
-
-                <p>
-                    <strong>
-                        <%= comment.first_name %>
-                        <%= comment.last_name %>
-                    </strong>
-                </p>
-
-                <p>
-                    <%= comment.content %>
-                </p>
-
-                <p>
-                    <small>
-                        <%= comment.created_at %>
-                    </small>
-                </p>
-
+                <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border-light);">
+                    <span style="color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Customer Statement:</span>
+                    <div style="background: var(--surface-muted); padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.9rem;">
+                        <%= complaint.description %>
+                    </div>
+                </div>
             </div>
 
-            <hr>
+            <div class="card" style="margin-bottom: 0;">
+                <h3 style="border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; margin-bottom: 1rem;">Update Ticket Status</h3>
 
-        <% }) %>
+                <form action="/manager/complaints/<%= complaint.id %>/status" method="POST">
+                    <div class="form-group">
+                        <label for="status">Resolution Status</label>
+                        <select name="status" id="status" required>
+                            <option value="OPEN" <%= complaint.status === 'OPEN' ? 'selected' : '' %>>Open Investigation</option>
+                            <option value="IN_PROGRESS" <%= complaint.status === 'IN_PROGRESS' ? 'selected' : '' %>>In Progress</option>
+                            <option value="RESOLVED" <%= complaint.status === 'RESOLVED' ? 'selected' : '' %>>Resolved</option>
+                            <option value="CLOSED" <%= complaint.status === 'CLOSED' ? 'selected' : '' %>>Closed</option>
+                        </select>
+                    </div>
 
-    <% } %>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Update Ticket Status
+                    </button>
+                </form>
+            </div>
+        </div>
 
-    <h3>Add a Response</h3>
+        <div class="card">
+            <h2>Correspondence & Resolution Notes</h2>
 
-    <form
-        action="/manager/complaints/<%= complaint.id %>/comments"
-        method="POST"
-    >
+            <% if (!comments || comments.length === 0) { %>
+                <p style="color: var(--text-muted);">No responses recorded yet.</p>
+            <% } else { %>
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                    <% comments.forEach(comment => { %>
+                        <div style="background: var(--surface-muted); border: 1px solid var(--border-light); padding: 1rem; border-radius: var(--radius-sm);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <strong><%= comment.first_name %> <%= comment.last_name %></strong>
+                                <small style="color: var(--text-muted);"><%= comment.created_at ? new Date(comment.created_at).toLocaleString() : '' %></small>
+                            </div>
+                            <p style="margin: 0; color: var(--text-main);"><%= comment.content %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
 
-        <textarea
-            name="content"
-            rows="4"
-            required
-            placeholder="Write a response..."
-        ></textarea>
-
-        <br><br>
-
-        <button type="submit">
-            Add Response
-        </button>
-
-    </form>
-
-    <br>
-
-    <a href="/manager/complaints">
-        Back to Complaints
-    </a>
+            <form action="/manager/complaints/<%= complaint.id %>/comments" method="POST" style="margin-top: 1.5rem; margin-bottom: 0;">
+                <div class="form-group">
+                    <label for="content">Send Official Response to Client</label>
+                    <textarea name="content" id="content" rows="3" placeholder="Type resolution note..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Dispatch Response</button>
+            </form>
+        </div>
+    </div>
 
 </body>
-
 </html>

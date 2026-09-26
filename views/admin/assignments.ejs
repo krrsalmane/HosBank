@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Assign Clients</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Clients — HosBank Admin</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -10,128 +11,62 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Assign Clients to Chargé Client</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Client Portfolio Assignments</h1>
+            <p>Assign client accounts to dedicated Chargé Client representatives for support and request routing.</p>
+        </div>
 
-    <p>
-        <a href="/admin/dashboard">
-            Back to Admin Dashboard
-        </a>
-    </p>
-
-    <table border="1" cellpadding="8">
-
-        <thead>
-
-            <tr>
-                <th>Client</th>
-                <th>Email</th>
-                <th>Current Chargé Client</th>
-                <th>Assign To</th>
-                <th>Action</th>
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <% clients.forEach(client => { %>
-
+        <table>
+            <thead>
                 <tr>
-
-                    <td>
-                        <%= client.first_name %>
-                        <%= client.last_name %>
-                    </td>
-
-                    <td>
-                        <%= client.email %>
-                    </td>
-
-                    <td>
-
-                        <% if (client.assigned_to) { %>
-
-                            <% const currentManager = managers.find(
-                                manager => manager.id == client.assigned_to
-                            ); %>
-
-                            <% if (currentManager) { %>
-
-                                <%= currentManager.first_name %>
-                                <%= currentManager.last_name %>
-
-                            <% } else { %>
-
-                                Not assigned
-
-                            <% } %>
-
-                        <% } else { %>
-
-                            Not assigned
-
-                        <% } %>
-
-                    </td>
-
-                    <td>
-
-                        <form
-                            action="/admin/assignments"
-                            method="POST"
-                        >
-
-                            <input
-                                type="hidden"
-                                name="clientId"
-                                value="<%= client.id %>"
-                            >
-
-                            <select
-                                name="managerId"
-                                required
-                            >
-
-                                <option value="">
-                                    Select Chargé Client
-                                </option>
-
-                                <% managers.forEach(manager => { %>
-
-                                    <option
-                                        value="<%= manager.id %>"
-                                        <%= client.assigned_to == manager.id
-                                            ? 'selected'
-                                            : '' %>
-                                    >
-                                        <%= manager.first_name %>
-                                        <%= manager.last_name %>
-                                    </option>
-
-                                <% }) %>
-
-                            </select>
-
-                    </td>
-
-                    <td>
-
-                            <button type="submit">
-                                Assign
-                            </button>
-
-                        </form>
-
-                    </td>
-
+                    <th>Client</th>
+                    <th>Email</th>
+                    <th>Current Chargé Client</th>
+                    <th>Reassign / Assign To</th>
+                    <th>Action</th>
                 </tr>
-
-            <% }) %>
-
-        </tbody>
-
-    </table>
+            </thead>
+            <tbody>
+                <% clients.forEach(client => { %>
+                    <tr>
+                        <td>
+                            <strong><%= client.first_name %> <%= client.last_name %></strong>
+                        </td>
+                        <td><%= client.email %></td>
+                        <td>
+                            <% if (client.assigned_to) { %>
+                                <% const currentManager = managers.find(manager => manager.id == client.assigned_to); %>
+                                <% if (currentManager) { %>
+                                    <span class="badge badge-info"><%= currentManager.first_name %> <%= currentManager.last_name %></span>
+                                <% } else { %>
+                                    <span class="badge badge-warning">Unassigned</span>
+                                <% } %>
+                            <% } else { %>
+                                <span class="badge badge-warning">Unassigned</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <form action="/admin/assignments" method="POST" style="margin: 0; display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="hidden" name="clientId" value="<%= client.id %>">
+                                <select name="managerId" style="max-width: 220px;" required>
+                                    <option value="">Select Chargé Client</option>
+                                    <% managers.forEach(manager => { %>
+                                        <option value="<%= manager.id %>" <%= client.assigned_to == manager.id ? 'selected' : '' %>>
+                                            <%= manager.first_name %> <%= manager.last_name %>
+                                        </option>
+                                    <% }) %>
+                                </select>
+                        </td>
+                        <td>
+                                <button type="submit" class="btn btn-primary btn-sm">Assign</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 
 </body>
-
 </html>

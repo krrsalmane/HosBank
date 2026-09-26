@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Requests</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Requests — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,100 +11,63 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>My Banking Requests</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Banking Requests</h1>
+            <p>Submit formal administrative requests or track existing submissions.</p>
+        </div>
 
-    <h2>New Request</h2>
+        <div class="card" style="max-width: 600px; margin-bottom: 2.5rem;">
+            <h2>Submit a New Request</h2>
+            <form action="/client/requests" method="POST">
+                <div class="form-group">
+                    <label for="type">Request Type</label>
+                    <select name="type" id="type" required>
+                        <option value="">Select request type</option>
+                        <option value="RIB">RIB / Bank Identity Statement</option>
+                        <option value="SAVINGS_ACCOUNT">Open Additional Savings Account</option>
+                        <option value="VIRTUAL_CARD">New Virtual Card Issue</option>
+                        <option value="PIN_RECALCULATION">PIN Recalculation / Resend</option>
+                        <option value="CARD_OPPOSITION">Card Opposition / Lock</option>
+                    </select>
+                </div>
 
-    <form action="/client/requests" method="POST">
+                <div class="form-group">
+                    <label for="description">Request Details & Justification</label>
+                    <textarea name="description" id="description" rows="4" placeholder="Provide any relevant context or specific instructions..."></textarea>
+                </div>
 
-        <label>Request Type</label>
+                <button type="submit" class="btn btn-primary">Submit Formal Request</button>
+            </form>
+        </div>
 
-        <select name="type" required>
+        <h2>Your Request History</h2>
 
-            <option value="">Select request</option>
-
-            <option value="RIB">
-                RIB
-            </option>
-
-            <option value="SAVINGS_ACCOUNT">
-                Savings Account
-            </option>
-
-            <option value="VIRTUAL_CARD">
-                Virtual Card
-            </option>
-
-            <option value="PIN_RECALCULATION">
-                PIN Recalculation
-            </option>
-
-            <option value="CARD_OPPOSITION">
-                Card Opposition
-            </option>
-
-        </select>
-
-        <br><br>
-
-        <label>Description</label>
-
-        <br>
-
-        <textarea
-            name="description"
-            rows="5"
-            cols="40"
-        ></textarea>
-
-        <br><br>
-
-        <button type="submit">
-            Submit Request
-        </button>
-
-    </form>
-
-    <hr>
-
-    <h2>My Requests</h2>
-
-    <% if (!requests || requests.length === 0) { %>
-
-        <p>You don't have any requests.</p>
-
-    <% } else { %>
-
-        <% requests.forEach(request => { %>
-
-            <div>
-
-                <h3>
-                    <%= request.type %>
-                </h3>
-
-                <p>
-                    Status:
-                    <strong>
-                        <%= request.status %>
-                    </strong>
-                </p>
-
-                <p>
-                    <%= request.description || 'No description' %>
-                </p>
-
-                <a href="/client/requests/<%= request.id %>">
-                    View details
-                </a>
-
+        <% if (!requests || requests.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 2.5rem 1.5rem;">
+                <p style="color: var(--text-muted); margin: 0;">You have no active or historical requests on file.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+                <% requests.forEach(request => { %>
+                    <div class="card" style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <strong style="color: var(--bank-navy-900); font-size: 1.05rem;"><%= request.type.replace('_', ' ') %></strong>
+                            <span class="status-badge <%= request.status === 'APPROVED' || request.status === 'RESOLVED' ? 'badge-success' : (request.status === 'REJECTED' ? 'badge-danger' : 'badge-pending') %>">
+                                <%= request.status %>
+                            </span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem; min-height: 40px;">
+                            <%= request.description || 'No description provided' %>
+                        </p>
+                        <a href="/client/requests/<%= request.id %>" class="btn btn-secondary btn-sm">
+                            View Dossier & Timeline
+                        </a>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 
 </body>
 </html>

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Complaints</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support & Complaints — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,87 +11,56 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>My Complaints</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Support & Complaints</h1>
+            <p>Our dedicated account representatives review every inquiry with highest priority.</p>
+        </div>
 
-    <h2>New Complaint</h2>
+        <div class="card" style="max-width: 600px; margin-bottom: 2.5rem;">
+            <h2>File a Complaint / Inquiry</h2>
+            <form action="/client/complaints" method="POST">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" maxlength="255" placeholder="Brief summary of the issue" required>
+                </div>
 
-    <form action="/client/complaints" method="POST">
+                <div class="form-group">
+                    <label for="description">Detailed Description</label>
+                    <textarea name="description" id="description" rows="5" placeholder="Explain the situation in detail, including relevant dates or account numbers..." required></textarea>
+                </div>
 
-        <label>
-            Subject
-        </label>
+                <button type="submit" class="btn btn-primary">Submit to Support</button>
+            </form>
+        </div>
 
-        <br>
+        <h2>Your Support Tickets</h2>
 
-        <input
-            type="text"
-            name="subject"
-            maxlength="255"
-            required
-        >
-
-        <br><br>
-
-        <label>
-            Description
-        </label>
-
-        <br>
-
-        <textarea
-            name="description"
-            rows="6"
-            required
-        ></textarea>
-
-        <br><br>
-
-        <button type="submit">
-            Submit Complaint
-        </button>
-
-    </form>
-
-    <hr>
-
-    <h2>My Complaints</h2>
-
-    <% if (complaints.length === 0) { %>
-
-        <p>You don't have any complaints.</p>
-
-    <% } else { %>
-
-        <% complaints.forEach(complaint => { %>
-
-            <div>
-
-                <h3>
-                    <%= complaint.subject %>
-                </h3>
-
-                <p>
-                    Status:
-                    <strong>
-                        <%= complaint.status %>
-                    </strong>
-                </p>
-
-                <p>
-                    <%= complaint.description %>
-                </p>
-
-                <a href="/client/complaints/<%= complaint.id %>">
-                    View details
-                </a>
-
+        <% if (!complaints || complaints.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 2.5rem 1.5rem;">
+                <p style="color: var(--text-muted); margin: 0;">No active support tickets or complaints recorded.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+                <% complaints.forEach(complaint => { %>
+                    <div class="card" style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                            <strong style="color: var(--bank-navy-900); font-size: 1.05rem;"><%= complaint.subject %></strong>
+                            <span class="status-badge <%= complaint.status === 'RESOLVED' ? 'badge-success' : (complaint.status === 'REJECTED' ? 'badge-danger' : 'badge-pending') %>">
+                                <%= complaint.status %>
+                            </span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem; min-height: 40px;">
+                            <%= complaint.description %>
+                        </p>
+                        <a href="/client/complaints/<%= complaint.id %>" class="btn btn-secondary btn-sm">
+                            View Ticket & Discussion
+                        </a>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 
 </body>
 </html>

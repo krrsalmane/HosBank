@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Request Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Details — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,40 +11,45 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Request Details</h1>
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/client/requests" style="display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 1rem;">
+                ← Back to requests
+            </a>
+            <h1>Request Dossier #<%= request.id %></h1>
+        </div>
 
-    <div>
+        <div class="card" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted);">Request Type</span>
+                <strong style="font-size: 1.05rem;"><%= request.type.replace('_', ' ') %></strong>
+            </div>
 
-        <p>
-            <strong>Type:</strong>
-            <%= request.type %>
-        </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted);">Status</span>
+                <span class="status-badge <%= request.status === 'APPROVED' || request.status === 'RESOLVED' ? 'badge-success' : (request.status === 'REJECTED' ? 'badge-danger' : 'badge-pending') %>">
+                    <%= request.status %>
+                </span>
+            </div>
 
-        <p>
-            <strong>Status:</strong>
-            <%= request.status %>
-        </p>
+            <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Description</span>
+                <div style="background: var(--surface-muted); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 0.95rem;">
+                    <%= request.description || 'No description provided' %>
+                </div>
+            </div>
 
-        <p>
-            <strong>Description:</strong>
-            <%= request.description || 'No description' %>
-        </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                <span>Created At:</span>
+                <span><%= request.created_at ? new Date(request.created_at).toLocaleString() : 'N/A' %></span>
+            </div>
 
-        <p>
-            <strong>Created:</strong>
-            <%= request.created_at %>
-        </p>
-
-        <p>
-            <strong>Updated:</strong>
-            <%= request.updated_at %>
-        </p>
-
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted);">
+                <span>Last Updated:</span>
+                <span><%= request.updated_at ? new Date(request.updated_at).toLocaleString() : 'N/A' %></span>
+            </div>
+        </div>
     </div>
-
-    <a href="/client/requests">
-        Back to requests
-    </a>
 
 </body>
 </html>

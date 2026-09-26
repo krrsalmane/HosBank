@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Manage Cards</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Cards — HosBank Admin</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -10,134 +11,57 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Manage Cards</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Bank Cards Oversight</h1>
+            <p>Monitor debit and credit cards, enforce security opposition, and update statuses.</p>
+        </div>
 
-    <p>
-        <a href="/admin/dashboard">
-            Back to Admin Dashboard
-        </a>
-    </p>
-
-    <table border="1" cellpadding="8">
-
-        <thead>
-
-            <tr>
-                <th>ID</th>
-                <th>Card Number</th>
-                <th>Owner</th>
-                <th>Email</th>
-                <th>Account</th>
-                <th>Type</th>
-                <th>Expiration Date</th>
-                <th>Status</th>
-                <th>Change Status</th>
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <% cards.forEach(card => { %>
-
+        <table>
+            <thead>
                 <tr>
-
-                    <td>
-                        <%= card.id %>
-                    </td>
-
-                    <td>
-                        <%= card.card_number %>
-                    </td>
-
-                    <td>
-                        <%= card.first_name %>
-                        <%= card.last_name %>
-                    </td>
-
-                    <td>
-                        <%= card.email %>
-                    </td>
-
-                    <td>
-                        <%= card.account_number %>
-                    </td>
-
-                    <td>
-                        <%= card.type %>
-                    </td>
-
-                    <td>
-                        <%= card.expiration_date || '-' %>
-                    </td>
-
-                    <td>
-                        <%= card.status %>
-                    </td>
-
-                    <td>
-
-                        <form
-                            action="/admin/cards/<%= card.id %>/status"
-                            method="POST"
-                        >
-
-                            <select name="status" required>
-
-                                <option
-                                    value="ACTIVE"
-                                    <%= card.status === 'ACTIVE'
-                                        ? 'selected'
-                                        : '' %>
-                                >
-                                    Active
-                                </option>
-
-                                <option
-                                    value="BLOCKED"
-                                    <%= card.status === 'BLOCKED'
-                                        ? 'selected'
-                                        : '' %>
-                                >
-                                    Blocked
-                                </option>
-
-                                <option
-                                    value="OPPOSED"
-                                    <%= card.status === 'OPPOSED'
-                                        ? 'selected'
-                                        : '' %>
-                                >
-                                    Opposed
-                                </option>
-
-                                <option
-                                    value="EXPIRED"
-                                    <%= card.status === 'EXPIRED'
-                                        ? 'selected'
-                                        : '' %>
-                                >
-                                    Expired
-                                </option>
-
-                            </select>
-
-                            <button type="submit">
-                                Update
-                            </button>
-
-                        </form>
-
-                    </td>
-
+                    <th>ID</th>
+                    <th>Card Number</th>
+                    <th>Cardholder</th>
+                    <th>Email</th>
+                    <th>Linked Account</th>
+                    <th>Type</th>
+                    <th>Expires</th>
+                    <th>Status</th>
+                    <th>Change Status</th>
                 </tr>
-
-            <% }) %>
-
-        </tbody>
-
-    </table>
+            </thead>
+            <tbody>
+                <% cards.forEach(card => { %>
+                    <tr>
+                        <td>#<%= card.id %></td>
+                        <td style="font-family: monospace; font-weight: 600;">•••• <%= card.card_number ? card.card_number.slice(-4) : '0000' %></td>
+                        <td><%= card.first_name %> <%= card.last_name %></td>
+                        <td><%= card.email %></td>
+                        <td style="font-family: monospace;"><%= card.account_number %></td>
+                        <td><span class="status-badge badge-info"><%= card.type %></span></td>
+                        <td><%= card.expiration_date || '-' %></td>
+                        <td>
+                            <span class="status-badge <%= card.status === 'ACTIVE' ? 'badge-active' : (card.status === 'OPPOSED' || card.status === 'BLOCKED' ? 'badge-danger' : 'badge-pending') %>">
+                                <%= card.status %>
+                            </span>
+                        </td>
+                        <td>
+                            <form action="/admin/cards/<%= card.id %>/status" method="POST" style="margin: 0; display: flex; gap: 0.5rem; align-items: center;">
+                                <select name="status" style="max-width: 140px; padding: 0.35rem 0.5rem; font-size: 0.85rem;" required>
+                                    <option value="ACTIVE" <%= card.status === 'ACTIVE' ? 'selected' : '' %>>Active</option>
+                                    <option value="BLOCKED" <%= card.status === 'BLOCKED' ? 'selected' : '' %>>Blocked</option>
+                                    <option value="OPPOSED" <%= card.status === 'OPPOSED' ? 'selected' : '' %>>Opposed</option>
+                                    <option value="EXPIRED" <%= card.status === 'EXPIRED' ? 'selected' : '' %>>Expired</option>
+                                </select>
+                                <button type="submit" class="btn btn-secondary btn-sm">Save</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 
 </body>
-
 </html>

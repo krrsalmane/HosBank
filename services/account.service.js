@@ -14,8 +14,8 @@ export async function openAccount(userId, type) {
     }
 
     // A unique database constraint protects account numbers from collisions.
-    const accountNumber = randomBytes(8).toString('hex').toUpperCase();
-    return insertAccount(userId, accountNumber, type);
+    const account_number = randomBytes(8).toString('hex').toUpperCase();
+    return insertAccount(userId, account_number, type);
 }
 
 

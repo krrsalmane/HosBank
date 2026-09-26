@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Client Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -10,61 +11,52 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-        <h1>Client Details</h1>
-
-        <div>
-
-            <p>
-                <strong>Client ID:</strong>
-                <%= client.id %>
-            </p>
-
-            <p>
-                <strong>First Name:</strong>
-                <%= client.first_name %>
-            </p>
-
-            <p>
-                <strong>Last Name:</strong>
-                <%= client.last_name %>
-            </p>
-
-            <p>
-                <strong>Email:</strong>
-                <%= client.email %>
-            </p>
-
-            <p>
-                <strong>Phone:</strong>
-                <%= client.phone || 'Not provided' %>
-            </p>
-
-            <p>
-                <strong>Status:</strong>
-                <%= client.active ? 'Active' : 'Inactive' %>
-            </p>
-
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/manager/clients" style="display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 1rem;">
+                ← Back to assigned clients
+            </a>
+            <h1>Client Profile: <%= client.first_name %> <%= client.last_name %></h1>
         </div>
-        <br>
 
-        <p>
-            <a href="/manager/clients/<%= client.id %>/accounts">
-                View Bank Accounts
+        <div class="card" style="max-width: 600px; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="color: var(--text-muted);">Client ID</span>
+                <strong>#<%= client.id %></strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="color: var(--text-muted);">Full Name</span>
+                <strong><%= client.first_name %> <%= client.last_name %></strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="color: var(--text-muted);">Email Address</span>
+                <span><%= client.email %></span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="color: var(--text-muted);">Contact Phone</span>
+                <span><%= client.phone || 'Not provided' %></span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: var(--text-muted);">Account Status</span>
+                <span class="status-badge <%= client.active ? 'badge-active' : 'badge-danger' %>">
+                    <%= client.active ? 'ACTIVE' : 'INACTIVE' %>
+                </span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="/manager/clients/<%= client.id %>/accounts" class="btn btn-primary">
+                💳 View Client Bank Accounts
             </a>
-        </p>
-
-        <p>
-            <a href="/manager/clients/<%= client.id %>/interactions">
-                View Interaction History
+            <a href="/manager/clients/<%= client.id %>/interactions" class="btn btn-secondary">
+                📋 Interaction History
             </a>
-        </p>
-
-        <br>
-
-        <a href="/manager/clients">
-            Back to Assigned Clients
-        </a>
+        </div>
+    </div>
 
 </body>
-
 </html>

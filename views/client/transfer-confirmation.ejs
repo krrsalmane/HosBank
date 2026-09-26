@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Confirm Transfer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Transfer — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,57 +11,63 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Confirm Transfer</h1>
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <h1>Confirm Fund Transfer</h1>
+            <p>Please verify all transaction details carefully before final execution.</p>
+        </div>
 
-    <div>
-        <h2>Transfer Details</h2>
+        <div class="card" style="max-width: 600px;">
+            <h3 style="border-bottom: 1px solid var(--border-light); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+                Transaction Summary
+            </h3>
 
-        <p>
-            <strong>From account:</strong>
-            <%= account.account_number %>
-        </p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted);">From Account:</span>
+                <strong style="font-family: monospace;"><%= account.account_number %></strong>
+            </div>
 
-        <p>
-            <strong>Beneficiary:</strong>
-            <%= beneficiary.name %>
-        </p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted);">Beneficiary Name:</span>
+                <strong><%= beneficiary.name %></strong>
+            </div>
 
-        <p>
-            <strong>Beneficiary account:</strong>
-            <%= beneficiary.accountNumber %>
-        </p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted);">Beneficiary Account:</span>
+                <strong style="font-family: monospace;"><%= beneficiary.account_number %></strong>
+            </div>
 
-        <p>
-            <strong>Amount:</strong>
-            <%= amount %>
-        </p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span style="color: var(--text-muted);">Amount:</span>
+                <strong style="font-size: 1.25rem; color: var(--bank-blue-600);"><%= Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2 }) %></strong>
+            </div>
 
-        <p>
-            <strong>Description:</strong>
-            <%= description || 'No description' %>
-        </p>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                <span style="color: var(--text-muted);">Description:</span>
+                <span><%= description || 'No description provided' %></span>
+            </div>
+
+            <div style="background-color: var(--warning-bg); border: 1px solid var(--warning-border); padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--warning-amber);">
+                ⚠️ Fund transfers are processed immediately and are irreversible once confirmed.
+            </div>
+
+            <form action="/client/transfers" method="POST" style="margin-bottom: 0;">
+                <input type="hidden" name="accountId" value="<%= account.id %>">
+                <input type="hidden" name="beneficiaryId" value="<%= beneficiary.id %>">
+                <input type="hidden" name="amount" value="<%= amount %>">
+                <input type="hidden" name="description" value="<%= description %>">
+
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button type="submit" class="btn btn-primary" style="background-color: var(--success-green);">
+                        Authorize & Send Funds
+                    </button>
+                    <a href="/client/transfers" class="btn btn-secondary">
+                        Back / Edit
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <br>
-
-    <form action="/client/transfers" method="POST">
-
-        <input type="hidden" name="accountId" value="<%= account.id %>">
-        <input type="hidden" name="beneficiaryId" value="<%= beneficiary.id %>">
-        <input type="hidden" name="amount" value="<%= amount %>">
-        <input type="hidden" name="description" value="<%= description %>">
-
-        <button type="submit">
-            Confirm Transfer
-        </button>
-
-    </form>
-
-    <br>
-
-    <a href="/client/transfers">
-        Cancel
-    </a>
 
 </body>
 </html>

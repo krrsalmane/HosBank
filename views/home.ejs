@@ -1,17 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Test Jira -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartBank </title>
+    <title>HosBank — Next Generation Digital Banking</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #070e1b 0%, #0f172a 50%, #1e293b 100%);
+            color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 4rem 3rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(37, 99, 235, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            color: #93c5fd;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .feature-icon {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-    <h1>HosBank Home Page</h1>
-    <p>
-        <a href="/auth/login">Login</a>
-        |
-        <a href="/auth/register">Create an account</a>
-    </p>
+
+    <nav class="bank-nav">
+        <div class="bank-nav-container">
+            <a class="navbar-brand" href="/">
+                HosBank <span class="logo-badge">Secure</span>
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/auth/login">Login</a>
+                <a class="btn btn-primary btn-sm" href="/auth/register" style="color: white !important;">Open Account</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <span class="hero-badge">Enterprise Grade Financial Services</span>
+            <h1 class="hero-title">Simple, Reliable & Secure Banking</h1>
+            <p class="hero-desc">
+                Manage accounts, instant transfers, smart beneficiary directories, and payment cards with complete transparency and modern security.
+            </p>
+            <div class="hero-actions">
+                <a href="/auth/login" class="btn btn-primary" style="padding: 0.8rem 1.75rem; font-size: 1rem;">
+                    Access Online Portal
+                </a>
+                <a href="/auth/register" class="btn btn-secondary" style="padding: 0.8rem 1.75rem; font-size: 1rem; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.2);">
+                    Create Client Account
+                </a>
+            </div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Institutional Security</h3>
+                <p>Protected by multi-step authentication, encrypted sessions, and direct compliance oversight.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Fund Transfers</h3>
+                <p>Transfer funds immediately between accounts and verified beneficiaries with instant confirmation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💳</div>
+                <h3>Comprehensive Card Controls</h3>
+                <p>Instantly request card PINs, view card details, or trigger emergency card opposition 24/7.</p>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

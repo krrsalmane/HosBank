@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PIN Recalculation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIN Recalculation — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,33 +11,26 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>PIN Recalculation</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Request PIN Recalculation</h1>
+            <p>Request a new security PIN dispatch for your active bank card.</p>
+        </div>
 
-    <p>
-        Request a new PIN for your card.
-    </p>
+        <div class="card" style="max-width: 550px;">
+            <form action="/client/cards/pin-request" method="POST">
+                <div class="form-group">
+                    <label for="description">Reason for PIN Request</label>
+                    <textarea name="description" id="description" rows="4" placeholder="e.g., Forgotten PIN, unreadable PIN letter..." required></textarea>
+                </div>
 
-    <form action="/client/cards/pin-request" method="POST">
-
-        <label>
-            Reason
-        </label>
-
-        <br>
-
-        <textarea
-            name="description"
-            rows="5"
-            required
-        ></textarea>
-
-        <br><br>
-
-        <button type="submit">
-            Request PIN Recalculation
-        </button>
-
-    </form>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Submit PIN Request</button>
+                    <a href="/client/cards" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>

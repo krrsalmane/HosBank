@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Account Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,36 +11,43 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Account Details</h1>
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/client/accounts" style="display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 1rem;">
+                ← Back to accounts
+            </a>
+            <h1><%= account.type %> Account Details</h1>
+        </div>
 
-    <p>
-        <strong>Account number:</strong>
-        <%= account.account_number %>
-    </p>
+        <div class="card" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Account Number</span>
+                <strong style="font-family: monospace; font-size: 1.1rem;"><%= account.account_number %></strong>
+            </div>
 
-    <p>
-        <strong>Type:</strong>
-        <%= account.type %>
-    </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Account Type</span>
+                <strong><%= account.type %></strong>
+            </div>
 
-    <p>
-        <strong>Balance:</strong>
-        <%= account.balance %>
-    </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Current Balance</span>
+                <strong style="font-size: 1.3rem; color: var(--bank-navy-900);"><%= Number(account.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></strong>
+            </div>
 
-    <p>
-        <strong>Status:</strong>
-        <%= account.status %>
-    </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Status</span>
+                <span class="status-badge <%= account.status === 'ACTIVE' ? 'badge-active' : 'badge-pending' %>">
+                    <%= account.status %>
+                </span>
+            </div>
 
-    <p>
-        <strong>Created:</strong>
-        <%= account.created_at %>
-    </p>
-
-    <a href="/client/accounts">
-        Back to accounts
-    </a>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem;">
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Creation Date</span>
+                <span><%= account.created_at ? new Date(account.created_at).toLocaleDateString() : 'N/A' %></span>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Command Center — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,117 +11,103 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Admin Dashboard</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Administration Command Center</h1>
+            <p>Welcome, <%= user.firstName %> <%= user.lastName || '' %>. Global system analytics, user access control, and bank operations oversight.</p>
+        </div>
 
-    <p>
-        Welcome
-        <%= user.firstName %>
-        <%= user.lastName %>
-    </p>
+        <h2>Core Platform Metrics</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value"><%= stats.users || 0 %></div>
+            </div>
 
-    <div>
-        <h2>Statistics</h2>
+            <div class="stat-item">
+                <div class="stat-label">Active Clients</div>
+                <div class="stat-value" style="color: var(--bank-blue-600);"><%= stats.clients || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Total Users:</strong>
-            <%= stats.users %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Chargés Client</div>
+                <div class="stat-value"><%= stats.managers || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Clients:</strong>
-            <%= stats.clients %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Administrators</div>
+                <div class="stat-value"><%= stats.admins || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Chargés Client:</strong>
-            <%= stats.managers %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Bank Accounts</div>
+                <div class="stat-value" style="color: var(--success-green);"><%= stats.accounts || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Administrators:</strong>
-            <%= stats.admins %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Issued Cards</div>
+                <div class="stat-value"><%= stats.cards || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Bank Accounts:</strong>
-            <%= stats.accounts %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Pending Requests</div>
+                <div class="stat-value" style="color: var(--warning-amber);"><%= stats.requests || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Cards:</strong>
-            <%= stats.cards %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Open Complaints</div>
+                <div class="stat-value" style="color: var(--danger-red);"><%= stats.complaints || 0 %></div>
+            </div>
 
-        <p>
-            <strong>Pending Requests:</strong>
-            <%= stats.requests %>
-        </p>
+            <div class="stat-item">
+                <div class="stat-label">Total Transfers</div>
+                <div class="stat-value"><%= stats.transfers || 0 %></div>
+            </div>
+        </div>
 
-        <p>
-            <strong>Open Complaints:</strong>
-            <%= stats.complaints %>
-        </p>
-
-        <p>
-            <strong>Transfers:</strong>
-            <%= stats.transfers %>
-        </p>
-    </div>
-
-    <br>
-
-    <div>
-        <h2>Administration</h2>
-
-        <p>
-            <a href="/admin/users">
-                Manage Users
+        <h2>Administrative Controls</h2>
+        <div class="quick-actions-grid">
+            <a href="/admin/users" class="quick-action-card">
+                <strong>👤 User Management</strong>
+                <span>Create, edit, activate/deactivate client and staff logins</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/assignments">
-                Assign Clients
+            <a href="/admin/assignments" class="quick-action-card">
+                <strong>🔄 Client Assignments</strong>
+                <span>Assign clients to dedicated account representatives</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/accounts">
-                Manage Accounts
+            <a href="/admin/accounts" class="quick-action-card">
+                <strong>💳 Account Oversight</strong>
+                <span>Inspect checking/savings ledger balances and statuses</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/cards">
-                Manage Cards
+            <a href="/admin/cards" class="quick-action-card">
+                <strong>🪪 Card Governance</strong>
+                <span>Monitor active debit/credit cards and opposition logs</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/requests">
-                View Banking Requests
+            <a href="/admin/requests" class="quick-action-card">
+                <strong>📑 Banking Requests</strong>
+                <span>Audit all submitted client requests across departments</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/complaints">
-                View Complaints
+            <a href="/admin/complaints" class="quick-action-card">
+                <strong>💬 Support Escalations</strong>
+                <span>Monitor all complaints and resolution workflows</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/transfers">
-                View Transfers
+            <a href="/admin/transfers" class="quick-action-card">
+                <strong>↗ Money Transfers</strong>
+                <span>Audit wire transfers and inter-account movements</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/admin/transactions">
-                View Transactions
+            <a href="/admin/transactions" class="quick-action-card">
+                <strong>📊 Transaction Logs</strong>
+                <span>View full immutable transaction audit ledger</span>
             </a>
-        </p>
+        </div>
     </div>
 
 </body>
-
 </html>

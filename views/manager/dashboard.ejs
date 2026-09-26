@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Chargé Client Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Workspace — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,48 +11,36 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Chargé Client Dashboard</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Manager Workspace</h1>
+            <p>Welcome back, <%= user.firstName %> <%= user.lastName || '' %>. Monitor client portfolios, review pending requests, and resolve customer inquiries.</p>
+        </div>
 
-    <p>
-        Welcome
-        <%= user.firstName %>
-        <%= user.lastName %>
-    </p>
-
-    <div>
-        <h2>My Work</h2>
-
-        <p>
-            <a href="/manager/requests">
-                Banking Requests
+        <div class="quick-actions-grid" style="margin-bottom: 2.5rem;">
+            <a href="/manager/requests" class="quick-action-card">
+                <strong>📑 Banking Requests</strong>
+                <span>Review, approve, or reject administrative submissions</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/manager/complaints">
-                Complaints
+            <a href="/manager/complaints" class="quick-action-card">
+                <strong>💬 Customer Complaints</strong>
+                <span>Handle support escalation tickets and write responses</span>
             </a>
-        </p>
 
-        <p>
-            <a href="/manager/clients">
-                Assigned Clients
+            <a href="/manager/clients" class="quick-action-card">
+                <strong>👥 Assigned Clients</strong>
+                <span>Browse and manage your assigned client portfolio</span>
             </a>
-        </p>
-    </div>
+        </div>
 
-    <div>
-        <h2>Account Management</h2>
-
-        <p>
-            View and process requests submitted by your assigned clients.
-        </p>
-
-        <p>
-            Review complaints and update their status.
-        </p>
+        <div class="card">
+            <h2>Account Representative Responsibilities</h2>
+            <p>• Process all client requests (RIB, PIN recalculations, savings accounts) in accordance with bank SLA protocols.</p>
+            <p>• Provide timely, professional responses to customer complaints within 24 hours of ticket submission.</p>
+            <p>• Audit assigned client accounts regularly to detect suspicious or blocked activity.</p>
+        </div>
     </div>
 
 </body>
-
 </html>

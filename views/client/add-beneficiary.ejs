@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Beneficiary</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Beneficiary — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,39 +11,31 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Add Beneficiary</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1>Add New Beneficiary</h1>
+            <p>Save recipient banking details for instant future transfers.</p>
+        </div>
 
-    <form action="/client/beneficiaries/add" method="POST">
+        <div class="card" style="max-width: 550px;">
+            <form action="/client/beneficiaries/add" method="POST">
+                <div class="form-group">
+                    <label for="name">Beneficiary Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="e.g. John Doe, Acme Corp" required>
+                </div>
 
-        <label>Name</label>
-        <input
-            type="text"
-            name="name"
-            required
-        >
+                <div class="form-group">
+                    <label for="account_number">Account Number / RIB</label>
+                    <input type="text" id="account_number" name="account_number" placeholder="Enter full bank account number" required>
+                </div>
 
-        <br><br>
-
-        <label>Account Number</label>
-        <input
-            type="text"
-            name="accountNumber"
-            required
-        >
-
-        <br><br>
-
-        <button type="submit">
-            Add Beneficiary
-        </button>
-
-    </form>
-
-    <br>
-
-    <a href="/client/beneficiaries">
-        Back
-    </a>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Save Beneficiary</button>
+                    <a href="/client/beneficiaries" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>

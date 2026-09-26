@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Client Accounts</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Accounts — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,56 +11,45 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Client Bank Accounts</h1>
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/manager/clients/<%= clientId %>" style="display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 1rem;">
+                ← Back to client profile
+            </a>
+            <h1>Client Bank Accounts</h1>
+        </div>
 
-    <p>
-        <a href="/manager/clients/<%= clientId %>">
-            Back to Client Details
-        </a>
-    </p>
-
-    <% if (accounts.length === 0) { %>
-
-        <p>No bank accounts found for this client.</p>
-
-    <% } else { %>
-
-        <% accounts.forEach(account => { %>
-
-            <div>
-
-                <h3>
-                    <%= account.type %>
-                </h3>
-
-                <p>
-                    <strong>Account Number:</strong>
-                    <%= account.account_number %>
-                </p>
-
-                <p>
-                    <strong>Balance:</strong>
-                    <%= account.balance %>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <%= account.status %>
-                </p>
-
-                <p>
-                    <strong>Created:</strong>
-                    <%= account.created_at %>
-                </p>
-
+        <% if (!accounts || accounts.length === 0) { %>
+            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+                <p style="color: var(--text-muted); margin: 0;">No active bank accounts found for this client.</p>
             </div>
-
-            <hr>
-
-        <% }) %>
-
-    <% } %>
+        <% } else { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                <% accounts.forEach(account => { %>
+                    <div class="account-card-visual">
+                        <div class="account-card-header">
+                            <span class="account-card-type"><%= account.type %></span>
+                            <span class="status-badge <%= account.status === 'ACTIVE' ? 'badge-active' : 'badge-pending' %>">
+                                <%= account.status %>
+                            </span>
+                        </div>
+                        <div class="account-card-number">
+                            <%= account.account_number %>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <span style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Ledger Balance</span>
+                            <div class="account-card-balance">
+                                <%= Number(account.balance || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) %>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: #94a3b8;">
+                            Opened: <%= account.created_at ? new Date(account.created_at).toLocaleDateString() : 'N/A' %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
 
 </body>
-
 </html>

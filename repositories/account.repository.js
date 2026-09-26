@@ -10,11 +10,11 @@ export async function findAccountById(accountId){
     return rows[0];
 }
 
-export async function createAccount(userId, accountNumber, type) {
+export async function createAccount(userId, account_number, type) {
     const [result] = await pool.query(
         `INSERT INTO bank_accounts (user_id, account_number, type)
          VALUES (?, ?, ?)`,
-        [userId, accountNumber, type]
+        [userId, account_number, type]
     );
     return result.insertId;
 }

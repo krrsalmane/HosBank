@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Card Opposition</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Opposition — HosBank</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -9,57 +11,42 @@
 
     <%- include('../partials/navbar', { user: user }) %>
 
-    <h1>Card Opposition</h1>
+    <div class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1 style="color: var(--danger-red);">Emergency Card Opposition</h1>
+            <p>If your payment card has been lost, stolen, or shows unauthorized transactions, immediately trigger opposition below.</p>
+        </div>
 
-    <p>
-        If your card has been lost or stolen, you can request
-        an opposition.
-    </p>
+        <div class="card" style="max-width: 600px; border-top: 4px solid var(--danger-red);">
+            <form action="/client/cards/opposition" method="POST">
+                <div class="form-group">
+                    <label for="cardId">Select Card to Block</label>
+                    <select name="cardId" id="cardId" required>
+                        <option value="">Select a card</option>
+                        <% cards.forEach(card => { %>
+                            <option value="<%= card.id %>">
+                                <%= card.type %> — •••• <%= card.card_number.slice(-4) %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
 
-    <form action="/client/cards/opposition" method="POST">
+                <div class="form-group">
+                    <label for="description">Reason for Opposition (Stolen, Lost, Fraud)</label>
+                    <textarea name="description" id="description" rows="4" placeholder="Describe the incident (date, location, reason)..." required></textarea>
+                </div>
 
-        <label>
-            Card
-        </label>
-
-        <select name="cardId" required>
-
-            <option value="">
-                Select a card
-            </option>
-
-            <% cards.forEach(card => { %>
-
-                <option value="<%= card.id %>">
-                    <%= card.type %> -
-                    **** <%= card.card_number.slice(-4) %>
-                </option>
-
-            <% }) %>
-
-        </select>
-
-        <br><br>
-
-        <label>
-            Reason
-        </label>
-
-        <br>
-
-        <textarea
-            name="description"
-            rows="5"
-            required
-        ></textarea>
-
-        <br><br>
-
-        <button type="submit">
-            Request Opposition
-        </button>
-
-    </form>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-danger">
+                        Confirm & Block Card Immediately
+                    </button>
+                    <a href="/client/cards" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>
